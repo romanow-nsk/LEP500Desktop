@@ -28,6 +28,8 @@ public class LEP500Client extends Client{
         super.initPanels();
         panelDescList.add(new PanelDescriptor("Настройки", LEP500WorkSettingsPanel.class,new int[]
                 {UserSuperAdminType,UserLEP500Analytic}));
+        panelDescList.add(new PanelDescriptor("Параметры", LEP500ParamsPanel.class,new int[]
+                {UserSuperAdminType,UserLEP500Analytic}));
         panelDescList.add(new PanelDescriptor("Тестовая", LEP500Example.class,new int[]
                 {UserSuperAdminType,UserLEP500Analytic}));
         }
