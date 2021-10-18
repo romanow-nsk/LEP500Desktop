@@ -47,11 +47,11 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel18">
       <Properties>
-        <Property name="text" type="java.lang.String" value="&#x426;&#x438;&#x43a;&#x43b; &#x43e;&#x43f;&#x440;&#x43e;&#x441;&#x430; &#x43f;&#x43e;&#x442;&#x43e;&#x43a;&#x43e;&#x432;&#x44b;&#x445; &#x434;&#x430;&#x43d;&#x43d;&#x44b;&#x445; (&#x441;&#x435;&#x43a;)"/>
+        <Property name="text" type="java.lang.String" value="&#x412;&#x435;&#x440;&#x445;&#x43d;&#x44f;&#x44f; &#x433;&#x440;&#x430;&#x43d;&#x438;&#x446;&#x430; &#x447;&#x430;&#x441;&#x442;&#x43e;&#x442;&#x44b; &#x434;&#x438;&#x430;&#x43f;&#x430;&#x437;&#x43e;&#x43d;&#x430; &#x43c;&#x430;&#x43a;&#x441;."/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="20" y="130" width="230" height="-1"/>
+          <AbsoluteConstraints x="20" y="130" width="250" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -401,11 +401,11 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel28">
       <Properties>
-        <Property name="text" type="java.lang.String" value="&#x413;&#x43b;&#x443;&#x431;&#x438;&#x43d;&#x430; &#x430;&#x440;&#x445;&#x438;&#x432;&#x430; &#x432; &#x434;&#x43d;&#x44f;&#x445;"/>
+        <Property name="text" type="java.lang.String" value="&#x41d;&#x438;&#x436;&#x43d;&#x44f;&#x44f; &#x433;&#x440;&#x430;&#x43d;&#x438;&#x446;&#x430; &#x447;&#x430;&#x441;&#x442;&#x43e;&#x442;&#x44b; &#x434;&#x438;&#x430;&#x43f;&#x430;&#x437;&#x43e;&#x43d;&#x430; &#x43c;&#x430;&#x43a;&#x441;."/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="20" y="100" width="180" height="-1"/>
+          <AbsoluteConstraints x="20" y="100" width="240" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>

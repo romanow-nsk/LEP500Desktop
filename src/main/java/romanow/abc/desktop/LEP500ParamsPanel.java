@@ -119,9 +119,9 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
         add(jLabel17);
         jLabel17.setBounds(420, 220, 110, 14);
 
-        jLabel18.setText("Цикл опроса потоковых данных (сек)");
+        jLabel18.setText("Верхняя граница частоты диапазона макс.");
         add(jLabel18);
-        jLabel18.setBounds(20, 130, 230, 14);
+        jLabel18.setBounds(20, 130, 250, 14);
 
         jLabel19.setText("Вид компрессии потоковых данных");
         add(jLabel19);
@@ -328,9 +328,9 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
         add(MainServer);
         MainServer.setBounds(420, 280, 170, 23);
 
-        jLabel28.setText("Глубина архива в днях");
+        jLabel28.setText("Нижняя граница частоты диапазона макс.");
         add(jLabel28);
-        jLabel28.setBounds(20, 100, 180, 14);
+        jLabel28.setBounds(20, 100, 240, 14);
     }// </editor-fold>//GEN-END:initComponents
 
     private void GUIrefreshPeriodKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GUIrefreshPeriodKeyPressed
