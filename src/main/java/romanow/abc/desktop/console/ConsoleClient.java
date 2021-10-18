@@ -2,7 +2,7 @@ package romanow.abc.desktop.console;
 
 import com.google.gson.Gson;
 import romanow.abc.core.API.RestAPIBase;
-import romanow.abc.core.API.RestAPIESS2;
+import romanow.abc.core.API.RestAPILEP500;
 import romanow.abc.core.DBRequest;
 import romanow.abc.core.UniException;
 import romanow.abc.core.constants.Values;
@@ -20,7 +20,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 
@@ -33,7 +32,7 @@ public class ConsoleClient {
     int clientPort=4567;
     String sysPassword="pi31415926";
     RestAPIBase service = null;
-    RestAPIESS2 service2 = null;
+    RestAPILEP500 service2 = null;
     String debugToken=null;
     User user=null;
     boolean connected=false;
@@ -138,7 +137,7 @@ public class ConsoleClient {
         }.call();
         return new Pair<RestAPIBase,String>(service,ss.getValue());
         }
-    private RestAPIESS2 startSecondClient() throws UniException {
+    private RestAPILEP500 startSecondClient() throws UniException {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .readTimeout(Values.HTTPTimeOut, TimeUnit.SECONDS)
                 .connectTimeout(Values.HTTPTimeOut, TimeUnit.SECONDS)
@@ -148,7 +147,7 @@ public class ConsoleClient {
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build();
-        RestAPIESS2 service = (RestAPIESS2)retrofit.create(RestAPIESS2.class);
+        RestAPILEP500 service = (RestAPILEP500)retrofit.create(RestAPILEP500.class);
         localUser = clientIP.equals("localhost") || clientIP.equals("127.0.0.1");
         return service;
         }

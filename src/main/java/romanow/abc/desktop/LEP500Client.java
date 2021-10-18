@@ -4,7 +4,7 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import romanow.abc.core.API.RestAPIBase;
-import romanow.abc.core.API.RestAPIESS2;
+import romanow.abc.core.API.RestAPILEP500;
 import romanow.abc.core.UniException;
 import romanow.abc.core.constants.Values;
 import romanow.abc.core.entity.subjectarea.*;
@@ -27,10 +27,12 @@ public class LEP500Client extends Client{
     public void initPanels() {
         super.initPanels();
         panelDescList.add(new PanelDescriptor("Настройки", LEP500WorkSettingsPanel.class,new int[]
-                {UserSuperAdminType,UserESSServiceEngeneer,UserESSEngeneer}));
+                {UserSuperAdminType,UserLEP500Analytic}));
+        panelDescList.add(new PanelDescriptor("Тестовая", LEP500Example.class,new int[]
+                {UserSuperAdminType,UserLEP500Analytic}));
         }
     //-------------------------------------------------------------------------------------------------------
-    RestAPIESS2 service2;
+    RestAPILEP500 service2;
     @Override
     public void onLoginSuccess(){
         try {
@@ -41,7 +43,7 @@ public class LEP500Client extends Client{
                 }
     }
 
-    public void setExternalData(String token, User uu, WorkSettings ws0, RestAPIBase service0, RestAPIESS2 service20, boolean localUser0){
+    public void setExternalData(String token, User uu, WorkSettings ws0, RestAPIBase service0, RestAPILEP500 service20, boolean localUser0){
         debugToken = token;
         loginUser = uu;
         workSettings = ws0;
@@ -49,7 +51,7 @@ public class LEP500Client extends Client{
         service2 = service20;
         localUser = localUser0;
         }
-    public RestAPIESS2 startSecondClient(String ip, String port) throws UniException {
+    public RestAPILEP500 startSecondClient(String ip, String port) throws UniException {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .readTimeout(Values.HTTPTimeOut, TimeUnit.SECONDS)
                 .connectTimeout(Values.HTTPTimeOut, TimeUnit.SECONDS)
@@ -59,7 +61,7 @@ public class LEP500Client extends Client{
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build();
-        RestAPIESS2 service = (RestAPIESS2)retrofit.create(RestAPIESS2.class);
+        RestAPILEP500 service = (RestAPILEP500)retrofit.create(RestAPILEP500.class);
         localUser = ip.equals("localhost") || port.equals("127.0.0.1");
         return service;
         }

@@ -3,6 +3,9 @@ package romanow.abc.desktop;
 import romanow.abc.core.constants.Values;
 
 public class LEP500Cabinet extends Cabinet{
+    public LEP500Cabinet(){
+        super();
+    }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

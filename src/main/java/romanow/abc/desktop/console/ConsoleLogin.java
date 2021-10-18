@@ -43,14 +43,8 @@ public class ConsoleLogin extends ConsoleCommand {
         }.call();
         client.debugToken = client.user.getSessionToken();
         client.getWorkSettings();
-        JBoolean ready = new APICallC<JBoolean>(){
-            @Override
-            public Call<JBoolean> apiFun() {
-                return client.service2.isPLMReady(client.debugToken);
-                }
-            }.call();
-        client.connected = ready.value();
-        String out = client.connected ? "ПКЛ подключен\n" : "ПКЛ не подключен\n";
+        client.connected = true;
+        String out = "";
         return out;
         }
     @Override
