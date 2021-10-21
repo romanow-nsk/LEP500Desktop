@@ -22,7 +22,7 @@ import java.io.IOException;
  * @author romanow
  */
 public class LEP500ParamsPanel extends LEP500BasePanel {
-    private WorkSettings ws;
+    private final static String WinModes[]={"прямоугольник","треугольник","синус","парабола"};
     EntityPanelUni paramsList;
     EntityList<LEP500Params> list = new EntityList<>();
     public LEP500ParamsPanel() {
@@ -30,7 +30,10 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
         }
     public void initPanel(MainBaseFrame main0){
         super.initPanel(main0);
-        paramsList  = new EntityPanelUni(10, 15, list, "LEP500Params", main,true,0,5) {
+        WinFun.removeAll();
+        for(String ss : WinModes)
+            WinFun.add(ss);
+        paramsList  = new EntityPanelUni(10, 15, list, "LEP500Params", main,true,0,0) {
             @Override
             public EntityList<Entity> getLazy(){
                 return  null;
@@ -51,8 +54,33 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
         //=================================================================================================================
         add(paramsList);        
         }
-    public void showParams(){}
-    public void updateParams(){}
+    public void showParams(){
+        LEP500Params params = (LEP500Params) paramsList.current;
+        if (params==null)
+            return;
+        K1.setText(String.format("%5.2f",params.K1).replace(",","."));
+        K2.setText(String.format("%5.2f",params.K2).replace(",","."));
+        K3.setText(String.format("%5.2f",params.K3).replace(",","."));
+        K4.setText(String.format("%5.2f",params.K4).replace(",","."));
+        K5.setText(String.format("%5.2f",params.K5).replace(",","."));
+        K6.setText(String.format("%5.2f",params.K6).replace(",","."));
+        K7.setText(String.format("%5.2f",params.K7).replace(",","."));
+        NTrendPoints.setText(""+params.nTrendPoints);
+        NTrendPointsSpectrum.setText(""+params.nTrendPointsSpectrum);
+        FirstFreq.setText(""+params.FirstFreq);
+        LastFreq.setText(""+params.LastFreq);
+        AmplLevelProc.setText(""+params.amplLevelProc);
+        PowerLevelProc.setText(""+params.powerLevelProc);
+        P_BlockSize.setText(""+params.p_BlockSize);
+        P_OverProc.setText(""+params.p_OverProc);
+        WinFun.select(params.winFun);
+        ParamListName.setText(params.paramListName);
+        }
+    public void updateParams(){
+        LEP500Params params = (LEP500Params) paramsList.current;
+        if (params==null)
+            return;
+        }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -63,507 +91,578 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jSeparator1 = new javax.swing.JSeparator();
-        GUIrefreshPeriod = new javax.swing.JTextField();
-        jLabel17 = new javax.swing.JLabel();
+        P_BlockSize = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
-        jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
-        ArchiveDepthInDay = new javax.swing.JTextField();
-        StreamDataPeriod = new javax.swing.JTextField();
-        StreamDataLongPeriod = new javax.swing.JTextField();
-        FailureTestPeriod = new javax.swing.JTextField();
+        FirstFreq = new javax.swing.JTextField();
+        LastFreq = new javax.swing.JTextField();
+        NTrendPoints = new javax.swing.JTextField();
+        NTrendPointsSpectrum = new javax.swing.JTextField();
         jLabel21 = new javax.swing.JLabel();
-        EventsPeriod = new javax.swing.JTextField();
+        P_OverProc = new javax.swing.JTextField();
         jLabel22 = new javax.swing.JLabel();
-        RegisterAge = new javax.swing.JTextField();
         jLabel23 = new javax.swing.JLabel();
-        PLMEmulator = new javax.swing.JCheckBox();
-        PLMPort = new javax.swing.JTextField();
-        PLMIP = new javax.swing.JTextField();
-        jLabel25 = new javax.swing.JLabel();
-        PLMTimeOut = new javax.swing.JTextField();
-        jLabel26 = new javax.swing.JLabel();
-        jLabel27 = new javax.swing.JLabel();
-        PLMGroupSize = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
-        jLabel4 = new javax.swing.JLabel();
-        FileScanPeriod = new javax.swing.JTextField();
+        AmplLevelProc = new javax.swing.JTextField();
         jLabel33 = new javax.swing.JLabel();
-        MainServerPeriod = new javax.swing.JTextField();
+        K1 = new javax.swing.JTextField();
         jLabel34 = new javax.swing.JLabel();
         jLabel35 = new javax.swing.JLabel();
-        StreamDataLimit = new javax.swing.JTextField();
-        PLMReady = new javax.swing.JCheckBox();
-        jLabel36 = new javax.swing.JLabel();
-        StreamDataCompressMode = new javax.swing.JTextField();
-        Refresh = new javax.swing.JButton();
-        UserSilenceTime = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        MainServer = new javax.swing.JCheckBox();
         jLabel28 = new javax.swing.JLabel();
+        PowerLevelProc = new javax.swing.JTextField();
+        jLabel37 = new javax.swing.JLabel();
+        K2 = new javax.swing.JTextField();
+        jLabel38 = new javax.swing.JLabel();
+        K3 = new javax.swing.JTextField();
+        jLabel39 = new javax.swing.JLabel();
+        K4 = new javax.swing.JTextField();
+        jLabel40 = new javax.swing.JLabel();
+        K5 = new javax.swing.JTextField();
+        jLabel41 = new javax.swing.JLabel();
+        K6 = new javax.swing.JTextField();
+        jLabel42 = new javax.swing.JLabel();
+        K7 = new javax.swing.JTextField();
+        jLabel43 = new javax.swing.JLabel();
+        WinFun = new java.awt.Choice();
+        ParamListName = new javax.swing.JTextField();
+        jLabel29 = new javax.swing.JLabel();
 
         setLayout(null);
-        add(jSeparator1);
-        jSeparator1.setBounds(410, 80, 240, 10);
 
-        GUIrefreshPeriod.addKeyListener(new java.awt.event.KeyAdapter() {
+        P_BlockSize.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                GUIrefreshPeriodKeyPressed(evt);
+                P_BlockSizeKeyPressed(evt);
             }
         });
-        add(GUIrefreshPeriod);
-        GUIrefreshPeriod.setBounds(310, 210, 70, 25);
-
-        jLabel17.setText("Регистров в блоке");
-        add(jLabel17);
-        jLabel17.setBounds(420, 220, 110, 14);
+        add(P_BlockSize);
+        P_BlockSize.setBounds(310, 210, 70, 25);
 
         jLabel18.setText("Верхняя граница частоты диапазона макс.");
         add(jLabel18);
         jLabel18.setBounds(20, 130, 250, 14);
 
-        jLabel19.setText("Вид компрессии потоковых данных");
-        add(jLabel19);
-        jLabel19.setBounds(20, 400, 260, 14);
-
-        jLabel20.setText("Цикл обнаружения аварий (сек)");
+        jLabel20.setText("Точек при сглаживании тренда в спектре");
         add(jLabel20);
         jLabel20.setBounds(20, 190, 230, 14);
 
-        ArchiveDepthInDay.addKeyListener(new java.awt.event.KeyAdapter() {
+        FirstFreq.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                ArchiveDepthInDayKeyPressed(evt);
+                FirstFreqKeyPressed(evt);
             }
         });
-        add(ArchiveDepthInDay);
-        ArchiveDepthInDay.setBounds(310, 90, 70, 25);
+        add(FirstFreq);
+        FirstFreq.setBounds(310, 90, 70, 25);
 
-        StreamDataPeriod.addKeyListener(new java.awt.event.KeyAdapter() {
+        LastFreq.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                StreamDataPeriodKeyPressed(evt);
+                LastFreqKeyPressed(evt);
             }
         });
-        add(StreamDataPeriod);
-        StreamDataPeriod.setBounds(310, 120, 70, 25);
+        add(LastFreq);
+        LastFreq.setBounds(310, 120, 70, 25);
 
-        StreamDataLongPeriod.addKeyListener(new java.awt.event.KeyAdapter() {
+        NTrendPoints.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                StreamDataLongPeriodKeyPressed(evt);
+                NTrendPointsKeyPressed(evt);
             }
         });
-        add(StreamDataLongPeriod);
-        StreamDataLongPeriod.setBounds(310, 150, 70, 25);
+        add(NTrendPoints);
+        NTrendPoints.setBounds(310, 150, 70, 25);
 
-        FailureTestPeriod.addKeyListener(new java.awt.event.KeyAdapter() {
+        NTrendPointsSpectrum.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                FailureTestPeriodKeyPressed(evt);
+                NTrendPointsSpectrumKeyPressed(evt);
             }
         });
-        add(FailureTestPeriod);
-        FailureTestPeriod.setBounds(310, 180, 70, 25);
+        add(NTrendPointsSpectrum);
+        NTrendPointsSpectrum.setBounds(310, 180, 70, 25);
 
-        jLabel21.setText("Период обновления форм ЧМИ (сек)");
+        jLabel21.setText("Количество блоков по 1024 отсчета");
         add(jLabel21);
         jLabel21.setBounds(20, 220, 210, 14);
 
-        EventsPeriod.addKeyListener(new java.awt.event.KeyAdapter() {
+        P_OverProc.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                EventsPeriodKeyPressed(evt);
+                P_OverProcKeyPressed(evt);
             }
         });
-        add(EventsPeriod);
-        EventsPeriod.setBounds(310, 240, 70, 25);
+        add(P_OverProc);
+        P_OverProc.setBounds(310, 240, 70, 25);
 
-        jLabel22.setText("\"Возраст\" регистра в кэше (мс)");
+        jLabel22.setText("Вид функции окна");
         add(jLabel22);
-        jLabel22.setBounds(20, 280, 250, 14);
+        jLabel22.setBounds(20, 280, 140, 14);
 
-        RegisterAge.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                RegisterAgeKeyPressed(evt);
-            }
-        });
-        add(RegisterAge);
-        RegisterAge.setBounds(310, 270, 70, 25);
-
-        jLabel23.setText("Цикл опроса дискретных   событий (сек)");
+        jLabel23.setText("Процент перекрытия окна");
         add(jLabel23);
         jLabel23.setBounds(20, 250, 250, 14);
-
-        PLMEmulator.setText("Эмулятор ПЛК");
-        PLMEmulator.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                PLMEmulatorItemStateChanged(evt);
-            }
-        });
-        add(PLMEmulator);
-        PLMEmulator.setBounds(420, 90, 150, 23);
-
-        PLMPort.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                PLMPortKeyPressed(evt);
-            }
-        });
-        add(PLMPort);
-        PLMPort.setBounds(530, 150, 60, 25);
-
-        PLMIP.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                PLMIPKeyPressed(evt);
-            }
-        });
-        add(PLMIP);
-        PLMIP.setBounds(530, 120, 110, 25);
-
-        jLabel25.setText("IP ПЛМ");
-        add(jLabel25);
-        jLabel25.setBounds(420, 130, 60, 14);
-
-        PLMTimeOut.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                PLMTimeOutKeyPressed(evt);
-            }
-        });
-        add(PLMTimeOut);
-        PLMTimeOut.setBounds(530, 180, 60, 25);
-
-        jLabel26.setText("Порт ПЛМ");
-        add(jLabel26);
-        jLabel26.setBounds(420, 160, 60, 14);
-
-        jLabel27.setText("Тайм-аут (с)");
-        add(jLabel27);
-        jLabel27.setBounds(420, 190, 90, 14);
-
-        PLMGroupSize.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                PLMGroupSizeKeyPressed(evt);
-            }
-        });
-        add(PLMGroupSize);
-        PLMGroupSize.setBounds(530, 210, 60, 25);
         add(jSeparator2);
         jSeparator2.setBounds(20, 80, 360, 10);
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel4.setText("ПЛК");
-        add(jLabel4);
-        jLabel4.setBounds(660, 70, 50, 14);
-
-        FileScanPeriod.addKeyListener(new java.awt.event.KeyAdapter() {
+        AmplLevelProc.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                FileScanPeriodKeyPressed(evt);
+                AmplLevelProcKeyPressed(evt);
             }
         });
-        add(FileScanPeriod);
-        FileScanPeriod.setBounds(310, 300, 70, 25);
+        add(AmplLevelProc);
+        AmplLevelProc.setBounds(310, 300, 70, 25);
 
-        jLabel33.setText("Длинный цикл опроса потоковых данных (сек)");
+        jLabel33.setText("Точек при сглаживании тренда в волне");
         add(jLabel33);
         jLabel33.setBounds(20, 160, 260, 14);
 
-        MainServerPeriod.addKeyListener(new java.awt.event.KeyAdapter() {
+        K1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                MainServerPeriodKeyPressed(evt);
+                K1KeyPressed(evt);
             }
         });
-        add(MainServerPeriod);
-        MainServerPeriod.setBounds(310, 330, 70, 25);
+        add(K1);
+        K1.setBounds(470, 90, 70, 25);
 
-        jLabel34.setText("Цикл опроса источников файлов (сек)");
+        jLabel34.setText("Уровень амплитуды пика для отсечения (%)");
         add(jLabel34);
         jLabel34.setBounds(20, 310, 260, 14);
 
-        jLabel35.setText("Цикл снятия данных сервером СМУ (сек)");
+        jLabel35.setText("K1");
         add(jLabel35);
-        jLabel35.setBounds(20, 340, 260, 14);
+        jLabel35.setBounds(420, 100, 30, 10);
 
-        StreamDataLimit.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                StreamDataLimitKeyPressed(evt);
-            }
-        });
-        add(StreamDataLimit);
-        StreamDataLimit.setBounds(310, 360, 70, 25);
-
-        PLMReady.setText("Соединение с ПЛК");
-        PLMReady.setEnabled(false);
-        add(PLMReady);
-        PLMReady.setBounds(420, 250, 180, 23);
-
-        jLabel36.setText("Лимит наборов потоковых данных в периоде");
-        add(jLabel36);
-        jLabel36.setBounds(20, 370, 260, 14);
-
-        StreamDataCompressMode.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                StreamDataCompressModeKeyPressed(evt);
-            }
-        });
-        add(StreamDataCompressMode);
-        StreamDataCompressMode.setBounds(310, 390, 70, 25);
-
-        Refresh.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RefreshActionPerformed(evt);
-            }
-        });
-        add(Refresh);
-        Refresh.setBounds(640, 230, 40, 40);
-
-        UserSilenceTime.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                UserSilenceTimeKeyPressed(evt);
-            }
-        });
-        add(UserSilenceTime);
-        UserSilenceTime.setBounds(310, 420, 70, 25);
-
-        jLabel1.setText("Время \"молчания\" оператора (мин)");
-        add(jLabel1);
-        jLabel1.setBounds(20, 430, 240, 14);
-
-        MainServer.setText("Сервер СМУ СНЭ");
-        add(MainServer);
-        MainServer.setBounds(420, 280, 170, 23);
-
-        jLabel28.setText("Нижняя граница частоты диапазона макс.");
+        jLabel28.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel28.setText("Название");
         add(jLabel28);
-        jLabel28.setBounds(20, 100, 240, 14);
+        jLabel28.setBounds(20, 50, 130, 14);
+
+        PowerLevelProc.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                PowerLevelProcKeyPressed(evt);
+            }
+        });
+        add(PowerLevelProc);
+        PowerLevelProc.setBounds(310, 330, 70, 25);
+
+        jLabel37.setText("Уровень мощности  пика для отсечения  (%)");
+        add(jLabel37);
+        jLabel37.setBounds(20, 340, 260, 14);
+
+        K2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                K2KeyPressed(evt);
+            }
+        });
+        add(K2);
+        K2.setBounds(470, 120, 70, 25);
+
+        jLabel38.setText("K2");
+        add(jLabel38);
+        jLabel38.setBounds(420, 130, 30, 10);
+
+        K3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                K3KeyPressed(evt);
+            }
+        });
+        add(K3);
+        K3.setBounds(470, 150, 70, 25);
+
+        jLabel39.setText("K3");
+        add(jLabel39);
+        jLabel39.setBounds(420, 160, 30, 10);
+
+        K4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                K4KeyPressed(evt);
+            }
+        });
+        add(K4);
+        K4.setBounds(470, 180, 70, 25);
+
+        jLabel40.setText("K4");
+        add(jLabel40);
+        jLabel40.setBounds(420, 190, 30, 10);
+
+        K5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                K5KeyPressed(evt);
+            }
+        });
+        add(K5);
+        K5.setBounds(470, 210, 70, 25);
+
+        jLabel41.setText("K5");
+        add(jLabel41);
+        jLabel41.setBounds(420, 220, 30, 10);
+
+        K6.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                K6KeyPressed(evt);
+            }
+        });
+        add(K6);
+        K6.setBounds(470, 240, 70, 25);
+
+        jLabel42.setText("K6");
+        add(jLabel42);
+        jLabel42.setBounds(420, 250, 30, 10);
+
+        K7.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                K7KeyPressed(evt);
+            }
+        });
+        add(K7);
+        K7.setBounds(470, 270, 70, 25);
+
+        jLabel43.setText("K7");
+        add(jLabel43);
+        jLabel43.setBounds(420, 280, 30, 10);
+
+        WinFun.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                WinFunItemStateChanged(evt);
+            }
+        });
+        add(WinFun);
+        WinFun.setBounds(230, 270, 150, 20);
+
+        ParamListName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                ParamListNameKeyPressed(evt);
+            }
+        });
+        add(ParamListName);
+        ParamListName.setBounds(160, 50, 380, 25);
+
+        jLabel29.setText("Нижняя граница частоты диапазона макс.");
+        add(jLabel29);
+        jLabel29.setBounds(20, 100, 240, 14);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void GUIrefreshPeriodKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GUIrefreshPeriodKeyPressed
-        procPressedInt(evt, GUIrefreshPeriod,"GUIrefreshPeriod");
-    }//GEN-LAST:event_GUIrefreshPeriodKeyPressed
-
-    private void ArchiveDepthInDayKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ArchiveDepthInDayKeyPressed
-        procPressedInt(evt, ArchiveDepthInDay,"archiveDepthInDay");
-    }//GEN-LAST:event_ArchiveDepthInDayKeyPressed
-
-    private void StreamDataPeriodKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_StreamDataPeriodKeyPressed
-        procPressedInt(evt, StreamDataPeriod,"streamDataPeriod");
-    }//GEN-LAST:event_StreamDataPeriodKeyPressed
-
-    private void StreamDataLongPeriodKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_StreamDataLongPeriodKeyPressed
-        procPressedInt(evt, StreamDataLongPeriod,"streamDataLongPeriod");
-    }//GEN-LAST:event_StreamDataLongPeriodKeyPressed
-
-    private void FailureTestPeriodKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FailureTestPeriodKeyPressed
-        procPressedInt(evt, FailureTestPeriod,"failureTestPeriod");
-    }//GEN-LAST:event_FailureTestPeriodKeyPressed
-
-    private void EventsPeriodKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_EventsPeriodKeyPressed
-        procPressedInt(evt, EventsPeriod,"eventTestPeriod");
-    }//GEN-LAST:event_EventsPeriodKeyPressed
-
-    private void RegisterAgeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_RegisterAgeKeyPressed
-        procPressedInt(evt, RegisterAge,"maxRegisterAge");
-    }//GEN-LAST:event_RegisterAgeKeyPressed
-
-    private void setIPPortVisible(){
-        }
-
-    private void PLMEmulatorItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_PLMEmulatorItemStateChanged
-        procPressedBoolean(PLMEmulator,"emulated");
-        setIPPortVisible();
-    }//GEN-LAST:event_PLMEmulatorItemStateChanged
-
-    private void PLMPortKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PLMPortKeyPressed
-        procPressedInt(evt, PLMPort,"plmPort");
-    }//GEN-LAST:event_PLMPortKeyPressed
-
-    private void PLMIPKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PLMIPKeyPressed
-        procPressedString(evt, PLMIP,"plmIP");
-    }//GEN-LAST:event_PLMIPKeyPressed
-
-    private void PLMTimeOutKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PLMTimeOutKeyPressed
-        procPressedInt(evt, PLMTimeOut,"plmTimeOut");
-    }//GEN-LAST:event_PLMTimeOutKeyPressed
-
-    private void FileScanPeriodKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FileScanPeriodKeyPressed
-        procPressedInt(evt, FileScanPeriod,"fileScanPeriod");
-    }//GEN-LAST:event_FileScanPeriodKeyPressed
-
-    private void MainServerPeriodKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_MainServerPeriodKeyPressed
-        procPressedInt(evt, MainServerPeriod,"mainServerPeriod");
-    }//GEN-LAST:event_MainServerPeriodKeyPressed
-
-    private void StreamDataLimitKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_StreamDataLimitKeyPressed
-        procPressedInt(evt, StreamDataLimit,"streamDataPeriodLimit");
-    }//GEN-LAST:event_StreamDataLimitKeyPressed
-
-
-    private void StreamDataCompressModeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_StreamDataCompressModeKeyPressed
-        procPressedInt(evt, StreamDataCompressMode,"compressMode");
-    }//GEN-LAST:event_StreamDataCompressModeKeyPressed
-
-    private void RefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshActionPerformed
-        refresh();
-    }//GEN-LAST:event_RefreshActionPerformed
-
-    private void UserSilenceTimeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_UserSilenceTimeKeyPressed
-        procPressedInt(evt, UserSilenceTime,"userSilenceTime");
-    }//GEN-LAST:event_UserSilenceTimeKeyPressed
-
-    private void PLMGroupSizeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PLMGroupSizeKeyPressed
-        procPressedInt(evt, PLMGroupSize,"plmRegGroupSize");
-    }//GEN-LAST:event_PLMGroupSizeKeyPressed
-
-    private void procPressedInt(KeyEvent evt, JTextField text, String name){
+    private void P_BlockSizeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_P_BlockSizeKeyPressed
         if(evt.getKeyCode()!=10) return;
-        int vv=0;
+        LEP500Params params = (LEP500Params) paramsList.current;
+        if (params==null)
+            return;
         try {
-            vv = Integer.parseInt(text.getText());
+            params.p_BlockSize = Integer.parseInt(P_BlockSize.getText());
         } catch (Exception ee){
             popup("Недопустимый формат целого");
             return;
         }
-        updateSettings(evt,name,vv);
+        updateSettings(evt,"p_BlockSize");
         refresh();
-        }
-    private void procPressedString(KeyEvent evt, JTextField text, String name){
+
+    }//GEN-LAST:event_P_BlockSizeKeyPressed
+
+    private void FirstFreqKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FirstFreqKeyPressed
         if(evt.getKeyCode()!=10) return;
-        updateSettings(evt,name,text.getText());
-        refresh();
+        LEP500Params params = (LEP500Params) paramsList.current;
+        if (params==null)
+            return;
+        try {
+            params.FirstFreq = Double.parseDouble(FirstFreq.getText());
+        } catch (Exception ee){
+            popup("Недопустимый формат вещественного");
+            return;
         }
-    private void procPressedBoolean(JCheckBox box, String name){
-        updateSettings(null,name,box.isSelected());
+        updateSettings(evt,"FirstFreq");
         refresh();
+    }//GEN-LAST:event_FirstFreqKeyPressed
+
+    private void LastFreqKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_LastFreqKeyPressed
+        if(evt.getKeyCode()!=10) return;
+        LEP500Params params = (LEP500Params) paramsList.current;
+        if (params==null)
+            return;
+        try {
+            params.LastFreq = Double.parseDouble(LastFreq.getText());
+        } catch (Exception ee){
+            popup("Недопустимый формат вещественного");
+            return;
         }
+        updateSettings(evt,"LastFreq");
+        refresh();
+
+    }//GEN-LAST:event_LastFreqKeyPressed
+
+    private void NTrendPointsKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NTrendPointsKeyPressed
+        if(evt.getKeyCode()!=10) return;
+        LEP500Params params = (LEP500Params) paramsList.current;
+        if (params==null)
+            return;
+        try {
+            params.nTrendPoints = Integer.parseInt(NTrendPoints.getText());
+        } catch (Exception ee){
+            popup("Недопустимый формат целого");
+            return;
+            }
+        updateSettings(evt,"nTrendPoints");
+        refresh();
+
+    }//GEN-LAST:event_NTrendPointsKeyPressed
+
+    private void NTrendPointsSpectrumKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NTrendPointsSpectrumKeyPressed
+        if(evt.getKeyCode()!=10) return;
+        LEP500Params params = (LEP500Params) paramsList.current;
+        if (params==null)
+            return;
+        try {
+            params.nTrendPointsSpectrum = Integer.parseInt(NTrendPointsSpectrum.getText());
+        } catch (Exception ee){
+            popup("Недопустимый формат целого");
+            return;
+        }
+        updateSettings(evt,"nTrendPointsSpectrum");
+        refresh();
+    }//GEN-LAST:event_NTrendPointsSpectrumKeyPressed
+
+    private void P_OverProcKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_P_OverProcKeyPressed
+        if(evt.getKeyCode()!=10) return;
+        LEP500Params params = (LEP500Params) paramsList.current;
+        if (params==null)
+            return;
+        try {
+            params.p_OverProc = Integer.parseInt(P_OverProc.getText());
+        } catch (Exception ee){
+            popup("Недопустимый формат целого");
+            return;
+        }
+        updateSettings(evt,"p_OverProc");
+        refresh();
+    }//GEN-LAST:event_P_OverProcKeyPressed
+
+    private void setIPPortVisible(){
+        }
+
+    private void AmplLevelProcKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AmplLevelProcKeyPressed
+        if(evt.getKeyCode()!=10) return;
+        LEP500Params params = (LEP500Params) paramsList.current;
+        if (params==null)
+            return;
+        try {
+            params.amplLevelProc = Integer.parseInt(AmplLevelProc.getText());
+        } catch (Exception ee){
+            popup("Недопустимый формат целого");
+            return;
+        }
+        updateSettings(evt,"amplLevelProc");
+        refresh();
+    }//GEN-LAST:event_AmplLevelProcKeyPressed
+
+    private void K1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_K1KeyPressed
+        if(evt.getKeyCode()!=10) return;
+        LEP500Params params = (LEP500Params) paramsList.current;
+        if (params==null)
+            return;
+        try {
+            params.K1 = Double.parseDouble(K1.getText());
+            } catch (Exception ee){
+                popup("Недопустимый формат вещественного");
+                return;
+                }
+        updateSettings(evt,"K1");
+        refresh();
+    }//GEN-LAST:event_K1KeyPressed
+
+    private void PowerLevelProcKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PowerLevelProcKeyPressed
+        if(evt.getKeyCode()!=10) return;
+        LEP500Params params = (LEP500Params) paramsList.current;
+        if (params==null)
+            return;
+        try {
+            params.powerLevelProc = Integer.parseInt(PowerLevelProc.getText());
+            } catch (Exception ee){
+                popup("Недопустимый формат целого");
+                return;
+                }
+        updateSettings(evt,"powerLevelProc");
+        refresh();
+    }//GEN-LAST:event_PowerLevelProcKeyPressed
+
+    private void K2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_K2KeyPressed
+        if(evt.getKeyCode()!=10) return;
+        LEP500Params params = (LEP500Params) paramsList.current;
+        if (params==null)
+            return;
+        try {
+            params.K2 = Double.parseDouble(K2.getText());
+        } catch (Exception ee){
+            popup("Недопустимый формат вещественного");
+            return;
+        }
+        updateSettings(evt,"K2");
+        refresh();
+    }//GEN-LAST:event_K2KeyPressed
+
+    private void K3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_K3KeyPressed
+        if(evt.getKeyCode()!=10) return;
+        LEP500Params params = (LEP500Params) paramsList.current;
+        if (params==null)
+            return;
+        try {
+            params.K3 = Double.parseDouble(K3.getText());
+        } catch (Exception ee){
+            popup("Недопустимый формат вещественного");
+            return;
+        }
+        updateSettings(evt,"K3");
+        refresh();
+    }//GEN-LAST:event_K3KeyPressed
+
+    private void K4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_K4KeyPressed
+        if(evt.getKeyCode()!=10) return;
+        LEP500Params params = (LEP500Params) paramsList.current;
+        if (params==null)
+            return;
+        try {
+            params.K4 = Double.parseDouble(K4.getText());
+        } catch (Exception ee){
+            popup("Недопустимый формат вещественного");
+            return;
+        }
+        updateSettings(evt,"K4");
+        refresh();
+
+    }//GEN-LAST:event_K4KeyPressed
+
+    private void K5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_K5KeyPressed
+        if(evt.getKeyCode()!=10) return;
+        LEP500Params params = (LEP500Params) paramsList.current;
+        if (params==null)
+            return;
+        try {
+            params.K5 = Double.parseDouble(K5.getText());
+        } catch (Exception ee){
+            popup("Недопустимый формат вещественного");
+            return;
+        }
+        updateSettings(evt,"K5");
+        refresh();
+
+    }//GEN-LAST:event_K5KeyPressed
+
+    private void K6KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_K6KeyPressed
+        if(evt.getKeyCode()!=10) return;
+        LEP500Params params = (LEP500Params) paramsList.current;
+        if (params==null)
+            return;
+        try {
+            params.K6 = Double.parseDouble(K6.getText());
+        } catch (Exception ee){
+            popup("Недопустимый формат вещественного");
+            return;
+        }
+        updateSettings(evt,"K6");
+        refresh();
+    }//GEN-LAST:event_K6KeyPressed
+
+    private void K7KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_K7KeyPressed
+        if(evt.getKeyCode()!=10) return;
+        LEP500Params params = (LEP500Params) paramsList.current;
+        if (params==null)
+            return;
+        try {
+            params.K7 = Double.parseDouble(K7.getText());
+        } catch (Exception ee){
+            popup("Недопустимый формат вещественного");
+            return;
+        }
+        updateSettings(evt,"K7");
+        refresh();
+    }//GEN-LAST:event_K7KeyPressed
+
+    private void ParamListNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ParamListNameKeyPressed
+        if(evt.getKeyCode()!=10) return;
+        LEP500Params params = (LEP500Params) paramsList.current;
+        if (params==null)
+            return;
+        params.paramListName = ParamListName.getText();
+        updateSettings(evt,"paramListName");
+        refresh();
+    }//GEN-LAST:event_ParamListNameKeyPressed
+
+    private void WinFunItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_WinFunItemStateChanged
+        LEP500Params params = (LEP500Params) paramsList.current;
+        if (params==null)
+            return;
+        try {
+            params.winFun = WinFun.getSelectedIndex();
+            } catch (Exception ee){
+            popup("Недопустимый формат вещественного");
+            return;
+            }
+        updateSettings(null,"winFun");
+        refresh();
+
+    }//GEN-LAST:event_WinFunItemStateChanged
 
     @Override
     public void refresh() {
-        try {
-            if (!main.getWorkSettings())
-                return;
-            ws = (WorkSettings)main.workSettings;
-        } catch (Exception e) { popup(e.toString()); }
-    }
+        showParams();
+        }
 
     @Override
     public void eventPanel(int code, int par1, long par2, String par3) {
-        if (code==EventRefreshSettings){
-            refresh();
-            main.sendEventPanel(EventRefreshSettingsDone,0,0,"");
-            }
         }
 
     @Override
     public void shutDown() {
     }
 
-    private void updateSettings(){
-        updateSettings(null);
-        }
-    private void updateSettings(KeyEvent evt){
+    private void updateSettings(KeyEvent evt, String name){
+        LEP500Params params = (LEP500Params) paramsList.current;
+        if (params==null)
+            return;
         Response<JEmpty> wsr = null;
         try {
-            wsr = main.service.updateWorkSettings(main.debugToken,new DBRequest(ws,main.gson)).execute();
+            wsr = main.service.updateEntityField(main.debugToken,name,new DBRequest(params,main.gson)).execute();
             if (!wsr.isSuccessful()){
-                popup("Ошибка обновления настроек  " + httpError(wsr));
+                popup("Ошибка обновления параметров  " + httpError(wsr));
                 return;
                 }
-            popup("Настройки обновлены");
+            popup("Параметры обновлены");
             if (evt!=null)
                 main.viewUpdate(evt,true);
-            main.sendEventPanel(EventRefreshSettings,0,0,"");
             } catch (IOException e) {
                 main.viewUpdate(evt,false);
                 popup(e.toString());
                 }
-        }
-    private void updateSettings(KeyEvent evt, String name, int val){
-        Response<JEmpty> wsr = null;
-        try {
-            wsr = main.service.updateWorkSettings(main.debugToken,name,val).execute();
-            if (!wsr.isSuccessful()){
-                popup("Ошибка обновления настроек  " + httpError(wsr));
-                return;
-                }
-            popup("Настройки обновлены");
-            if (evt!=null)
-                main.viewUpdate(evt,true);
-            main.sendEventPanel(EventRefreshSettings,0,0,"");
-            } catch (IOException e) {
-                main.viewUpdate(evt,false);
-                popup(e.toString());
-                }
-        }
-    private void updateSettings(KeyEvent evt, String name, boolean val){
-        Response<JEmpty> wsr = null;
-        try {
-            wsr = main.service.updateWorkSettings(main.debugToken,name,val).execute();
-            if (!wsr.isSuccessful()){
-                popup("Ошибка обновления настроек  " + httpError(wsr));
-                return;
-            }
-            popup("Настройки обновлены");
-            if (evt!=null)
-                main.viewUpdate(evt,true);
-            main.sendEventPanel(EventRefreshSettings,0,0,"");
-            } catch (IOException e) {
-                main.viewUpdate(evt,false);
-                popup(e.toString());
-            }
-        }
-    private void updateSettings(KeyEvent evt, String name, String val){
-        Response<JEmpty> wsr = null;
-        try {
-            wsr = main.service.updateWorkSettings(main.debugToken,name,val).execute();
-            if (!wsr.isSuccessful()){
-                popup("Ошибка обновления настроек  " + httpError(wsr));
-                return;
-                }
-            popup("Настройки обновлены");
-            if (evt!=null)
-                main.viewUpdate(evt,true);
-            main.sendEventPanel(EventRefreshSettings,0,0,"");
-        } catch (IOException e) {
-            main.viewUpdate(evt,false);
-            popup(e.toString());
-        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField ArchiveDepthInDay;
-    private javax.swing.JTextField EventsPeriod;
-    private javax.swing.JTextField FailureTestPeriod;
-    private javax.swing.JTextField FileScanPeriod;
-    private javax.swing.JTextField GUIrefreshPeriod;
-    private javax.swing.JCheckBox MainServer;
-    private javax.swing.JTextField MainServerPeriod;
-    private javax.swing.JCheckBox PLMEmulator;
-    private javax.swing.JTextField PLMGroupSize;
-    private javax.swing.JTextField PLMIP;
-    private javax.swing.JTextField PLMPort;
-    private javax.swing.JCheckBox PLMReady;
-    private javax.swing.JTextField PLMTimeOut;
-    private javax.swing.JButton Refresh;
-    private javax.swing.JTextField RegisterAge;
-    private javax.swing.JTextField StreamDataCompressMode;
-    private javax.swing.JTextField StreamDataLimit;
-    private javax.swing.JTextField StreamDataLongPeriod;
-    private javax.swing.JTextField StreamDataPeriod;
-    private javax.swing.JTextField UserSilenceTime;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel17;
+    private javax.swing.JTextField AmplLevelProc;
+    private javax.swing.JTextField FirstFreq;
+    private javax.swing.JTextField K1;
+    private javax.swing.JTextField K2;
+    private javax.swing.JTextField K3;
+    private javax.swing.JTextField K4;
+    private javax.swing.JTextField K5;
+    private javax.swing.JTextField K6;
+    private javax.swing.JTextField K7;
+    private javax.swing.JTextField LastFreq;
+    private javax.swing.JTextField NTrendPoints;
+    private javax.swing.JTextField NTrendPointsSpectrum;
+    private javax.swing.JTextField P_BlockSize;
+    private javax.swing.JTextField P_OverProc;
+    private javax.swing.JTextField ParamListName;
+    private javax.swing.JTextField PowerLevelProc;
+    private java.awt.Choice WinFun;
     private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
-    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
-    private javax.swing.JLabel jLabel36;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
+    private javax.swing.JLabel jLabel39;
+    private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel41;
+    private javax.swing.JLabel jLabel42;
+    private javax.swing.JLabel jLabel43;
     private javax.swing.JSeparator jSeparator2;
     // End of variables declaration//GEN-END:variables
 }
