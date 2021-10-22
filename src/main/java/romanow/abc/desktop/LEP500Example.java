@@ -6,20 +6,40 @@
 package romanow.abc.desktop;
 
 import retrofit2.Call;
+import romanow.abc.core.DBRequest;
+import romanow.abc.core.UniException;
+import romanow.abc.core.constants.OidList;
+import romanow.abc.core.constants.Values;
 import romanow.abc.core.entity.Entity;
 import romanow.abc.core.entity.subjectarea.MeasureFile;
+import romanow.abc.core.entity.subjectarea.PowerLine;
+import romanow.abc.core.entity.subjectarea.Support;
+import romanow.lep500.AnalyseResult;
+import romanow.lep500.LEP500Params;
+
+import java.util.ArrayList;
 
 /**
  *
  * @author romanow0
  */
 public class LEP500Example extends LEP500BasePanel {
-
+    private ArrayList<MeasureFile> measureFiles = new ArrayList<>();
+    private ArrayList<MeasureFile> selectedFiles = new ArrayList<>();
+    private ArrayList<PowerLine> lines = new ArrayList<>();
+    private ArrayList<Support> supports = new ArrayList<>();
+    private ArrayList<LEP500Params> params = new ArrayList<>();
     /**
      * Creates new form LEP500Example
      */
     public LEP500Example() {
         initComponents();
+    }
+
+    @Override
+    public void initPanel(MainBaseFrame main0) {
+        super.initPanel(main0);
+        refreshAll();
     }
 
     /**
@@ -32,15 +52,21 @@ public class LEP500Example extends LEP500BasePanel {
     private void initComponents() {
 
         AddMeasure = new javax.swing.JButton();
-        MeasureList = new java.awt.Choice();
+        Selection = new java.awt.Choice();
         jLabel1 = new javax.swing.JLabel();
-        Refresh = new javax.swing.JButton();
+        FromSelect = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         Linked = new java.awt.Checkbox();
         PowerLine = new java.awt.Choice();
         jLabel3 = new javax.swing.JLabel();
         Support = new java.awt.Choice();
-        Spectrum = new javax.swing.JButton();
+        ProcSelection = new javax.swing.JButton();
+        Refresh = new javax.swing.JButton();
+        ToSelect = new javax.swing.JButton();
+        MeasureList = new java.awt.Choice();
+        jLabel4 = new javax.swing.JLabel();
+        Params = new java.awt.Choice();
+        jLabel5 = new javax.swing.JLabel();
 
         setLayout(null);
 
@@ -54,23 +80,23 @@ public class LEP500Example extends LEP500BasePanel {
         });
         add(AddMeasure);
         AddMeasure.setBounds(20, 10, 40, 30);
-        add(MeasureList);
-        MeasureList.setBounds(150, 20, 460, 20);
+        add(Selection);
+        Selection.setBounds(150, 110, 530, 20);
 
-        jLabel1.setText("Линия");
+        jLabel1.setText("Параметры");
         add(jLabel1);
-        jLabel1.setBounds(70, 80, 70, 14);
+        jLabel1.setBounds(70, 140, 70, 14);
 
-        Refresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/refresh.png"))); // NOI18N
-        Refresh.setBorderPainted(false);
-        Refresh.setContentAreaFilled(false);
-        Refresh.addActionListener(new java.awt.event.ActionListener() {
+        FromSelect.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/up.PNG"))); // NOI18N
+        FromSelect.setBorderPainted(false);
+        FromSelect.setContentAreaFilled(false);
+        FromSelect.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RefreshActionPerformed(evt);
+                FromSelectActionPerformed(evt);
             }
         });
-        add(Refresh);
-        Refresh.setBounds(620, 20, 30, 30);
+        add(FromSelect);
+        FromSelect.setBounds(530, 60, 30, 30);
 
         jLabel2.setText("Измерения");
         add(jLabel2);
@@ -105,16 +131,50 @@ public class LEP500Example extends LEP500BasePanel {
         add(Support);
         Support.setBounds(150, 50, 190, 20);
 
-        Spectrum.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/graph.png"))); // NOI18N
-        Spectrum.setBorderPainted(false);
-        Spectrum.setContentAreaFilled(false);
-        Spectrum.addActionListener(new java.awt.event.ActionListener() {
+        ProcSelection.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/graph.png"))); // NOI18N
+        ProcSelection.setBorderPainted(false);
+        ProcSelection.setContentAreaFilled(false);
+        ProcSelection.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SpectrumActionPerformed(evt);
+                ProcSelectionActionPerformed(evt);
             }
         });
-        add(Spectrum);
-        Spectrum.setBounds(660, 20, 40, 30);
+        add(ProcSelection);
+        ProcSelection.setBounds(700, 100, 40, 30);
+
+        Refresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/refresh.png"))); // NOI18N
+        Refresh.setBorderPainted(false);
+        Refresh.setContentAreaFilled(false);
+        Refresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RefreshActionPerformed(evt);
+            }
+        });
+        add(Refresh);
+        Refresh.setBounds(700, 20, 30, 30);
+
+        ToSelect.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/updown.png"))); // NOI18N
+        ToSelect.setBorderPainted(false);
+        ToSelect.setContentAreaFilled(false);
+        ToSelect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ToSelectActionPerformed(evt);
+            }
+        });
+        add(ToSelect);
+        ToSelect.setBounds(490, 60, 30, 30);
+        add(MeasureList);
+        MeasureList.setBounds(150, 20, 530, 20);
+
+        jLabel4.setText("Линия");
+        add(jLabel4);
+        jLabel4.setBounds(70, 80, 70, 14);
+        add(Params);
+        Params.setBounds(150, 140, 190, 20);
+
+        jLabel5.setText("Выборка");
+        add(jLabel5);
+        jLabel5.setBounds(70, 110, 70, 14);
     }// </editor-fold>//GEN-END:initComponents
 
     private void AddMeasureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddMeasureActionPerformed
@@ -135,37 +195,187 @@ public class LEP500Example extends LEP500BasePanel {
         });
     }//GEN-LAST:event_AddMeasureActionPerformed
 
-    private void RefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshActionPerformed
+    public void refreshSelection(){
+        MeasureList.removeAll();
+        for(MeasureFile ss : measureFiles)
+            MeasureList.add(ss.toString()+" ("+ss.getArtifact().getRef().getOriginalName()+")");
+        Selection.removeAll();
+        for(MeasureFile ss : selectedFiles)
+            Selection.add(ss.toString()+" ("+ss.getArtifact().getRef().getOriginalName()+")");
+        }
 
-    }//GEN-LAST:event_RefreshActionPerformed
+    private void FromSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FromSelectActionPerformed
+        if(selectedFiles.size()==0)
+            return;
+        measureFiles.add(selectedFiles.remove(Selection.getSelectedIndex()));
+        refreshSelection();
+    }//GEN-LAST:event_FromSelectActionPerformed
 
     private void LinkedItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_LinkedItemStateChanged
-        // TODO add your handling code here:
+        refreshAll();
     }//GEN-LAST:event_LinkedItemStateChanged
 
     private void SupportItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_SupportItemStateChanged
-        // TODO add your handling code here:
+        if (Linked.getState())
+            refreshMeasure();
     }//GEN-LAST:event_SupportItemStateChanged
 
     private void PowerLineItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_PowerLineItemStateChanged
-        // TODO add your handling code here:
+        if (Linked.getState())
+            refreshSupport();
     }//GEN-LAST:event_PowerLineItemStateChanged
 
-    private void SpectrumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SpectrumActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_SpectrumActionPerformed
+    private void ProcSelectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProcSelectionActionPerformed
+        if (selectedFiles.size()==0 || params.size()==0)
+            return;
+        OidList  list = new OidList();
+        for(MeasureFile ss : selectedFiles){
+            list.oids.add(ss.getOid());
+            }
+        new APICall<ArrayList<AnalyseResult>>(main){
+            @Override
+            public Call<ArrayList<AnalyseResult>> apiFun() {
+                return main2.service2.analyse(main.debugToken,params.get(Params.getSelectedIndex()).getOid(),list);
+                }
+            @Override
+            public void onSucess(ArrayList<AnalyseResult> oo) {
+                for(AnalyseResult dd : oo){
+                    System.out.println(dd);
+                }
+            }
+        };
 
+    }//GEN-LAST:event_ProcSelectionActionPerformed
+
+    private void RefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshActionPerformed
+        refreshAll();
+    }//GEN-LAST:event_RefreshActionPerformed
+
+    private void ToSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ToSelectActionPerformed
+        if(measureFiles.size()==0)
+            return;
+        selectedFiles.add(measureFiles.remove(MeasureList.getSelectedIndex()));
+        refreshSelection();
+
+    }//GEN-LAST:event_ToSelectActionPerformed
+
+    public void refreshMeasure(){
+        MeasureList.removeAll();
+        measureFiles = supports.get(Support.getSelectedIndex()).getFiles();
+        for(MeasureFile ss : measureFiles){
+            MeasureList.add(ss.toString()+" ("+ss.getArtifact().getRef().getOriginalName()+")");
+            }
+        }
+    public void refreshSupport(){
+        Support.removeAll();
+        supports.clear();
+        if(lines.size()==0)
+            return;
+        supports = lines.get(PowerLine.getSelectedIndex()).getGroup();
+        for(Support ss : supports){
+            Support.add(ss.getName());
+            }
+        refreshMeasure();
+        }
+
+    public void refreshParams(){
+        Params.removeAll();
+        params.clear();
+        new APICall<ArrayList<DBRequest>>(main){
+            @Override
+            public Call<ArrayList<DBRequest>> apiFun() {
+                return main.service.getEntityList(main.debugToken,"LEP500Params", Values.GetAllModeActual,0);
+                }
+            @Override
+            public void onSucess(ArrayList<DBRequest> oo) {
+                params.clear();
+                for(DBRequest dd : oo){
+                    try {
+                        LEP500Params param = (LEP500Params) dd.get(main.gson);
+                        Params.add(param.getTitle());
+                        params.add(param);
+                        } catch (UniException e) {
+                            System.out.println(e);
+                            }
+                        }
+                }
+            };
+        }
+
+    public void refreshAll(){
+        refreshParams();
+        Selection.removeAll();
+        MeasureList.removeAll();
+        PowerLine.removeAll();
+        Support.removeAll();
+        supports.clear();
+        lines.clear();
+        if (!Linked.getState()){
+            new APICall<ArrayList<DBRequest>>(main){
+                @Override
+                public Call<ArrayList<DBRequest>> apiFun() {
+                    return main.service.getEntityList(main.debugToken,"MeasureFile", Values.GetAllModeActual,1);
+                    }
+                @Override
+                public void onSucess(ArrayList<DBRequest> oo) {
+                    measureFiles.clear();
+                    for(DBRequest dd : oo){
+                        try {
+                            MeasureFile ss = (MeasureFile) dd.get(main.gson);
+                            MeasureList.add(ss.toString()+" ("+ss.getArtifact().getRef().getOriginalName()+")");
+                            measureFiles.add(ss);
+                            } catch (UniException e) {
+                                System.out.println(e);
+                                }
+                            }
+                    if (lines.size()!=0){
+                        refreshSupport();
+                        }
+                    }
+                };
+            }
+        else{
+            new APICall<ArrayList<DBRequest>>(main){
+                @Override
+                public Call<ArrayList<DBRequest>> apiFun() {
+                    return main.service.getEntityList(main.debugToken,"PowerLine", Values.GetAllModeActual,3);
+                    }
+                @Override
+                public void onSucess(ArrayList<DBRequest> oo) {
+                    lines.clear();
+                    for(DBRequest dd : oo){
+                        try {
+                            PowerLine line = (PowerLine) dd.get(main.gson);
+                            lines.add(line);
+                            PowerLine.add(line.getName());
+                            } catch (UniException e) {
+                                System.out.println(e);
+                                }
+                            }
+                        if (lines.size()!=0){
+                            refreshSupport();
+                            }
+                    }
+                };
+            }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddMeasure;
+    private javax.swing.JButton FromSelect;
     private java.awt.Checkbox Linked;
     private java.awt.Choice MeasureList;
+    private java.awt.Choice Params;
     private java.awt.Choice PowerLine;
+    private javax.swing.JButton ProcSelection;
     private javax.swing.JButton Refresh;
-    private javax.swing.JButton Spectrum;
+    private java.awt.Choice Selection;
     private java.awt.Choice Support;
+    private javax.swing.JButton ToSelect;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     // End of variables declaration//GEN-END:variables
 }
