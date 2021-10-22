@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="LEP500Desktop:jar" />
+    </artifacts-to-build>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="dd0d4f89-2465-418c-9c78-71fb44c9bc3c" name="Default Changelist" comment="Добавление дерева линия-опора-измерение" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../LEP500Core" />
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1zdg4K2Z502kAbPnsXmRTPzimRV" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../FireFighterGit/UnityDataserver" />
+    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.152439" />
+  </component>
+  <component name="RunManager" selected="Application.LEP500Client">
+    <configuration name="LEP500Cabinet" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="romanow.abc.desktop.LEP500Cabinet" />
+      <module name="LEP500Desktop" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="romanow.abc.desktop.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LEP500Client" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="romanow.abc.desktop.LEP500Client" />
+      <module name="LEP500Desktop" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="romanow.abc.desktop.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LEP500MainBase" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="romanow.abc.desktop.LEP500MainBase" />
+      <module name="LEP500Desktop" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="romanow.abc.desktop.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MainBase (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="romanow.abc.desktop.MainBase" />
+      <module name="LEP500Desktop" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="romanow.abc.desktop.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MainBase" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="romanow.abc.desktop.MainBase" />
+      <module name="ABSDesktop" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="romanow.abc.desktop.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.LEP500Client" />
+        <item itemvalue="Application.LEP500Cabinet" />
+        <item itemvalue="Application.LEP500MainBase" />
+        <item itemvalue="Application.MainBase (1)" />
+        <item itemvalue="Application.MainBase" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="dd0d4f89-2465-418c-9c78-71fb44c9bc3c" name="Default Changelist" comment="" />
+      <created>1634483190603</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1634483190603</updated>
+    </task>
+    <task id="LOCAL-00001" summary="fix0 Desktop">
+      <created>1634487885028</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1634487885028</updated>
+    </task>
+    <task id="LOCAL-00002" summary="fix0 Desktop">
+      <created>1634488029519</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1634488029519</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Fix-1 развернут клиент-сервер">
+      <created>1634491861896</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1634491861897</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Fix-1 API добавления файла измерений">
+      <created>1634535445063</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1634535445063</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Fix-1 API добавления настройки параметров">
+      <created>1634538220402</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1634538220402</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Fix-1 API добавления настройки параметров">
+      <created>1634556415542</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1634556415542</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Добавление дерева линия-опора-измерение">
+      <created>1634577662405</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1634577662405</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Добавление дерева линия-опора-измерение">
+      <created>1634817226396</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1634817226396</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Добавление дерева линия-опора-измерение">
+      <created>1634832303870</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1634832303870</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Добавление дерева линия-опора-измерение">
+      <created>1634837666178</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1634837666178</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="fix0 Desktop" />
+    <MESSAGE value="Fix-1 развернут клиент-сервер" />
+    <MESSAGE value="Fix-1 API добавления файла измерений" />
+    <MESSAGE value="Fix-1 API добавления настройки параметров" />
+    <MESSAGE value="Добавление дерева линия-опора-измерение" />
+    <option name="LAST_COMMIT_MESSAGE" value="Добавление дерева линия-опора-измерение" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/../../ABC/ABSDesktop/src/main/java/romanow/abc/desktop/MainBaseFrame.java</url>
+          <line>238</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/../../ABC/ABCDataServer/src/main/java/romanow/abc/dataserver/APICommon.java</url>
+          <line>317</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/../../ABC/ABCCore/src/main/java/romanow/abc/core/constants/ValuesBase.java</url>
+          <line>77</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

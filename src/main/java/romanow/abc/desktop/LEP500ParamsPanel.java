@@ -127,6 +127,7 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
         ParamListName = new javax.swing.JTextField();
         jLabel29 = new javax.swing.JLabel();
 
+        setDoubleBuffered(false);
         setLayout(null);
 
         P_BlockSize.addKeyListener(new java.awt.event.KeyAdapter() {
