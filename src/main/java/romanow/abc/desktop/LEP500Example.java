@@ -32,17 +32,89 @@ public class LEP500Example extends LEP500BasePanel {
     private void initComponents() {
 
         AddMeasure = new javax.swing.JButton();
+        MeasureList = new java.awt.Choice();
+        jLabel1 = new javax.swing.JLabel();
+        Refresh = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        Linked = new java.awt.Checkbox();
+        PowerLine = new java.awt.Choice();
+        jLabel3 = new javax.swing.JLabel();
+        Support = new java.awt.Choice();
+        Spectrum = new javax.swing.JButton();
 
         setLayout(null);
 
-        AddMeasure.setText("+Измерение");
+        AddMeasure.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/upload.png"))); // NOI18N
+        AddMeasure.setBorderPainted(false);
+        AddMeasure.setContentAreaFilled(false);
         AddMeasure.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AddMeasureActionPerformed(evt);
             }
         });
         add(AddMeasure);
-        AddMeasure.setBounds(20, 29, 100, 23);
+        AddMeasure.setBounds(20, 10, 40, 30);
+        add(MeasureList);
+        MeasureList.setBounds(150, 20, 460, 20);
+
+        jLabel1.setText("Линия");
+        add(jLabel1);
+        jLabel1.setBounds(70, 80, 70, 14);
+
+        Refresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/refresh.png"))); // NOI18N
+        Refresh.setBorderPainted(false);
+        Refresh.setContentAreaFilled(false);
+        Refresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RefreshActionPerformed(evt);
+            }
+        });
+        add(Refresh);
+        Refresh.setBounds(620, 20, 30, 30);
+
+        jLabel2.setText("Измерения");
+        add(jLabel2);
+        jLabel2.setBounds(70, 20, 70, 14);
+
+        Linked.setLabel("Опора/Линия");
+        Linked.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                LinkedItemStateChanged(evt);
+            }
+        });
+        add(Linked);
+        Linked.setBounds(360, 50, 130, 20);
+
+        PowerLine.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                PowerLineItemStateChanged(evt);
+            }
+        });
+        add(PowerLine);
+        PowerLine.setBounds(150, 80, 190, 20);
+
+        jLabel3.setText("Опора");
+        add(jLabel3);
+        jLabel3.setBounds(70, 50, 70, 14);
+
+        Support.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                SupportItemStateChanged(evt);
+            }
+        });
+        add(Support);
+        Support.setBounds(150, 50, 190, 20);
+
+        Spectrum.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/graph.png"))); // NOI18N
+        Spectrum.setBorderPainted(false);
+        Spectrum.setContentAreaFilled(false);
+        Spectrum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SpectrumActionPerformed(evt);
+            }
+        });
+        add(Spectrum);
+        Spectrum.setBounds(660, 20, 40, 30);
     }// </editor-fold>//GEN-END:initComponents
 
     private void AddMeasureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddMeasureActionPerformed
@@ -63,8 +135,37 @@ public class LEP500Example extends LEP500BasePanel {
         });
     }//GEN-LAST:event_AddMeasureActionPerformed
 
+    private void RefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshActionPerformed
+
+    }//GEN-LAST:event_RefreshActionPerformed
+
+    private void LinkedItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_LinkedItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_LinkedItemStateChanged
+
+    private void SupportItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_SupportItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_SupportItemStateChanged
+
+    private void PowerLineItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_PowerLineItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PowerLineItemStateChanged
+
+    private void SpectrumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SpectrumActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_SpectrumActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddMeasure;
+    private java.awt.Checkbox Linked;
+    private java.awt.Choice MeasureList;
+    private java.awt.Choice PowerLine;
+    private javax.swing.JButton Refresh;
+    private javax.swing.JButton Spectrum;
+    private java.awt.Choice Support;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     // End of variables declaration//GEN-END:variables
 }
