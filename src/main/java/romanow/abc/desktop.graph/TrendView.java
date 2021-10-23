@@ -6,6 +6,7 @@
 package romanow.abc.desktop.graph;
 
 import romanow.abc.desktop.Client;
+import romanow.lep500.I_TrendData;
 
 /**
  *

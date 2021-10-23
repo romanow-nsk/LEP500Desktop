@@ -1,5 +1,7 @@
 package romanow.abc.desktop.graph;
 
+import romanow.lep500.I_TrendData;
+
 /**
  * Created by romanow on 09.04.2018.
  */

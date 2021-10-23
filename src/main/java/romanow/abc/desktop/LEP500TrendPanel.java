@@ -6,6 +6,9 @@
 package romanow.abc.desktop;
 
 import romanow.abc.desktop.graph.TrendPanel;
+import romanow.lep500.AnalyseResult;
+
+import java.util.ArrayList;
 
 /**
  *
@@ -77,10 +80,17 @@ public class LEP500TrendPanel extends LEP500BasePanel{
     public void refresh() {}
 
     @Override
-    public void eventPanel(int code, int par1, long par2, String par3) {
+    public void eventPanel(int code, int par1, long par2, String par3, Object oo) {
         if (code==EventRefreshSettings){
             refresh();
             main.sendEventPanel(EventRefreshSettingsDone,0,0,"");
+            }
+        if (code==EventGraph){
+            ArrayList<AnalyseResult> results = (ArrayList<AnalyseResult>)oo;
+            trend.clearAll();
+            for(AnalyseResult result  : results)
+                trend.addTrendView(result);
+            main.toFront();
             }
     }
 

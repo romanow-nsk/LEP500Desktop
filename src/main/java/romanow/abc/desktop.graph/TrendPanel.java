@@ -7,7 +7,6 @@ package romanow.abc.desktop.graph;
 
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import romanow.abc.core.utils.OwnDateTime;;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -26,6 +25,7 @@ import org.jfree.chart.ui.RectangleInsets;
 import org.jfree.data.xy.XYDataset;
 import romanow.abc.desktop.Client;
 import romanow.abc.desktop.I_Success;
+import romanow.lep500.I_TrendData;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,7 +39,7 @@ import java.util.ArrayList;
 public class TrendPanel extends javax.swing.JPanel implements I_Trend{
     private ArrayList<I_TrendData> data = new ArrayList<>();
     private ArrayList<I_TrendData> view = new ArrayList<>();
-    private boolean viewReady=false;
+    private boolean viewReady=true;
     private JPanel chart=null;
     private I_Success back=null;
     XYSeriesCollection dataset = new XYSeriesCollection();
@@ -270,7 +270,7 @@ public class TrendPanel extends javax.swing.JPanel implements I_Trend{
         StatListView.add("...");
         for(int i=view.size()-1;i>=0;i--)
             StatListView.add(view.get(i).getTitle());
-    }
+        }
 
 
 
