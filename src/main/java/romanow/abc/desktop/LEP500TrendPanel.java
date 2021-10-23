@@ -87,10 +87,10 @@ public class LEP500TrendPanel extends LEP500BasePanel{
             }
         if (code==EventGraph){
             ArrayList<AnalyseResult> results = (ArrayList<AnalyseResult>)oo;
-            trend.clearAll();
+            trend.clearFull();
             for(AnalyseResult result  : results)
                 trend.addTrendView(result);
-            main.toFront();
+            main.panelToFront(this);
             }
     }
 

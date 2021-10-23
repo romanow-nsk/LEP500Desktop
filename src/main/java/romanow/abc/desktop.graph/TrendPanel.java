@@ -5,8 +5,13 @@
  */
 package romanow.abc.desktop.graph;
 
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.Dataset;
+import org.jfree.data.general.DatasetChangeListener;
+import org.jfree.data.general.DatasetGroup;
 import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -17,20 +22,20 @@ import javafx.scene.control.Tooltip;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.chart.ui.RectangleInsets;
 import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYSeriesCollection;
 import romanow.abc.desktop.Client;
 import romanow.abc.desktop.I_Success;
 import romanow.lep500.I_TrendData;
 
 import javax.swing.*;
 import java.awt.*;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
 
 /**
  *
@@ -40,9 +45,10 @@ public class TrendPanel extends javax.swing.JPanel implements I_Trend{
     private ArrayList<I_TrendData> data = new ArrayList<>();
     private ArrayList<I_TrendData> view = new ArrayList<>();
     private boolean viewReady=true;
-    private JPanel chart=null;
+    private JFreeChart chart=null;
+    private ChartPanel panel=null;
     private I_Success back=null;
-    XYSeriesCollection dataset = new XYSeriesCollection();
+    XYSeriesCollection dataset;
     public void setBack(I_Success bb){
         back = bb;
         Add.setVisible(back!=null);
@@ -75,6 +81,7 @@ public class TrendPanel extends javax.swing.JPanel implements I_Trend{
         Back = new javax.swing.JButton();
         Add = new javax.swing.JButton();
         StatListView = new java.awt.Choice();
+        Smooth = new javax.swing.JCheckBox();
 
         setLayout(null);
 
@@ -115,7 +122,7 @@ public class TrendPanel extends javax.swing.JPanel implements I_Trend{
         add(Fore);
         Fore.setBounds(420, 0, 40, 30);
 
-        Back.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/left.png"))); // NOI18N
+        Back.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/left.PNG"))); // NOI18N
         Back.setBorderPainted(false);
         Back.setContentAreaFilled(false);
         Back.addActionListener(new java.awt.event.ActionListener() {
@@ -140,6 +147,15 @@ public class TrendPanel extends javax.swing.JPanel implements I_Trend{
         StatListView.setBackground(new java.awt.Color(204, 204, 204));
         add(StatListView);
         StatListView.setBounds(460, 5, 300, 30);
+
+        Smooth.setText("сглаживание");
+        Smooth.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                SmoothItemStateChanged(evt);
+            }
+        });
+        add(Smooth);
+        Smooth.setBounds(810, 10, 100, 23);
     }// </editor-fold>//GEN-END:initComponents
 
     //--------------------------------------------------------------------------
@@ -151,9 +167,10 @@ public class TrendPanel extends javax.swing.JPanel implements I_Trend{
         }
     //==============================================================================
     public void createJChartPanel(){
+        dataset =  new XYSeriesCollection();
         JFreeChart chart = createChart(dataset);
         chart.setPadding(new RectangleInsets(2, 2, 2, 2));
-        ChartPanel panel = new ChartPanel(chart);
+        panel = new ChartPanel(chart);
         panel.setFillZoomRectangle(true);
         panel.setMouseWheelEnabled(true);
         panel.setPreferredSize(new Dimension(Client.PanelW - 75, Client.PanelH - 100));
@@ -163,7 +180,7 @@ public class TrendPanel extends javax.swing.JPanel implements I_Trend{
     private void refreshJChartPanel() {         // Со всех графиков
         dataset.removeAllSeries();
         for(I_TrendData set : view){
-            XYSeries s1 = new XYSeries(set.getTitle());
+            XYSeries s1 = new XYSeries(set.getGraphTitle());
             double vv[] = set.getY();
             double x0 = set.getX0();
             double dx = set.getDX();
@@ -177,15 +194,18 @@ public class TrendPanel extends javax.swing.JPanel implements I_Trend{
         }
 
     private JFreeChart createChart(XYDataset dataset){
+        /*
         JFreeChart chart = ChartFactory.createTimeSeriesChart(
-            "",                  // title
+            "",           // title
             "",           // x-axis label
-            "",          // y-axis label
-             dataset,                 // data
-            true,             // create legend
-            true,            // generate tooltips
-            false               // generate URLs
+            "",           // y-axis label
+             dataset,     // data
+            true,         // create legend
+            true,         // generate tooltips
+            false         // generate URLs
             );
+         */
+        chart = ChartFactory.createXYLineChart("Спектры","гц","",dataset);
         chart.setBackgroundPaint(Color.white);
         XYPlot plot = (XYPlot) chart.getPlot();
         plot.setBackgroundPaint    (Color.lightGray);
@@ -201,10 +221,10 @@ public class TrendPanel extends javax.swing.JPanel implements I_Trend{
             renderer.setDefaultShapesVisible(true);
             //renderer.setBaseShapesVisible   (true);
             //renderer.setBaseShapesFilled    (true);
-            renderer.setDrawSeriesLineAsPath(true);
+            renderer.setDrawSeriesLineAsPath(Smooth.isSelected());
             }
-        DateAxis axis = (DateAxis) plot.getDomainAxis();
-        axis.setDateFormatOverride(new SimpleDateFormat("dd.MM:k.m.s"));
+        //NumberAxis axis = (NumberAxis)  plot.getDomainAxis();
+        //axis.setDateFormatOverride(new SimpleDateFormat("dd.MM:k.m.s"));
         return chart;
         }
     //==========================================================================================
@@ -213,7 +233,7 @@ public class TrendPanel extends javax.swing.JPanel implements I_Trend{
         final double data[] = stat.getY();
         double x0 = stat.getX0();
         double dx = stat.getDX();
-        series.setName(stat.getTitle());
+        series.setName(stat.getGraphTitle());
         ObservableList dd = series.getData();
         for(int j=0;j<data.length;j++,x0+=dx){
             XYChart.Data<Double, Double> item = new XYChart.Data<Double, Double>(x0, data[j]);
@@ -265,11 +285,11 @@ public class TrendPanel extends javax.swing.JPanel implements I_Trend{
         StatList.removeAll();
         StatList.add("...");
         for(int i=data.size()-1;i>=0;i--)
-            StatList.add(data.get(i).getTitle());
+            StatList.add(data.get(i).getGraphTitle());
         StatListView.removeAll();
         StatListView.add("...");
         for(int i=view.size()-1;i>=0;i--)
-            StatListView.add(view.get(i).getTitle());
+            StatListView.add(view.get(i).getGraphTitle());
         }
 
 
@@ -291,6 +311,12 @@ public class TrendPanel extends javax.swing.JPanel implements I_Trend{
         StatListView.removeAll();
         StatListView.add("...");
         }
+    public  void clearFull(){
+        clearAll();
+        data.clear();
+        view.clear();
+        refreshJChartPanel();
+        }
     public void repaint(){
         if (!viewReady)
             return;
@@ -298,18 +324,9 @@ public class TrendPanel extends javax.swing.JPanel implements I_Trend{
         createStatList();
         }
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        clearAll();
-        data.clear();
-        view.clear();
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void ClearActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        clearAll();
-        data.clear();
-        view.clear();
-        refreshJChartPanel();
-    }                                        
+    private void ClearActionPerformed(java.awt.event.ActionEvent evt) {
+        clearFull();
+    }
     private void AddActionPerformed(java.awt.event.ActionEvent evt) {                                         
         if (back!=null)
             back.onSuccess();
@@ -337,6 +354,14 @@ public class TrendPanel extends javax.swing.JPanel implements I_Trend{
         refreshJChartPanel();
     }//GEN-LAST:event_BackActionPerformed
 
+    private void SmoothItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_SmoothItemStateChanged
+        XYPlot plot = (XYPlot) chart.getPlot();
+        XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer)plot.getRenderer();
+        renderer.setDrawSeriesLineAsPath(Smooth.isSelected());
+        createStatList();
+        refreshJChartPanel();
+    }//GEN-LAST:event_SmoothItemStateChanged
+
 
     @Override
     public void toFront() { }
@@ -348,6 +373,7 @@ public class TrendPanel extends javax.swing.JPanel implements I_Trend{
     private javax.swing.JButton Clear;
     private javax.swing.JButton Fore;
     private javax.swing.JButton Remove;
+    private javax.swing.JCheckBox Smooth;
     private java.awt.Choice StatList;
     private java.awt.Choice StatListView;
     // End of variables declaration//GEN-END:variables

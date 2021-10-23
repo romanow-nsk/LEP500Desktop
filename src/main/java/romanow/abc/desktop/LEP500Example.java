@@ -6,12 +6,14 @@
 package romanow.abc.desktop;
 
 import retrofit2.Call;
+import retrofit2.Response;
 import romanow.abc.core.DBRequest;
 import romanow.abc.core.UniException;
 import romanow.abc.core.constants.ConstValue;
 import romanow.abc.core.constants.OidList;
 import romanow.abc.core.constants.Values;
 import romanow.abc.core.entity.Entity;
+import romanow.abc.core.entity.baseentityes.JEmpty;
 import romanow.abc.core.entity.subjectarea.MeasureFile;
 import romanow.abc.core.entity.subjectarea.PowerLine;
 import romanow.abc.core.entity.subjectarea.Support;
@@ -22,8 +24,10 @@ import romanow.lep500.fft.ExtremeList;
 import romanow.lep500.fft.ExtremeNull;
 import romanow.lep500.fft.FFTStatistic;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 
 /**
@@ -43,7 +47,8 @@ public class LEP500Example extends LEP500BasePanel {
         StateColors.put(Values.MSSumPeak1,"/drawable/status_light_red.png");
         StateColors.put(Values.MSSumPeak2,"/drawable/status_light_yellow.png");
         }
-    private ArrayList<ConstValue> analyseStateList;
+    private HashMap<Integer,String> analyseStateList = new HashMap<>();
+    private ArrayList<ConstValue> resultStates = new ArrayList<>();
     private ArrayList<String> criterisList= new ArrayList<>();
     private ArrayList<MeasureFile> measureFiles = new ArrayList<>();
     private ArrayList<MeasureFile> selectedFiles = new ArrayList<>();
@@ -57,12 +62,21 @@ public class LEP500Example extends LEP500BasePanel {
      */
     public LEP500Example() {
         initComponents();
-    }
+        }
 
     @Override
     public void initPanel(MainBaseFrame main0) {
         super.initPanel(main0);
-        analyseStateList = main.filter(main.constList,"MState");
+        resultStates = main.filter(main.constList,"MState");
+        resultStates.sort(new Comparator<ConstValue>() {
+            @Override
+            public int compare(ConstValue o1, ConstValue o2) {
+                return o1.value()-o2.value();
+                }
+            });
+        analyseStateList.clear();
+        for(ConstValue cc : resultStates)
+            analyseStateList.put(cc.value(),cc.title());
         criterisList.clear();
         for (int mode = 0; mode < FFTStatistic.extremeFacade.length; mode++) {
             ExtremeFacade facade;
@@ -110,6 +124,12 @@ public class LEP500Example extends LEP500BasePanel {
         CrearResults = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         Criteria = new java.awt.Choice();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        ExpertResult = new java.awt.Choice();
+        TestResult = new javax.swing.JTextField();
+        SaveExpert = new javax.swing.JButton();
+        ResultData = new java.awt.TextArea();
 
         setLayout(null);
 
@@ -122,7 +142,7 @@ public class LEP500Example extends LEP500BasePanel {
             }
         });
         add(AddMeasure);
-        AddMeasure.setBounds(720, 10, 40, 30);
+        AddMeasure.setBounds(680, 10, 40, 30);
         add(Selection);
         Selection.setBounds(90, 100, 530, 20);
 
@@ -143,7 +163,7 @@ public class LEP500Example extends LEP500BasePanel {
 
         jLabel2.setText("Критерий");
         add(jLabel2);
-        jLabel2.setBounds(10, 200, 70, 14);
+        jLabel2.setBounds(10, 210, 70, 14);
 
         Linked.setLabel("Опора/Линия");
         Linked.addItemListener(new java.awt.event.ItemListener() {
@@ -183,7 +203,7 @@ public class LEP500Example extends LEP500BasePanel {
             }
         });
         add(ProcSelection);
-        ProcSelection.setBounds(680, 5, 35, 35);
+        ProcSelection.setBounds(540, 40, 35, 35);
 
         Refresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/refresh.png"))); // NOI18N
         Refresh.setBorderPainted(false);
@@ -225,7 +245,7 @@ public class LEP500Example extends LEP500BasePanel {
             }
         });
         add(Results);
-        Results.setBounds(90, 170, 470, 20);
+        Results.setBounds(90, 170, 540, 20);
 
         jLabel6.setText("Измерения");
         add(jLabel6);
@@ -240,7 +260,7 @@ public class LEP500Example extends LEP500BasePanel {
             }
         });
         add(StateLamp);
-        StateLamp.setBounds(10, 220, 40, 40);
+        StateLamp.setBounds(290, 240, 40, 40);
 
         RemoveResults.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/remove.png"))); // NOI18N
         RemoveResults.setBorderPainted(false);
@@ -251,7 +271,7 @@ public class LEP500Example extends LEP500BasePanel {
             }
         });
         add(RemoveResults);
-        RemoveResults.setBounds(570, 160, 30, 30);
+        RemoveResults.setBounds(640, 160, 30, 30);
 
         ShowGraph.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/graph.png"))); // NOI18N
         ShowGraph.setBorderPainted(false);
@@ -262,7 +282,7 @@ public class LEP500Example extends LEP500BasePanel {
             }
         });
         add(ShowGraph);
-        ShowGraph.setBounds(650, 150, 40, 40);
+        ShowGraph.setBounds(720, 160, 40, 40);
 
         CrearResults.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/clear.png"))); // NOI18N
         CrearResults.setBorderPainted(false);
@@ -273,7 +293,7 @@ public class LEP500Example extends LEP500BasePanel {
             }
         });
         add(CrearResults);
-        CrearResults.setBounds(610, 160, 30, 30);
+        CrearResults.setBounds(680, 160, 30, 30);
 
         jLabel7.setText("Результаты");
         add(jLabel7);
@@ -286,6 +306,33 @@ public class LEP500Example extends LEP500BasePanel {
         });
         add(Criteria);
         Criteria.setBounds(90, 210, 190, 20);
+
+        jLabel8.setText("Оценка эксперта");
+        add(jLabel8);
+        jLabel8.setBounds(300, 210, 110, 14);
+
+        jLabel9.setText("Оценка алг.");
+        add(jLabel9);
+        jLabel9.setBounds(10, 250, 70, 14);
+        add(ExpertResult);
+        ExpertResult.setBounds(420, 210, 170, 20);
+
+        TestResult.setEnabled(false);
+        add(TestResult);
+        TestResult.setBounds(90, 250, 190, 25);
+
+        SaveExpert.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/save.png"))); // NOI18N
+        SaveExpert.setBorderPainted(false);
+        SaveExpert.setContentAreaFilled(false);
+        SaveExpert.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SaveExpertActionPerformed(evt);
+            }
+        });
+        add(SaveExpert);
+        SaveExpert.setBounds(600, 200, 30, 30);
+        add(ResultData);
+        ResultData.setBounds(420, 250, 420, 310);
     }// </editor-fold>//GEN-END:initComponents
 
     private void AddMeasureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddMeasureActionPerformed
@@ -309,10 +356,10 @@ public class LEP500Example extends LEP500BasePanel {
     public void refreshSelection(){
         MeasureList.removeAll();
         for(MeasureFile ss : measureFiles)
-            MeasureList.add(ss.toString()+" ("+ss.getArtifact().getRef().getOriginalName()+")");
+            MeasureList.add(ss.getTitle());
         Selection.removeAll();
         for(MeasureFile ss : selectedFiles)
-            Selection.add(ss.toString()+" ("+ss.getArtifact().getRef().getOriginalName()+")");
+            Selection.add(ss.getTitle());
         }
 
     private void FromSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FromSelectActionPerformed
@@ -375,10 +422,10 @@ public class LEP500Example extends LEP500BasePanel {
     }//GEN-LAST:event_StateLampActionPerformed
 
     private void RemoveResultsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoveResultsActionPerformed
-        if(selectedFiles.size()==0)
+        if(results.size()==0)
             return;
-        selectedFiles.remove(selectedFiles.remove(Selection.getSelectedIndex()));
-        refreshSelection();
+        results.remove(Results.getSelectedIndex());
+        refreshResults();
     }//GEN-LAST:event_RemoveResultsActionPerformed
 
     private void CrearResultsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CrearResultsActionPerformed
@@ -400,6 +447,23 @@ public class LEP500Example extends LEP500BasePanel {
         main.sendEventPanel(EventGraph,0,0,"",results);
     }//GEN-LAST:event_ShowGraphActionPerformed
 
+    private void SaveExpertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveExpertActionPerformed
+        if (selectedResult==null)
+            return;
+        selectedResult.measure.setExpertResult(ExpertResult.getSelectedIndex());
+        try {
+            Response<JEmpty> wsr = main.service.updateEntityField(main.debugToken,"expertResult",new DBRequest(selectedResult.measure,main.gson)).execute();
+            if (!wsr.isSuccessful()){
+                popup("Ошибка обновления параметров  " + httpError(wsr));
+                return;
+                }
+            else
+                popup("Оценка эксперта обновлена");
+            } catch (IOException e) {
+                popup(e.toString());
+                }
+    }//GEN-LAST:event_SaveExpertActionPerformed
+
     private void refreshResults(){
         Results.removeAll();
         for(AnalyseResult result : results){
@@ -413,18 +477,23 @@ public class LEP500Example extends LEP500BasePanel {
         StateLamp.setIcon(new javax.swing.ImageIcon(url));
         Criteria.removeAll();
         selectedResult=null;
+        ExpertResult.removeAll();
         }
     private void showOneResultByCriteria(){
         if (selectedResult==null)
             return;
         ExtremeList extreme = selectedResult.data.get(Criteria.getSelectedIndex());
+        String ss = analyseStateList.get(extreme.getTestResult());
+        TestResult.setText(ss == null ? "Недопустимый результат" : ss);
         String icon = StateColors.get(extreme.getTestResult());
         if (icon==null){
             System.out.println("Не найден результат анализа: "+extreme.getTestResult());
             }
         StateLamp.setIcon(new javax.swing.ImageIcon(getClass().getResource(icon)));
-        System.out.println(extreme.getTestComment());
-    }
+        ResultData.setText("");
+        ResultData.append(extreme.getTestComment()+"\n");
+        ResultData.append(extreme.showExtrems(selectedResult.firstFreq,selectedResult.lastFreq,selectedResult.dFreq));
+        }
 
     private void showOneResult(){
         crearOneResult();
@@ -436,17 +505,22 @@ public class LEP500Example extends LEP500BasePanel {
             }
         for(String ss : criterisList)
             Criteria.add(ss);
+        for (ConstValue cc : resultStates)
+            ExpertResult.add(cc.title());
+        ExpertResult.select(selectedResult.measure.getExpertResult());
         showOneResultByCriteria();
         }
 
     private void refreshMeasure(){
+        ExpertResult.removeAll();
         MeasureList.removeAll();
         measureFiles = supports.get(Support.getSelectedIndex()).getFiles();
         for(MeasureFile ss : measureFiles){
-            MeasureList.add(ss.toString()+" ("+ss.getArtifact().getRef().getOriginalName()+")");
+            MeasureList.add(ss.getTitle());
             }
         }
     private void refreshSupport(){
+        ExpertResult.removeAll();
         Support.removeAll();
         supports.clear();
         if(lines.size()==0)
@@ -484,11 +558,14 @@ public class LEP500Example extends LEP500BasePanel {
 
     private void refreshAll(){
         refreshParams();
+        ExpertResult.removeAll();
         Selection.removeAll();
         MeasureList.removeAll();
         PowerLine.removeAll();
         Support.removeAll();
         supports.clear();
+        selectedFiles.clear();
+        measureFiles.clear();
         lines.clear();
         if (!Linked.getState()){
             new APICall<ArrayList<DBRequest>>(main){
@@ -502,7 +579,7 @@ public class LEP500Example extends LEP500BasePanel {
                     for(DBRequest dd : oo){
                         try {
                             MeasureFile ss = (MeasureFile) dd.get(main.gson);
-                            MeasureList.add(ss.toString()+" ("+ss.getArtifact().getRef().getOriginalName()+")");
+                            MeasureList.add(ss.getTitle());
                             measureFiles.add(ss);
                             } catch (UniException e) {
                                 System.out.println(e);
@@ -544,6 +621,7 @@ public class LEP500Example extends LEP500BasePanel {
     private javax.swing.JButton AddMeasure;
     private javax.swing.JButton CrearResults;
     private java.awt.Choice Criteria;
+    private java.awt.Choice ExpertResult;
     private javax.swing.JButton FromSelect;
     private java.awt.Checkbox Linked;
     private java.awt.Choice MeasureList;
@@ -552,11 +630,14 @@ public class LEP500Example extends LEP500BasePanel {
     private javax.swing.JButton ProcSelection;
     private javax.swing.JButton Refresh;
     private javax.swing.JButton RemoveResults;
+    private java.awt.TextArea ResultData;
     private java.awt.Choice Results;
+    private javax.swing.JButton SaveExpert;
     private java.awt.Choice Selection;
     private javax.swing.JButton ShowGraph;
     private javax.swing.JButton StateLamp;
     private java.awt.Choice Support;
+    private javax.swing.JTextField TestResult;
     private javax.swing.JButton ToSelect;
     private java.awt.Choice choice1;
     private javax.swing.JLabel jLabel1;
@@ -566,5 +647,7 @@ public class LEP500Example extends LEP500BasePanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     // End of variables declaration//GEN-END:variables
 }

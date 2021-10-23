@@ -75,6 +75,7 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
         P_OverProc.setText(""+params.p_OverProc);
         WinFun.select(params.winFun);
         ParamListName.setText(params.paramListName);
+        KSmooth.setText(""+params.kSmooth);
         }
     public void updateParams(){
         LEP500Params params = (LEP500Params) paramsList.current;
@@ -126,6 +127,8 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
         WinFun = new java.awt.Choice();
         ParamListName = new javax.swing.JTextField();
         jLabel29 = new javax.swing.JLabel();
+        jLabel36 = new javax.swing.JLabel();
+        KSmooth = new javax.swing.JTextField();
 
         setDoubleBuffered(false);
         setLayout(null);
@@ -136,15 +139,15 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
             }
         });
         add(P_BlockSize);
-        P_BlockSize.setBounds(310, 210, 70, 25);
+        P_BlockSize.setBounds(310, 240, 70, 25);
 
         jLabel18.setText("Верхняя граница частоты диапазона макс.");
         add(jLabel18);
         jLabel18.setBounds(20, 130, 250, 14);
 
-        jLabel20.setText("Точек при сглаживании тренда в спектре");
+        jLabel20.setText("Точек при удалении тренда в спектре");
         add(jLabel20);
-        jLabel20.setBounds(20, 190, 230, 14);
+        jLabel20.setBounds(20, 220, 230, 14);
 
         FirstFreq.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -168,7 +171,7 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
             }
         });
         add(NTrendPoints);
-        NTrendPoints.setBounds(310, 150, 70, 25);
+        NTrendPoints.setBounds(310, 180, 70, 25);
 
         NTrendPointsSpectrum.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -176,11 +179,11 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
             }
         });
         add(NTrendPointsSpectrum);
-        NTrendPointsSpectrum.setBounds(310, 180, 70, 25);
+        NTrendPointsSpectrum.setBounds(310, 210, 70, 25);
 
         jLabel21.setText("Количество блоков по 1024 отсчета");
         add(jLabel21);
-        jLabel21.setBounds(20, 220, 210, 14);
+        jLabel21.setBounds(20, 250, 210, 14);
 
         P_OverProc.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -188,15 +191,15 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
             }
         });
         add(P_OverProc);
-        P_OverProc.setBounds(310, 240, 70, 25);
+        P_OverProc.setBounds(310, 270, 70, 25);
 
         jLabel22.setText("Вид функции окна");
         add(jLabel22);
-        jLabel22.setBounds(20, 280, 140, 14);
+        jLabel22.setBounds(20, 310, 140, 14);
 
         jLabel23.setText("Процент перекрытия окна");
         add(jLabel23);
-        jLabel23.setBounds(20, 250, 250, 14);
+        jLabel23.setBounds(20, 280, 250, 14);
         add(jSeparator2);
         jSeparator2.setBounds(20, 80, 360, 10);
 
@@ -206,11 +209,11 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
             }
         });
         add(AmplLevelProc);
-        AmplLevelProc.setBounds(310, 300, 70, 25);
+        AmplLevelProc.setBounds(310, 330, 70, 25);
 
-        jLabel33.setText("Точек при сглаживании тренда в волне");
+        jLabel33.setText("Сглаживание (итераций)");
         add(jLabel33);
-        jLabel33.setBounds(20, 160, 260, 14);
+        jLabel33.setBounds(20, 160, 260, 10);
 
         K1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -222,7 +225,7 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
 
         jLabel34.setText("Уровень амплитуды пика для отсечения (%)");
         add(jLabel34);
-        jLabel34.setBounds(20, 310, 260, 14);
+        jLabel34.setBounds(20, 340, 260, 14);
 
         jLabel35.setText("K1");
         add(jLabel35);
@@ -239,11 +242,11 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
             }
         });
         add(PowerLevelProc);
-        PowerLevelProc.setBounds(310, 330, 70, 25);
+        PowerLevelProc.setBounds(310, 360, 70, 25);
 
         jLabel37.setText("Уровень мощности  пика для отсечения  (%)");
         add(jLabel37);
-        jLabel37.setBounds(20, 340, 260, 14);
+        jLabel37.setBounds(20, 370, 260, 14);
 
         K2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -323,7 +326,7 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
             }
         });
         add(WinFun);
-        WinFun.setBounds(230, 270, 150, 20);
+        WinFun.setBounds(230, 300, 150, 20);
 
         ParamListName.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -336,6 +339,18 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
         jLabel29.setText("Нижняя граница частоты диапазона макс.");
         add(jLabel29);
         jLabel29.setBounds(20, 100, 240, 14);
+
+        jLabel36.setText("Точек при удалении тренда в волне");
+        add(jLabel36);
+        jLabel36.setBounds(20, 190, 260, 14);
+
+        KSmooth.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                KSmoothKeyPressed(evt);
+            }
+        });
+        add(KSmooth);
+        KSmooth.setBounds(310, 150, 70, 25);
     }// </editor-fold>//GEN-END:initComponents
 
     private void P_BlockSizeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_P_BlockSizeKeyPressed
@@ -592,9 +607,25 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
             return;
             }
         updateSettings(null,"winFun");
+        popup("параметр \"Вид окна\"обновлен");
         refresh();
 
     }//GEN-LAST:event_WinFunItemStateChanged
+
+    private void KSmoothKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KSmoothKeyPressed
+        if(evt.getKeyCode()!=10) return;
+        LEP500Params params = (LEP500Params) paramsList.current;
+        if (params==null)
+            return;
+        try {
+            params.kSmooth = Integer.parseInt(KSmooth.getText());
+        } catch (Exception ee){
+            popup("Недопустимый формат целого");
+            return;
+        }
+        updateSettings(evt,"kSmooth");
+        refresh();
+    }//GEN-LAST:event_KSmoothKeyPressed
 
     @Override
     public void refresh() {
@@ -620,7 +651,7 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
                 popup("Ошибка обновления параметров  " + httpError(wsr));
                 return;
                 }
-            popup("Параметры обновлены");
+            //popup("Параметры обновлены");
             if (evt!=null)
                 main.viewUpdate(evt,true);
             } catch (IOException e) {
@@ -639,6 +670,7 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
     private javax.swing.JTextField K5;
     private javax.swing.JTextField K6;
     private javax.swing.JTextField K7;
+    private javax.swing.JTextField KSmooth;
     private javax.swing.JTextField LastFreq;
     private javax.swing.JTextField NTrendPoints;
     private javax.swing.JTextField NTrendPointsSpectrum;
@@ -657,6 +689,7 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;

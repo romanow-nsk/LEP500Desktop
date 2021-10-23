@@ -9,7 +9,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dd0d4f89-2465-418c-9c78-71fb44c9bc3c" name="Default Changelist" comment="API сервера - обработка измерений" />
+    <list default="true" id="dd0d4f89-2465-418c-9c78-71fb44c9bc3c" name="Default Changelist" comment="API сервера - обработка измерений">
+      <change beforePath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/abc/core/constants/Values.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/abc/core/constants/Values.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/abc/core/entity/subjectarea/MeasureFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/abc/core/entity/subjectarea/MeasureFile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/lep500/AnalyseResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/lep500/AnalyseResult.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/lep500/FileDescription.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/lep500/FileDescription.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/lep500/I_TrendData.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/lep500/I_TrendData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/lep500/fft/ExtremeList.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/lep500/fft/ExtremeList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/lep500/fft/FFTStatistic.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/lep500/fft/FFTStatistic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LEP500DataServer/src/main/java/romanow/abc/dataserver/APILEP500.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500DataServer/src/main/java/romanow/abc/dataserver/APILEP500.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500.class" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop.graph/TrendPanel.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop.graph/TrendPanel.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop.graph/TrendPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop.graph/TrendPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Example.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Example.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Example.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Example.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500ParamsPanel.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500ParamsPanel.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500ParamsPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500ParamsPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500TrendPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500TrendPanel.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -236,7 +255,14 @@
       <option name="project" value="LOCAL" />
       <updated>1634972420590</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="API сервера - обработка измерений">
+      <created>1634972538992</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1634972538992</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -265,13 +291,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/lep500/AnalyseResult.java</url>
-          <line>49</line>
+          <line>56</line>
           <option name="timeStamp" value="22" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500TrendPanel.java</url>
-          <line>89</line>
-          <option name="timeStamp" value="28" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
