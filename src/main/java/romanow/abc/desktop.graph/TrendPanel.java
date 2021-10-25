@@ -5,12 +5,6 @@
  */
 package romanow.abc.desktop.graph;
 
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.data.category.CategoryDataset;
-import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.Dataset;
-import org.jfree.data.general.DatasetChangeListener;
-import org.jfree.data.general.DatasetGroup;
 import org.jfree.data.xy.XYSeries;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -32,7 +26,6 @@ import romanow.abc.desktop.Client;
 import romanow.abc.desktop.I_Success;
 import romanow.lep500.I_TrendData;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -48,7 +41,8 @@ public class TrendPanel extends javax.swing.JPanel implements I_Trend{
     private JFreeChart chart=null;
     private ChartPanel panel=null;
     private I_Success back=null;
-    XYSeriesCollection dataset;
+    private XYSeriesCollection dataset;
+    private int smoothCount=0;
     public void setBack(I_Success bb){
         back = bb;
         Add.setVisible(back!=null);
@@ -81,13 +75,13 @@ public class TrendPanel extends javax.swing.JPanel implements I_Trend{
         Back = new javax.swing.JButton();
         Add = new javax.swing.JButton();
         StatListView = new java.awt.Choice();
-        Smooth = new javax.swing.JCheckBox();
+        Smooth = new javax.swing.JSlider();
 
         setLayout(null);
 
         StatList.setBackground(new java.awt.Color(204, 204, 204));
         add(StatList);
-        StatList.setBounds(80, 5, 300, 30);
+        StatList.setBounds(80, 5, 280, 30);
 
         Remove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/problem.png"))); // NOI18N
         Remove.setBorderPainted(false);
@@ -120,7 +114,7 @@ public class TrendPanel extends javax.swing.JPanel implements I_Trend{
             }
         });
         add(Fore);
-        Fore.setBounds(420, 0, 40, 30);
+        Fore.setBounds(400, 0, 40, 30);
 
         Back.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/left.PNG"))); // NOI18N
         Back.setBorderPainted(false);
@@ -131,7 +125,7 @@ public class TrendPanel extends javax.swing.JPanel implements I_Trend{
             }
         });
         add(Back);
-        Back.setBounds(380, 0, 40, 30);
+        Back.setBounds(360, 0, 40, 30);
 
         Add.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/add.png"))); // NOI18N
         Add.setBorderPainted(false);
@@ -142,20 +136,28 @@ public class TrendPanel extends javax.swing.JPanel implements I_Trend{
             }
         });
         add(Add);
-        Add.setBounds(760, 0, 40, 30);
+        Add.setBounds(740, 0, 40, 30);
 
         StatListView.setBackground(new java.awt.Color(204, 204, 204));
         add(StatListView);
-        StatListView.setBounds(460, 5, 300, 30);
+        StatListView.setBounds(440, 10, 300, 30);
 
-        Smooth.setText("сглаживание");
-        Smooth.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                SmoothItemStateChanged(evt);
+        Smooth.setMaximum(200);
+        Smooth.setValue(0);
+        Smooth.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                SmoothStateChanged(evt);
+            }
+        });
+        Smooth.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+                SmoothCaretPositionChanged(evt);
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         add(Smooth);
-        Smooth.setBounds(810, 10, 100, 23);
+        Smooth.setBounds(790, 10, 130, 23);
     }// </editor-fold>//GEN-END:initComponents
 
     //--------------------------------------------------------------------------
@@ -173,15 +175,15 @@ public class TrendPanel extends javax.swing.JPanel implements I_Trend{
         panel = new ChartPanel(chart);
         panel.setFillZoomRectangle(true);
         panel.setMouseWheelEnabled(true);
-        panel.setPreferredSize(new Dimension(Client.PanelW - 75, Client.PanelH - 100));
-        panel.setBounds(10, 35, Client.PanelW - 75, Client.PanelH - 100);
+        panel.setPreferredSize(new Dimension(Client.PanelW - 25, Client.PanelH - 100));
+        panel.setBounds(10, 35, Client.PanelW - 25, Client.PanelH - 100);
         add(panel);
         }
     private void refreshJChartPanel() {         // Со всех графиков
         dataset.removeAllSeries();
         for(I_TrendData set : view){
             XYSeries s1 = new XYSeries(set.getGraphTitle());
-            double vv[] = set.getY();
+            double vv[] = smooth(set.getY());
             double x0 = set.getX0();
             double dx = set.getDX();
             for(int i=0; i<vv.length;i++,x0+=dx){
@@ -221,16 +223,36 @@ public class TrendPanel extends javax.swing.JPanel implements I_Trend{
             renderer.setDefaultShapesVisible(true);
             //renderer.setBaseShapesVisible   (true);
             //renderer.setBaseShapesFilled    (true);
-            renderer.setDrawSeriesLineAsPath(Smooth.isSelected());
+            renderer.setDrawSeriesLineAsPath(false);
             }
         //NumberAxis axis = (NumberAxis)  plot.getDomainAxis();
         //axis.setDateFormatOverride(new SimpleDateFormat("dd.MM:k.m.s"));
         return chart;
         }
     //==========================================================================================
+    public void smoothOne(double out[],double data[]){
+        int size = data.length;
+        out[0]=(double)( 0.5*(data[1]+data[0]));
+        for(int i=1;i<size-1;i++)
+            out[i] = (double)( 0.5*(0.5*(data[i-1]+data[i+1])+data[i]));
+        out[size-1]=(double)( 0.5*(data[size-2]+data[size-1]));
+        data = out;
+        }
+    public double[] smooth(double src[]){
+        if (smoothCount==0)
+            return src;
+        double two[] = src.clone();
+        int count=smoothCount;
+        while (count-- >0){
+            smoothOne(two,src);
+            double cc[] = two; two=src; src=cc;
+            }
+        return two;
+        }
+    //------------------------------------------------------------------------------------------
     public void paintOne(I_TrendData stat){
         XYChart.Series series = new XYChart.Series();
-        final double data[] = stat.getY();
+        final double data[] = smooth(stat.getY());
         double x0 = stat.getX0();
         double dx = stat.getDX();
         series.setName(stat.getGraphTitle());
@@ -354,14 +376,20 @@ public class TrendPanel extends javax.swing.JPanel implements I_Trend{
         refreshJChartPanel();
     }//GEN-LAST:event_BackActionPerformed
 
-    private void SmoothItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_SmoothItemStateChanged
-        XYPlot plot = (XYPlot) chart.getPlot();
-        XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer)plot.getRenderer();
-        renderer.setDrawSeriesLineAsPath(Smooth.isSelected());
-        createStatList();
-        refreshJChartPanel();
-    }//GEN-LAST:event_SmoothItemStateChanged
+    private void SmoothCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_SmoothCaretPositionChanged
+        smoothCount = Smooth.getValue();
+        refreshJChartPanel();        
+    }//GEN-LAST:event_SmoothCaretPositionChanged
 
+    private void SmoothStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_SmoothStateChanged
+        smoothCount = Smooth.getValue();
+        refreshJChartPanel(); 
+    }//GEN-LAST:event_SmoothStateChanged
+
+    public int getSmoothCount() {
+        return smoothCount; }
+    public void setSmoothCount(int smoothCount) {
+        this.smoothCount = smoothCount; }
 
     @Override
     public void toFront() { }
@@ -373,7 +401,7 @@ public class TrendPanel extends javax.swing.JPanel implements I_Trend{
     private javax.swing.JButton Clear;
     private javax.swing.JButton Fore;
     private javax.swing.JButton Remove;
-    private javax.swing.JCheckBox Smooth;
+    private javax.swing.JSlider Smooth;
     private java.awt.Choice StatList;
     private java.awt.Choice StatListView;
     // End of variables declaration//GEN-END:variables

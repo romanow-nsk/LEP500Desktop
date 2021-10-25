@@ -23,7 +23,7 @@ public class LEP500TrendPanel extends LEP500BasePanel{
     private Runnable after = new Runnable() {
         @Override
         public void run() {
-            trend.setBounds(0,30,Client.PanelW-10,Client.PanelH+30);
+            trend.setBounds(0,10,Client.PanelW-10,Client.PanelH);
             add(trend);
             trend.setBack(new I_Success() {
                 @Override
