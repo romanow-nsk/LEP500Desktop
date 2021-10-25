@@ -24,6 +24,8 @@ import romanow.lep500.fft.ExtremeList;
 import romanow.lep500.fft.ExtremeNull;
 import romanow.lep500.fft.FFTStatistic;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -63,6 +65,37 @@ public class LEP500Example extends LEP500BasePanel {
     public LEP500Example() {
         initComponents();
         }
+    //---------------------------------------------------------------------------------
+    private ArrayList<JTextField> criteriaResults = new ArrayList<>();
+    private ArrayList<JButton> criteriaResultLamps = new ArrayList<>();
+    private void initResultsCriteriaList(){
+        int idx=0,dy=40;
+        for(String ss : criterisList) {
+            JLabel criteriaName = new JLabel();
+            criteriaName.setBounds(10, 260+idx*dy, 150, 14);
+            criteriaName.setText(ss);
+            add(criteriaName);
+            JTextField criteriaResult = new JTextField();
+            criteriaResult.setEnabled(false);
+            criteriaResult.setBounds(180, 260+idx*dy, 190, 25);
+            criteriaResults.add(criteriaResult);
+            add(criteriaResult);
+            JButton criteriaResultLamp = new JButton();
+            criteriaResultLamp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/status_gray.png"))); // NOI18N
+            criteriaResultLamp.setBounds(380, 250+idx*dy, 40, 40);
+            criteriaResultLamp.setBorderPainted(false);
+            criteriaResultLamp.setContentAreaFilled(false);
+            criteriaResultLamps.add(criteriaResultLamp);
+            add(criteriaResultLamp);
+            idx++;
+            }
+        }
+    private void clearResultsCriteriaList(){
+        for(int i=0;i<criterisList.size();i++){
+            criteriaResults.get(i).setText("");
+            criteriaResultLamps.get(i).setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/status_gray.png")));
+            }
+        }
 
     @Override
     public void initPanel(MainBaseFrame main0) {
@@ -87,6 +120,7 @@ public class LEP500Example extends LEP500BasePanel {
                     }
                 criterisList.add(facade.getTitle());
             }
+        initResultsCriteriaList();
         refreshAll();
     }
 
@@ -104,7 +138,6 @@ public class LEP500Example extends LEP500BasePanel {
         Selection = new java.awt.Choice();
         jLabel1 = new javax.swing.JLabel();
         FromSelect = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
         Linked = new java.awt.Checkbox();
         PowerLine = new java.awt.Choice();
         jLabel3 = new javax.swing.JLabel();
@@ -118,16 +151,12 @@ public class LEP500Example extends LEP500BasePanel {
         jLabel5 = new javax.swing.JLabel();
         Results = new java.awt.Choice();
         jLabel6 = new javax.swing.JLabel();
-        StateLamp = new javax.swing.JButton();
         RemoveResults = new javax.swing.JButton();
         ShowGraph = new javax.swing.JButton();
         CrearResults = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
-        Criteria = new java.awt.Choice();
         jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         ExpertResult = new java.awt.Choice();
-        TestResult = new javax.swing.JTextField();
         SaveExpert = new javax.swing.JButton();
         ResultData = new java.awt.TextArea();
 
@@ -160,10 +189,6 @@ public class LEP500Example extends LEP500BasePanel {
         });
         add(FromSelect);
         FromSelect.setBounds(490, 40, 40, 40);
-
-        jLabel2.setText("Критерий");
-        add(jLabel2);
-        jLabel2.setBounds(10, 210, 70, 14);
 
         Linked.setLabel("Опора/Линия");
         Linked.addItemListener(new java.awt.event.ItemListener() {
@@ -251,17 +276,6 @@ public class LEP500Example extends LEP500BasePanel {
         add(jLabel6);
         jLabel6.setBounds(10, 10, 70, 14);
 
-        StateLamp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/status_gray.png"))); // NOI18N
-        StateLamp.setBorderPainted(false);
-        StateLamp.setContentAreaFilled(false);
-        StateLamp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                StateLampActionPerformed(evt);
-            }
-        });
-        add(StateLamp);
-        StateLamp.setBounds(290, 240, 40, 40);
-
         RemoveResults.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/remove.png"))); // NOI18N
         RemoveResults.setBorderPainted(false);
         RemoveResults.setContentAreaFilled(false);
@@ -299,27 +313,11 @@ public class LEP500Example extends LEP500BasePanel {
         add(jLabel7);
         jLabel7.setBounds(10, 170, 70, 14);
 
-        Criteria.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                CriteriaItemStateChanged(evt);
-            }
-        });
-        add(Criteria);
-        Criteria.setBounds(90, 210, 190, 20);
-
         jLabel8.setText("Оценка эксперта");
         add(jLabel8);
-        jLabel8.setBounds(300, 210, 110, 14);
-
-        jLabel9.setText("Оценка алг.");
-        add(jLabel9);
-        jLabel9.setBounds(10, 250, 70, 14);
+        jLabel8.setBounds(10, 210, 110, 14);
         add(ExpertResult);
-        ExpertResult.setBounds(420, 210, 170, 20);
-
-        TestResult.setEnabled(false);
-        add(TestResult);
-        TestResult.setBounds(90, 250, 190, 25);
+        ExpertResult.setBounds(140, 210, 170, 20);
 
         SaveExpert.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/save.png"))); // NOI18N
         SaveExpert.setBorderPainted(false);
@@ -330,9 +328,9 @@ public class LEP500Example extends LEP500BasePanel {
             }
         });
         add(SaveExpert);
-        SaveExpert.setBounds(600, 200, 30, 30);
+        SaveExpert.setBounds(320, 200, 30, 30);
         add(ResultData);
-        ResultData.setBounds(420, 250, 420, 310);
+        ResultData.setBounds(420, 250, 460, 370);
     }// </editor-fold>//GEN-END:initComponents
 
     private void AddMeasureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddMeasureActionPerformed
@@ -418,9 +416,6 @@ public class LEP500Example extends LEP500BasePanel {
 
     }//GEN-LAST:event_ToSelectActionPerformed
 
-    private void StateLampActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StateLampActionPerformed
-    }//GEN-LAST:event_StateLampActionPerformed
-
     private void RemoveResultsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoveResultsActionPerformed
         if(results.size()==0)
             return;
@@ -436,10 +431,6 @@ public class LEP500Example extends LEP500BasePanel {
     private void ResultsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_ResultsItemStateChanged
         showOneResult();
     }//GEN-LAST:event_ResultsItemStateChanged
-
-    private void CriteriaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_CriteriaItemStateChanged
-        showOneResultByCriteria();
-    }//GEN-LAST:event_CriteriaItemStateChanged
 
     private void ShowGraphActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShowGraphActionPerformed
         if (results.size()==0)
@@ -471,26 +462,25 @@ public class LEP500Example extends LEP500BasePanel {
             }
         showOneResult();
         }
-
     private void crearOneResult(){
+        clearResultsCriteriaList();
         URL url = getClass().getResource("/drawable/status_gray.png");
-        StateLamp.setIcon(new javax.swing.ImageIcon(url));
-        Criteria.removeAll();
         selectedResult=null;
         ExpertResult.removeAll();
         }
-    private void showOneResultByCriteria(){
+    private void showOneResultByCriteria(int idx){
         if (selectedResult==null)
             return;
-        ExtremeList extreme = selectedResult.data.get(Criteria.getSelectedIndex());
-        String ss = analyseStateList.get(extreme.getTestResult());
-        TestResult.setText(ss == null ? "Недопустимый результат" : ss);
-        String icon = StateColors.get(extreme.getTestResult());
+        ExtremeList extreme = selectedResult.data.get(idx);
+        int res = extreme.getTestResult();
+        ResultData.append(res+"----------------------------------------------\n");
+        String ss = analyseStateList.get(res);
+        criteriaResults.get(idx).setText(ss == null ? "Недопустимый результат" : ss);
+        String icon = StateColors.get(res);
         if (icon==null){
-            System.out.println("Не найден результат анализа: "+extreme.getTestResult());
+            System.out.println("Не найден результат анализа: "+res);
             }
-        StateLamp.setIcon(new javax.swing.ImageIcon(getClass().getResource(icon)));
-        ResultData.setText("");
+        criteriaResultLamps.get(idx).setIcon(new javax.swing.ImageIcon(getClass().getResource(icon)));
         ResultData.append(extreme.getTestComment()+"\n");
         ResultData.append(extreme.showExtrems(selectedResult.firstFreq,selectedResult.lastFreq,selectedResult.dFreq));
         }
@@ -501,14 +491,16 @@ public class LEP500Example extends LEP500BasePanel {
             return;
         selectedResult = results.get(Results.getSelectedIndex());
         if (!selectedResult.valid){
-            System.out.println("Результат с ошибкой:\n"+selectedResult.message);
+            ResultData.setText("Результат с ошибкой:\n"+selectedResult.message);
+            return;
             }
-        for(String ss : criterisList)
-            Criteria.add(ss);
+        ResultData.setText(selectedResult.message);
         for (ConstValue cc : resultStates)
             ExpertResult.add(cc.title());
         ExpertResult.select(selectedResult.measure.getExpertResult());
-        showOneResultByCriteria();
+        for(int idx=0;idx<criterisList.size();idx++){
+            showOneResultByCriteria(idx);
+            }
         }
 
     private void refreshMeasure(){
@@ -558,6 +550,7 @@ public class LEP500Example extends LEP500BasePanel {
 
     private void refreshAll(){
         refreshParams();
+        clearResultsCriteriaList();
         ExpertResult.removeAll();
         Selection.removeAll();
         MeasureList.removeAll();
@@ -620,7 +613,6 @@ public class LEP500Example extends LEP500BasePanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddMeasure;
     private javax.swing.JButton CrearResults;
-    private java.awt.Choice Criteria;
     private java.awt.Choice ExpertResult;
     private javax.swing.JButton FromSelect;
     private java.awt.Checkbox Linked;
@@ -635,19 +627,15 @@ public class LEP500Example extends LEP500BasePanel {
     private javax.swing.JButton SaveExpert;
     private java.awt.Choice Selection;
     private javax.swing.JButton ShowGraph;
-    private javax.swing.JButton StateLamp;
     private java.awt.Choice Support;
-    private javax.swing.JTextField TestResult;
     private javax.swing.JButton ToSelect;
     private java.awt.Choice choice1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     // End of variables declaration//GEN-END:variables
 }
