@@ -3,7 +3,7 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$/../../ABC/ABCCore" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../../ABC/ABCDataServer" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/../../ABC/ABSDesktop" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../../ABC/ABCDesktop" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../LEP500Core" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../LEP500DataServer" vcs="Git" />
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
