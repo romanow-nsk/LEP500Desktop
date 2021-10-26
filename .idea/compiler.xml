@@ -7,14 +7,17 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="ABСDesktop" />
         <module name="ABCCore" />
         <module name="LEP500DataServer" />
         <module name="LEP500Desktop" />
         <module name="ABCDataServer" />
         <module name="LEP500Core" />
         <module name="LEP2DataServer" />
-        <module name="ABSDesktop" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="ABSDesktop" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
