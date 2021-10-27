@@ -9,12 +9,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dd0d4f89-2465-418c-9c78-71fb44c9bc3c" name="Default Changelist" comment="Баги сборки">
-      <change beforePath="$PROJECT_DIR$/../../ABC/ABCCore/src/main/java/romanow/abc/core/entity/users/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../ABC/ABCCore/src/main/java/romanow/abc/core/entity/users/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/abc/core/constants/Values.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/abc/core/constants/Values.java" afterDir="false" />
+    <list default="true" id="dd0d4f89-2465-418c-9c78-71fb44c9bc3c" name="Default Changelist" comment="002 - идентификатор сим карты">
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500.class" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/LEP500Desktop_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/LEP500Desktop_jar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -34,7 +31,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../LEP500Core" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../ABC/ABCDataServer" />
     <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="ProjectCodeStyleSettingsMigration">
@@ -286,7 +283,14 @@
       <option name="project" value="LOCAL" />
       <updated>1635227564747</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="002 - идентификатор сим карты">
+      <created>1635351578288</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1635351578288</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -318,7 +322,8 @@
     <MESSAGE value="API сервера - обработка измерений" />
     <MESSAGE value="Сглаживание графиков" />
     <MESSAGE value="Баги сборки" />
-    <option name="LAST_COMMIT_MESSAGE" value="Баги сборки" />
+    <MESSAGE value="002 - идентификатор сим карты" />
+    <option name="LAST_COMMIT_MESSAGE" value="002 - идентификатор сим карты" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
