@@ -10,12 +10,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dd0d4f89-2465-418c-9c78-71fb44c9bc3c" name="Default Changelist" comment="002 - идентификатор сим карты">
-      <change beforePath="$PROJECT_DIR$/../../ABC/ABCDesktop/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../ABC/ABCDesktop/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ABC/ABCDesktop/src/main/java/romanow/abc/desktop/UserPanelBase.form" beforeDir="false" afterPath="$PROJECT_DIR$/../../ABC/ABCDesktop/src/main/java/romanow/abc/desktop/UserPanelBase.form" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ABC/ABCDesktop/src/main/java/romanow/abc/desktop/UserPanelBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../ABC/ABCDesktop/src/main/java/romanow/abc/desktop/UserPanelBase.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500.class" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -300,7 +296,14 @@
       <option name="project" value="LOCAL" />
       <updated>1635355654128</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="002 - идентификатор сим карты">
+      <created>1635411204543</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1635411204543</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
