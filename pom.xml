@@ -203,7 +203,7 @@
         </dependency>
         <dependency>
             <groupId>romanow.abc</groupId>
-            <artifactId>ABSDesktop</artifactId>
+            <artifactId>ABCDesktop</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
