@@ -13,6 +13,7 @@ import romanow.abc.core.constants.ConstValue;
 import romanow.abc.core.constants.OidList;
 import romanow.abc.core.constants.Values;
 import romanow.abc.core.entity.Entity;
+import romanow.abc.core.entity.baseentityes.JBoolean;
 import romanow.abc.core.entity.baseentityes.JEmpty;
 import romanow.abc.core.entity.subjectarea.MeasureFile;
 import romanow.abc.core.entity.subjectarea.PowerLine;
@@ -36,7 +37,7 @@ import java.util.HashMap;
  *
  * @author romanow0
  */
-public class LEP500Example extends LEP500BasePanel {
+public class LEP500Experience extends LEP500BasePanel {
     public final static HashMap<Integer,String> StateColors=new HashMap<>();{
         StateColors.put(Values.MSUndefined,"/drawable/status_gray.png");
         StateColors.put(Values.MSNormal,"/drawable/status_green.png");
@@ -62,7 +63,7 @@ public class LEP500Example extends LEP500BasePanel {
     /**
      * Creates new form LEP500Example
      */
-    public LEP500Example() {
+    public LEP500Experience() {
         initComponents();
         }
     //---------------------------------------------------------------------------------
@@ -159,6 +160,7 @@ public class LEP500Example extends LEP500BasePanel {
         ExpertResult = new java.awt.Choice();
         SaveExpert = new javax.swing.JButton();
         ResultData = new java.awt.TextArea();
+        DeleteFile = new javax.swing.JButton();
 
         setLayout(null);
 
@@ -331,6 +333,17 @@ public class LEP500Example extends LEP500BasePanel {
         SaveExpert.setBounds(320, 200, 30, 30);
         add(ResultData);
         ResultData.setBounds(420, 250, 460, 370);
+
+        DeleteFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/remove.png"))); // NOI18N
+        DeleteFile.setBorderPainted(false);
+        DeleteFile.setContentAreaFilled(false);
+        DeleteFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeleteFileActionPerformed(evt);
+            }
+        });
+        add(DeleteFile);
+        DeleteFile.setBounds(720, 10, 30, 30);
     }// </editor-fold>//GEN-END:initComponents
 
     private void AddMeasureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddMeasureActionPerformed
@@ -454,6 +467,38 @@ public class LEP500Example extends LEP500BasePanel {
                 popup(e.toString());
                 }
     }//GEN-LAST:event_SaveExpertActionPerformed
+
+    private void DeleteFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteFileActionPerformed
+        if (measureFiles.size()==0)
+            return;
+        final MeasureFile file = measureFiles.get(MeasureList.getSelectedIndex());
+        new OK(200, 200, "Удалить " + file.toString(), new I_Button() {
+            @Override
+            public void onPush() {
+                new APICall<JBoolean>(main){
+                    @Override
+                    public Call<JBoolean> apiFun() {
+                        return main.service.deleteById(main.debugToken,"Измерение",file.getOid());
+                        }
+                    @Override
+                    public void onSucess(JBoolean oo) {
+                        refreshAll();
+                        System.out.println("Измерение удалено");
+                        new APICall<JEmpty>(main){
+                            @Override
+                            public Call<JEmpty> apiFun() {
+                                return main.service.removeArtifact(main.debugToken,file.getArtifact().getOid());
+                                }
+                            @Override
+                            public void onSucess(JEmpty oo) {
+                                System.out.println("Файл удален");
+                            }
+                        };
+                    }
+                };
+            }
+        });
+    }//GEN-LAST:event_DeleteFileActionPerformed
 
     private void refreshResults(){
         Results.removeAll();
@@ -613,6 +658,7 @@ public class LEP500Example extends LEP500BasePanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddMeasure;
     private javax.swing.JButton CrearResults;
+    private javax.swing.JButton DeleteFile;
     private java.awt.Choice ExpertResult;
     private javax.swing.JButton FromSelect;
     private java.awt.Checkbox Linked;

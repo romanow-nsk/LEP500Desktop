@@ -30,7 +30,7 @@ public class LEP500Client extends Client{
                 {UserSuperAdminType,UserLEP500Analytic}));
         panelDescList.add(new PanelDescriptor("Параметры", LEP500ParamsPanel.class,new int[]
                 {UserSuperAdminType,UserLEP500Analytic}));
-        panelDescList.add(new PanelDescriptor("Измерения", LEP500Example.class,new int[]
+        panelDescList.add(new PanelDescriptor("Измерения", LEP500Experience.class,new int[]
                 {UserSuperAdminType,UserLEP500Analytic}));
         panelDescList.add(new PanelDescriptor("Графики", LEP500TrendPanel.class,new int[]
                 {UserSuperAdminType,UserLEP500Analytic}));
