@@ -18,6 +18,10 @@ import romanow.abc.core.entity.baseentityes.JEmpty;
 import romanow.abc.core.entity.subjectarea.MeasureFile;
 import romanow.abc.core.entity.subjectarea.PowerLine;
 import romanow.abc.core.entity.subjectarea.Support;
+import romanow.abc.core.mongo.DBQueryInt;
+import romanow.abc.core.mongo.DBQueryList;
+import romanow.abc.core.mongo.DBXStream;
+import romanow.abc.core.mongo.I_DBQuery;
 import romanow.lep500.AnalyseResult;
 import romanow.lep500.LEP500Params;
 import romanow.lep500.fft.ExtremeFacade;
@@ -101,6 +105,7 @@ public class LEP500Experience extends LEP500BasePanel {
     @Override
     public void initPanel(MainBaseFrame main0) {
         super.initPanel(main0);
+        ExpertResult3.setVisible(false);
         resultStates = main.filter(main.constList,"MState");
         resultStates.sort(new Comparator<ConstValue>() {
             @Override
@@ -120,6 +125,13 @@ public class LEP500Experience extends LEP500BasePanel {
                     facade = new ExtremeNull();
                     }
                 criterisList.add(facade.getTitle());
+            }
+        ExpertResult2.removeAll();
+        ExpertResult3.removeAll();
+        ExpertResult3.add("Все определенные");
+        for (ConstValue cc : resultStates){
+            ExpertResult2.add(cc.title());
+            ExpertResult3.add(cc.title());
             }
         initResultsCriteriaList();
         refreshAll();
@@ -161,6 +173,10 @@ public class LEP500Experience extends LEP500BasePanel {
         SaveExpert = new javax.swing.JButton();
         ResultData = new java.awt.TextArea();
         DeleteFile = new javax.swing.JButton();
+        ExpertResult2 = new java.awt.Choice();
+        ExpertSelectionMode = new java.awt.Checkbox();
+        ExpertResult3 = new java.awt.Choice();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setLayout(null);
 
@@ -173,13 +189,13 @@ public class LEP500Experience extends LEP500BasePanel {
             }
         });
         add(AddMeasure);
-        AddMeasure.setBounds(680, 10, 40, 30);
+        AddMeasure.setBounds(690, 40, 40, 30);
         add(Selection);
-        Selection.setBounds(90, 100, 530, 20);
+        Selection.setBounds(90, 120, 530, 20);
 
         jLabel1.setText("Параметры");
         add(jLabel1);
-        jLabel1.setBounds(10, 130, 70, 14);
+        jLabel1.setBounds(10, 150, 70, 14);
 
         FromSelect.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/up.PNG"))); // NOI18N
         FromSelect.setBorderPainted(false);
@@ -190,7 +206,7 @@ public class LEP500Experience extends LEP500BasePanel {
             }
         });
         add(FromSelect);
-        FromSelect.setBounds(490, 40, 40, 40);
+        FromSelect.setBounds(580, 75, 40, 40);
 
         Linked.setLabel("Опора/Линия");
         Linked.addItemListener(new java.awt.event.ItemListener() {
@@ -199,7 +215,7 @@ public class LEP500Experience extends LEP500BasePanel {
             }
         });
         add(Linked);
-        Linked.setBounds(300, 40, 130, 20);
+        Linked.setBounds(290, 40, 130, 20);
 
         PowerLine.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -230,7 +246,7 @@ public class LEP500Experience extends LEP500BasePanel {
             }
         });
         add(ProcSelection);
-        ProcSelection.setBounds(540, 40, 35, 35);
+        ProcSelection.setBounds(640, 110, 35, 35);
 
         Refresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/refresh.png"))); // NOI18N
         Refresh.setBorderPainted(false);
@@ -241,7 +257,7 @@ public class LEP500Experience extends LEP500BasePanel {
             }
         });
         add(Refresh);
-        Refresh.setBounds(640, 10, 30, 30);
+        Refresh.setBounds(640, 40, 30, 30);
 
         ToSelect.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/updown.png"))); // NOI18N
         ToSelect.setBorderPainted(false);
@@ -252,7 +268,13 @@ public class LEP500Experience extends LEP500BasePanel {
             }
         });
         add(ToSelect);
-        ToSelect.setBounds(440, 40, 40, 40);
+        ToSelect.setBounds(580, 35, 40, 40);
+
+        MeasureList.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                MeasureListItemStateChanged(evt);
+            }
+        });
         add(MeasureList);
         MeasureList.setBounds(90, 10, 530, 20);
 
@@ -260,11 +282,11 @@ public class LEP500Experience extends LEP500BasePanel {
         add(jLabel4);
         jLabel4.setBounds(10, 70, 70, 14);
         add(Params);
-        Params.setBounds(90, 130, 190, 20);
+        Params.setBounds(90, 150, 190, 20);
 
         jLabel5.setText("Выборка");
         add(jLabel5);
-        jLabel5.setBounds(10, 100, 70, 14);
+        jLabel5.setBounds(10, 120, 70, 14);
 
         Results.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -272,7 +294,7 @@ public class LEP500Experience extends LEP500BasePanel {
             }
         });
         add(Results);
-        Results.setBounds(90, 170, 540, 20);
+        Results.setBounds(90, 190, 530, 20);
 
         jLabel6.setText("Измерения");
         add(jLabel6);
@@ -287,7 +309,7 @@ public class LEP500Experience extends LEP500BasePanel {
             }
         });
         add(RemoveResults);
-        RemoveResults.setBounds(640, 160, 30, 30);
+        RemoveResults.setBounds(640, 180, 30, 30);
 
         ShowGraph.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/graph.png"))); // NOI18N
         ShowGraph.setBorderPainted(false);
@@ -298,7 +320,7 @@ public class LEP500Experience extends LEP500BasePanel {
             }
         });
         add(ShowGraph);
-        ShowGraph.setBounds(720, 160, 40, 40);
+        ShowGraph.setBounds(750, 175, 40, 40);
 
         CrearResults.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/clear.png"))); // NOI18N
         CrearResults.setBorderPainted(false);
@@ -309,17 +331,17 @@ public class LEP500Experience extends LEP500BasePanel {
             }
         });
         add(CrearResults);
-        CrearResults.setBounds(680, 160, 30, 30);
+        CrearResults.setBounds(695, 180, 30, 30);
 
         jLabel7.setText("Результаты");
         add(jLabel7);
-        jLabel7.setBounds(10, 170, 70, 14);
+        jLabel7.setBounds(10, 190, 70, 14);
 
         jLabel8.setText("Оценка эксперта");
         add(jLabel8);
-        jLabel8.setBounds(10, 210, 110, 14);
+        jLabel8.setBounds(10, 230, 110, 14);
         add(ExpertResult);
-        ExpertResult.setBounds(140, 210, 170, 20);
+        ExpertResult.setBounds(140, 230, 190, 20);
 
         SaveExpert.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/save.png"))); // NOI18N
         SaveExpert.setBorderPainted(false);
@@ -330,7 +352,7 @@ public class LEP500Experience extends LEP500BasePanel {
             }
         });
         add(SaveExpert);
-        SaveExpert.setBounds(320, 200, 30, 30);
+        SaveExpert.setBounds(340, 220, 30, 30);
         add(ResultData);
         ResultData.setBounds(420, 250, 460, 370);
 
@@ -343,7 +365,30 @@ public class LEP500Experience extends LEP500BasePanel {
             }
         });
         add(DeleteFile);
-        DeleteFile.setBounds(720, 10, 30, 30);
+        DeleteFile.setBounds(750, 40, 30, 30);
+
+        ExpertResult2.setEnabled(false);
+        add(ExpertResult2);
+        ExpertResult2.setBounds(630, 10, 150, 20);
+
+        ExpertSelectionMode.setLabel("Оценка");
+        ExpertSelectionMode.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                ExpertSelectionModeItemStateChanged(evt);
+            }
+        });
+        add(ExpertSelectionMode);
+        ExpertSelectionMode.setBounds(290, 70, 70, 20);
+
+        ExpertResult3.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                ExpertResult3ItemStateChanged(evt);
+            }
+        });
+        add(ExpertResult3);
+        ExpertResult3.setBounds(370, 70, 170, 20);
+        add(jSeparator1);
+        jSeparator1.setBounds(10, 108, 560, 2);
     }// </editor-fold>//GEN-END:initComponents
 
     private void AddMeasureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddMeasureActionPerformed
@@ -371,6 +416,7 @@ public class LEP500Experience extends LEP500BasePanel {
         Selection.removeAll();
         for(MeasureFile ss : selectedFiles)
             Selection.add(ss.getTitle());
+        selectExperienceResult2();
         }
 
     private void FromSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FromSelectActionPerformed
@@ -381,12 +427,13 @@ public class LEP500Experience extends LEP500BasePanel {
     }//GEN-LAST:event_FromSelectActionPerformed
 
     private void LinkedItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_LinkedItemStateChanged
+        ExpertSelectionMode.setState(false);
         refreshAll();
     }//GEN-LAST:event_LinkedItemStateChanged
 
     private void SupportItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_SupportItemStateChanged
         if (Linked.getState())
-            refreshMeasure();
+            refreshMeasure(true);
     }//GEN-LAST:event_SupportItemStateChanged
 
     private void PowerLineItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_PowerLineItemStateChanged
@@ -500,6 +547,27 @@ public class LEP500Experience extends LEP500BasePanel {
         });
     }//GEN-LAST:event_DeleteFileActionPerformed
 
+    private void MeasureListItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_MeasureListItemStateChanged
+        selectExperienceResult2();
+    }//GEN-LAST:event_MeasureListItemStateChanged
+
+    private void ExpertSelectionModeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_ExpertSelectionModeItemStateChanged
+        Linked.setState(false);
+        refreshAll();
+    }//GEN-LAST:event_ExpertSelectionModeItemStateChanged
+
+    private void ExpertResult3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_ExpertResult3ItemStateChanged
+        if (ExpertSelectionMode.getState())
+            refreshAll();
+    }//GEN-LAST:event_ExpertResult3ItemStateChanged
+
+    private void selectExperienceResult2(){
+        ExpertResult2.setVisible(measureFiles.size()!=0);
+        if (measureFiles.size()==0) return;
+        int resultIdx = measureFiles.get(MeasureList.getSelectedIndex()).getExpertResult();
+        ExpertResult2.select(resultIdx);
+        }
+
     private void refreshResults(){
         Results.removeAll();
         for(AnalyseResult result : results){
@@ -548,25 +616,27 @@ public class LEP500Experience extends LEP500BasePanel {
             }
         }
 
-    private void refreshMeasure(){
+    private void refreshMeasure(boolean byLine){
         ExpertResult.removeAll();
         MeasureList.removeAll();
-        measureFiles = supports.get(Support.getSelectedIndex()).getFiles();
+        if (byLine)
+            measureFiles = supports.get(Support.getSelectedIndex()).getFiles();
         for(MeasureFile ss : measureFiles){
             MeasureList.add(ss.getTitle());
             }
+        selectExperienceResult2();
         }
     private void refreshSupport(){
         ExpertResult.removeAll();
         Support.removeAll();
         supports.clear();
-        if(lines.size()==0)
-            return;
-        supports = lines.get(PowerLine.getSelectedIndex()).getGroup();
-        for(Support ss : supports){
-            Support.add(ss.getName());
+        if(lines.size()!=0){
+            supports = lines.get(PowerLine.getSelectedIndex()).getGroup();
+            for(Support ss : supports){
+                Support.add(ss.getName());
+                }
             }
-        refreshMeasure();
+        refreshMeasure(true);
         }
 
     private void refreshParams(){
@@ -605,6 +675,35 @@ public class LEP500Experience extends LEP500BasePanel {
         selectedFiles.clear();
         measureFiles.clear();
         lines.clear();
+        ExpertResult3.setVisible(ExpertSelectionMode.getState());
+        if (ExpertSelectionMode.getState()){
+            int idx= ExpertResult3.getSelectedIndex();
+            DBQueryList query = idx!=0 ?
+                    new DBQueryList().add(new DBQueryInt("expertResult",idx-1))  :
+                    new DBQueryList().add(new DBQueryInt(I_DBQuery.ModeNEQ,"expertResult",0));
+            final String xmlQuery = new DBXStream().toXML(query);
+            new APICall<ArrayList<DBRequest>>(main){
+                @Override
+                public Call<ArrayList<DBRequest>> apiFun() {
+                    return main.service.getEntityListByQuery(main.debugToken,"MeasureFile",xmlQuery,1);
+                    }
+                @Override
+                public void onSucess(ArrayList<DBRequest> oo) {
+                    measureFiles.clear();
+                    for(DBRequest dd : oo){
+                        try {
+                            MeasureFile ss = (MeasureFile) dd.get(main.gson);
+                            MeasureList.add(ss.getTitle());
+                            measureFiles.add(ss);
+                            } catch (UniException e) {
+                                System.out.println(e);
+                                }
+                        }
+                    refreshMeasure(false);
+                }
+            };
+            return;
+            }
         if (!Linked.getState()){
             new APICall<ArrayList<DBRequest>>(main){
                 @Override
@@ -623,9 +722,7 @@ public class LEP500Experience extends LEP500BasePanel {
                                 System.out.println(e);
                                 }
                             }
-                    if (lines.size()!=0){
-                        refreshSupport();
-                        }
+                    refreshMeasure(false);
                     }
                 };
             }
@@ -647,9 +744,7 @@ public class LEP500Experience extends LEP500BasePanel {
                                 System.out.println(e);
                                 }
                             }
-                        if (lines.size()!=0){
-                            refreshSupport();
-                            }
+                    refreshSupport();
                     }
                 };
             }
@@ -660,6 +755,9 @@ public class LEP500Experience extends LEP500BasePanel {
     private javax.swing.JButton CrearResults;
     private javax.swing.JButton DeleteFile;
     private java.awt.Choice ExpertResult;
+    private java.awt.Choice ExpertResult2;
+    private java.awt.Choice ExpertResult3;
+    private java.awt.Checkbox ExpertSelectionMode;
     private javax.swing.JButton FromSelect;
     private java.awt.Checkbox Linked;
     private java.awt.Choice MeasureList;
@@ -683,5 +781,6 @@ public class LEP500Experience extends LEP500BasePanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
 }

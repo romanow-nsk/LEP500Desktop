@@ -22,7 +22,6 @@ public class LEP500Client extends Client{
         }
     public LEP500Client(boolean setLog){
         super(setLog);
-        Values.init();
         }
     public void initPanels() {
         super.initPanels();
@@ -94,12 +93,11 @@ public class LEP500Client extends Client{
             java.util.logging.Logger.getLogger(Client.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 Values.init();
-                new LEP500Client();
+                new LEP500Client().setVisible(false);
             }
         });
     }

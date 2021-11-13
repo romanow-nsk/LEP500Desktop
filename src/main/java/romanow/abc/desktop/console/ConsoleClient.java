@@ -59,6 +59,10 @@ public class ConsoleClient {
             }
         return out;
         }
+    public RestAPILEP500 getService2() {
+        return service2; }
+    public String getDebugToken() {
+        return debugToken; }
     public ConsoleClient(){
         reader = new BufferedReader(new InputStreamReader(System.in));
         }
