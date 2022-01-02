@@ -14,6 +14,7 @@
         <module name="ABCDataServer" />
         <module name="LEP500Core" />
         <module name="LEP2DataServer" />
+        <module name="ABCDesktop" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
