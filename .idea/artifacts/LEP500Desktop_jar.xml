@@ -9,7 +9,6 @@
       <element id="module-output" name="ABCCore" />
       <element id="module-output" name="ABCDataServer" />
       <element id="module-output" name="LEP500Core" />
-      <element id="module-output" name="LEP2DataServer" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-annotations/2.8.0/jackson-annotations-2.8.0.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/xpp3/xpp3_min/1.1.4c/xpp3_min-1.1.4c.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/javax/activation/activation/1.1/activation-1.1.jar" path-in-jar="/" />
@@ -92,7 +91,8 @@
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/apache/xmlbeans/xmlbeans/2.6.0/xmlbeans-2.6.0.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/github/fracpete/processoutput4j/0.0.7/processoutput4j-0.0.7.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar" path-in-jar="/" />
-      <element id="module-output" name="ABСDesktop" />
+      <element id="module-output" name="ABCDesktop" />
+      <element id="module-output" name="LEP500DataServer" />
     </root>
   </artifact>
 </component>
