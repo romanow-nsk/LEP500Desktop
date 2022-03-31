@@ -106,7 +106,7 @@ public class LEP500Experience extends LEP500BasePanel {
     public void initPanel(MainBaseFrame main0) {
         super.initPanel(main0);
         ExpertResult3.setVisible(false);
-        resultStates = main.filter(main.constList,"MState");
+        resultStates = main.filter(main.constList,"EState");
         resultStates.sort(new Comparator<ConstValue>() {
             @Override
             public int compare(ConstValue o1, ConstValue o2) {
