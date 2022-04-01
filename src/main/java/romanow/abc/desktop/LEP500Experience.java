@@ -503,7 +503,7 @@ public class LEP500Experience extends LEP500BasePanel {
             return;
         selectedResult.measure.setExpertResult(ExpertResult.getSelectedIndex());
         try {
-            Response<JEmpty> wsr = main.service.updateEntityField(main.debugToken,"expertResult",new DBRequest(selectedResult.measure,main.gson)).execute();
+            Response<JEmpty> wsr = main2.service2.setExpertNote(main.debugToken,selectedResult.measure.getOid(),ExpertResult.getSelectedIndex()).execute();
             if (!wsr.isSuccessful()){
                 popup("Ошибка обновления параметров  " + httpError(wsr));
                 return;
