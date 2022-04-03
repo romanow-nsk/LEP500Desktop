@@ -13,11 +13,13 @@ import romanow.abc.core.constants.ConstValue;
 import romanow.abc.core.constants.OidList;
 import romanow.abc.core.constants.Values;
 import romanow.abc.core.entity.Entity;
+import romanow.abc.core.entity.EntityList;
 import romanow.abc.core.entity.baseentityes.JBoolean;
 import romanow.abc.core.entity.baseentityes.JEmpty;
 import romanow.abc.core.entity.subjectarea.MeasureFile;
 import romanow.abc.core.entity.subjectarea.PowerLine;
 import romanow.abc.core.entity.subjectarea.Support;
+import romanow.abc.core.entity.users.User;
 import romanow.abc.core.mongo.DBQueryInt;
 import romanow.abc.core.mongo.DBQueryList;
 import romanow.abc.core.mongo.DBXStream;
@@ -64,6 +66,8 @@ public class LEP500Experience extends LEP500BasePanel {
     private ArrayList<LEP500Params> params = new ArrayList<>();
     private ArrayList<AnalyseResult> results = new ArrayList<>();
     private AnalyseResult selectedResult=null;
+    private HashMap<Long,User> userMap = new HashMap<>();
+    private HashMap<Integer,ConstValue> expertNoteMap;
     /**
      * Creates new form LEP500Example
      */
@@ -126,14 +130,25 @@ public class LEP500Experience extends LEP500BasePanel {
                     }
                 criterisList.add(facade.getTitle());
             }
-        ExpertResult2.removeAll();
         ExpertResult3.removeAll();
         ExpertResult3.add("Все определенные");
         for (ConstValue cc : resultStates){
-            ExpertResult2.add(cc.title());
             ExpertResult3.add(cc.title());
             }
         initResultsCriteriaList();
+        new APICall<EntityList<User>>(main) {
+            @Override
+            public Call<EntityList<User>> apiFun() {
+                return main.service.getUserList(main.debugToken,Values.GetAllModeActual,0);
+                }
+            @Override
+            public void onSucess(EntityList<User> oo) {
+                userMap.clear();
+                for(User user : oo)
+                    userMap.put(user.getOid(),user);
+                }
+            };
+        expertNoteMap =Values.constMap().getGroupMapByValue("EState");
         refreshAll();
     }
 
@@ -173,10 +188,13 @@ public class LEP500Experience extends LEP500BasePanel {
         SaveExpert = new javax.swing.JButton();
         ResultData = new java.awt.TextArea();
         DeleteFile = new javax.swing.JButton();
-        ExpertResult2 = new java.awt.Choice();
         ExpertSelectionMode = new java.awt.Checkbox();
         ExpertResult3 = new java.awt.Choice();
         jSeparator1 = new javax.swing.JSeparator();
+        ExpertNote2 = new javax.swing.JTextField();
+        UserId = new javax.swing.JTextField();
+        UserName = new javax.swing.JTextField();
+        UserPhone = new javax.swing.JTextField();
 
         setLayout(null);
 
@@ -367,10 +385,6 @@ public class LEP500Experience extends LEP500BasePanel {
         add(DeleteFile);
         DeleteFile.setBounds(750, 40, 30, 30);
 
-        ExpertResult2.setEnabled(false);
-        add(ExpertResult2);
-        ExpertResult2.setBounds(630, 10, 150, 20);
-
         ExpertSelectionMode.setLabel("Оценка");
         ExpertSelectionMode.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -389,6 +403,22 @@ public class LEP500Experience extends LEP500BasePanel {
         ExpertResult3.setBounds(370, 70, 170, 20);
         add(jSeparator1);
         jSeparator1.setBounds(10, 108, 560, 2);
+
+        ExpertNote2.setEnabled(false);
+        add(ExpertNote2);
+        ExpertNote2.setBounds(640, 10, 140, 25);
+
+        UserId.setEnabled(false);
+        add(UserId);
+        UserId.setBounds(790, 70, 90, 25);
+
+        UserName.setEnabled(false);
+        add(UserName);
+        UserName.setBounds(790, 10, 90, 25);
+
+        UserPhone.setEnabled(false);
+        add(UserPhone);
+        UserPhone.setBounds(790, 40, 90, 25);
     }// </editor-fold>//GEN-END:initComponents
 
     private void AddMeasureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddMeasureActionPerformed
@@ -562,10 +592,22 @@ public class LEP500Experience extends LEP500BasePanel {
     }//GEN-LAST:event_ExpertResult3ItemStateChanged
 
     private void selectExperienceResult2(){
-        ExpertResult2.setVisible(measureFiles.size()!=0);
+        ExpertNote2.setVisible(measureFiles.size()!=0);
+        UserId.setVisible(measureFiles.size()!=0);
         if (measureFiles.size()==0) return;
-        int resultIdx = measureFiles.get(MeasureList.getSelectedIndex()).getExpertResult();
-        ExpertResult2.select(resultIdx);
+        MeasureFile file  = measureFiles.get(MeasureList.getSelectedIndex());
+        ExpertNote2.setText(expertNoteMap.get(file.getExpertResult()).title());
+        if (file.getUserID()==0){
+            UserPhone.setText("");
+            UserName.setText("");
+            UserId.setText("0");
+            }
+        else{
+            User user = userMap.get(file.getUserID());
+            UserPhone.setText(user.getLoginPhone());
+            UserName.setText(user.getLastName());
+            UserId.setText(""+user.getOid());
+            }
         }
 
     private void refreshResults(){
@@ -754,8 +796,8 @@ public class LEP500Experience extends LEP500BasePanel {
     private javax.swing.JButton AddMeasure;
     private javax.swing.JButton CrearResults;
     private javax.swing.JButton DeleteFile;
+    private javax.swing.JTextField ExpertNote2;
     private java.awt.Choice ExpertResult;
-    private java.awt.Choice ExpertResult2;
     private java.awt.Choice ExpertResult3;
     private java.awt.Checkbox ExpertSelectionMode;
     private javax.swing.JButton FromSelect;
@@ -773,6 +815,9 @@ public class LEP500Experience extends LEP500BasePanel {
     private javax.swing.JButton ShowGraph;
     private java.awt.Choice Support;
     private javax.swing.JButton ToSelect;
+    private javax.swing.JTextField UserId;
+    private javax.swing.JTextField UserName;
+    private javax.swing.JTextField UserPhone;
     private java.awt.Choice choice1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
