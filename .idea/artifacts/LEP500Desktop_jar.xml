@@ -93,6 +93,14 @@
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar" path-in-jar="/" />
       <element id="module-output" name="ABCDesktop" />
       <element id="module-output" name="LEP500DataServer" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../ABC/ABCDesktop/libfx/javafx-swt.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../ABC/ABCDesktop/libfx/javafx.base.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../ABC/ABCDesktop/libfx/javafx.controls.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../ABC/ABCDesktop/libfx/javafx.fxml.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../ABC/ABCDesktop/libfx/javafx.graphics.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../ABC/ABCDesktop/libfx/javafx.media.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../ABC/ABCDesktop/libfx/javafx.swing.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../ABC/ABCDesktop/libfx/javafx.web.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>
