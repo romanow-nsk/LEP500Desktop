@@ -121,10 +121,10 @@ public class LEP500Experience extends LEP500BasePanel {
         for(ConstValue cc : resultStates)
             analyseStateList.put(cc.value(),cc.title());
         criterisList.clear();
-        for (int mode = 0; mode < FFTStatistic.extremeFacade.length; mode++) {
+        for (int mode = 0; mode < Values.extremeFacade.length; mode++) {
             ExtremeFacade facade;
             try {
-                facade = (ExtremeFacade)FFTStatistic.extremeFacade[mode].newInstance();
+                facade = (ExtremeFacade)Values.extremeFacade[mode].newInstance();
                 } catch (Exception e) {
                     facade = new ExtremeNull();
                     }
