@@ -1000,7 +1000,7 @@ public class LEP500Experience extends LEP500BasePanel {
                 for(DBRequest dd : oo){
                     try {
                         LEP500Params param = (LEP500Params) dd.get(main.gson);
-                        AnalyseParams.add(param.getTitle());
+                        AnalyseParams.add("["+param.getOid()+"] "+param.getTitle());
                         params.add(param);
                         } catch (UniException e) {
                             System.out.println(e);
