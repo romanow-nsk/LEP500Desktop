@@ -765,7 +765,7 @@ public class LEP500Experience extends LEP500BasePanel {
                 for(Support support : line.getGroup()){
                     System.out.println("______________ Опора "+support.getTitle());
                     for(MeasureFile file : support.getFiles())
-                        System.out.println("........................"+file.toString());
+                        System.out.println(".............."+file.toString()+" "+expertNoteMap.get(file.getExpertResult()).title());
                     }
                 }
             }
@@ -782,7 +782,7 @@ public class LEP500Experience extends LEP500BasePanel {
                             MFSelection selection = (MFSelection) request.get(main.gson);
                             System.out.println("______________ Выборка "+selection.getTitle());
                             for(EntityLink<MeasureFile> file : selection.getFiles())
-                                System.out.println("........................"+file.toString());
+                                System.out.println(".............."+file.toString()+" "+expertNoteMap.get(file.getRef().getExpertResult()).title());
                                 }
                         } catch (UniException ee){
                             System.out.println("");
@@ -970,7 +970,7 @@ public class LEP500Experience extends LEP500BasePanel {
     private void refreshMeasureList(){
         MeasureList.removeAll();
         for(MeasureFile ss : measureFiles){
-            MeasureList.add("["+ss.getOid()+"] "+ss.getTitle());
+            MeasureList.add(ss.getTitle());
             }
         refreshMeasure();
         }
@@ -1041,7 +1041,7 @@ public class LEP500Experience extends LEP500BasePanel {
                     measureFiles.clear();
                     measureFiles = oo;
                     for(MeasureFile ss : oo){
-                        MeasureList.add("["+ss.getOid()+"] "+ss.getTitle());
+                        MeasureList.add(ss.getTitle());
                         }
                     refreshMeasure();
                     }
