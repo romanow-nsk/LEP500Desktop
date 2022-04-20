@@ -12,10 +12,11 @@ import romanow.abc.core.UniException;
 import romanow.abc.core.constants.ConstValue;
 import romanow.abc.core.constants.OidList;
 import romanow.abc.core.constants.Values;
-import romanow.abc.core.entity.Entity;
-import romanow.abc.core.entity.EntityList;
+import romanow.abc.core.entity.*;
 import romanow.abc.core.entity.baseentityes.JBoolean;
 import romanow.abc.core.entity.baseentityes.JEmpty;
+import romanow.abc.core.entity.baseentityes.JLong;
+import romanow.abc.core.entity.subjectarea.MFSelection;
 import romanow.abc.core.entity.subjectarea.MeasureFile;
 import romanow.abc.core.entity.subjectarea.PowerLine;
 import romanow.abc.core.entity.subjectarea.Support;
@@ -56,23 +57,31 @@ public class LEP500Experience extends LEP500BasePanel {
         StateColors.put(Values.MSSumPeak1,"/drawable/status_light_red.png");
         StateColors.put(Values.MSSumPeak2,"/drawable/status_light_yellow.png");
         }
-    private HashMap<Integer,String> analyseStateList = new HashMap<>();
     private ArrayList<ConstValue> resultStates = new ArrayList<>();
+    private HashMap<Integer,ConstValue> expertNoteMap;                  // Оценка эксперта по коду
+    private HashMap<Integer,ConstValue> algResultMap;                   // Результаты алгоритмов по коду
+    //private HashMap<Integer,String> analyseStateList = new HashMap<>();
     private ArrayList<String> criterisList= new ArrayList<>();
     private ArrayList<MeasureFile> measureFiles = new ArrayList<>();
-    private ArrayList<MeasureFile> selectedFiles = new ArrayList<>();
+    private ArrayList<MeasureFile> selection = new ArrayList<>();
+    private ArrayList<MeasureFile> tempSelection = new ArrayList<>();
+    private boolean selectionChanged=false;
+    private ArrayList<MFSelection> selectionList = new ArrayList<>();
     private ArrayList<PowerLine> lines = new ArrayList<>();
     private ArrayList<Support> supports = new ArrayList<>();
     private ArrayList<LEP500Params> params = new ArrayList<>();
     private ArrayList<AnalyseResult> results = new ArrayList<>();
     private AnalyseResult selectedResult=null;
     private HashMap<Long,User> userMap = new HashMap<>();
-    private HashMap<Integer,ConstValue> expertNoteMap;
+    private EntityList<User> userList = new EntityList<>();
+    private boolean lineSupportState = false;                           // Режим - линия/опора
     /**
      * Creates new form LEP500Example
      */
     public LEP500Experience() {
         initComponents();
+        algResultMap = Values.constMap().getGroupMapByValue("MState");
+        expertNoteMap =Values.constMap().getGroupMapByValue("EState");
         }
     //---------------------------------------------------------------------------------
     private ArrayList<JTextField> criteriaResults = new ArrayList<>();
@@ -109,7 +118,10 @@ public class LEP500Experience extends LEP500BasePanel {
     @Override
     public void initPanel(MainBaseFrame main0) {
         super.initPanel(main0);
-        ExpertResult3.setVisible(false);
+        lineSupportState=false;
+        ExpertNoteSelector.setEnabled(false);
+        SelectionName.setEnabled(false);
+        SelectionSave.setEnabled(false);
         resultStates = main.filter(main.constList,"EState");
         resultStates.sort(new Comparator<ConstValue>() {
             @Override
@@ -117,9 +129,6 @@ public class LEP500Experience extends LEP500BasePanel {
                 return o1.value()-o2.value();
                 }
             });
-        analyseStateList.clear();
-        for(ConstValue cc : resultStates)
-            analyseStateList.put(cc.value(),cc.title());
         criterisList.clear();
         for (int mode = 0; mode < Values.extremeFacade.length; mode++) {
             ExtremeFacade facade;
@@ -130,10 +139,10 @@ public class LEP500Experience extends LEP500BasePanel {
                     }
                 criterisList.add(facade.getTitle());
             }
-        ExpertResult3.removeAll();
-        ExpertResult3.add("Все определенные");
+        ExpertNoteSelector.removeAll();
+        ExpertNoteSelector.add("Все определенные");
         for (ConstValue cc : resultStates){
-            ExpertResult3.add(cc.title());
+            ExpertNoteSelector.add(cc.title());
             }
         initResultsCriteriaList();
         new APICall<EntityList<User>>(main) {
@@ -143,14 +152,19 @@ public class LEP500Experience extends LEP500BasePanel {
                 }
             @Override
             public void onSucess(EntityList<User> oo) {
+                userList = oo;
                 userMap.clear();
-                for(User user : oo)
+                OwnerSelector.removeAll();
+                OwnerSelector.add("Все ");
+                for(User user : oo){
                     userMap.put(user.getOid(),user);
+                    OwnerSelector.add(user.getTitle());
+                    }
+                refreshAll();
                 }
             };
-        expertNoteMap =Values.constMap().getGroupMapByValue("EState");
-        refreshAll();
-    }
+        refreshSelectionList();
+        }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -163,38 +177,45 @@ public class LEP500Experience extends LEP500BasePanel {
 
         choice1 = new java.awt.Choice();
         AddMeasure = new javax.swing.JButton();
-        Selection = new java.awt.Choice();
+        SelectionMeasureList = new java.awt.Choice();
         jLabel1 = new javax.swing.JLabel();
-        FromSelect = new javax.swing.JButton();
-        Linked = new java.awt.Checkbox();
-        PowerLine = new java.awt.Choice();
+        LineSupportState = new java.awt.Checkbox();
+        PowerLineList = new java.awt.Choice();
         jLabel3 = new javax.swing.JLabel();
-        Support = new java.awt.Choice();
-        ProcSelection = new javax.swing.JButton();
+        SupportList = new java.awt.Choice();
+        AnalyseSelection = new javax.swing.JButton();
         Refresh = new javax.swing.JButton();
-        ToSelect = new javax.swing.JButton();
+        SelectuionAdd = new javax.swing.JButton();
         MeasureList = new java.awt.Choice();
         jLabel4 = new javax.swing.JLabel();
-        Params = new java.awt.Choice();
+        AnalyseParams = new java.awt.Choice();
         jLabel5 = new javax.swing.JLabel();
         Results = new java.awt.Choice();
         jLabel6 = new javax.swing.JLabel();
-        RemoveResults = new javax.swing.JButton();
+        AnaluseResultRemove = new javax.swing.JButton();
         ShowGraph = new javax.swing.JButton();
-        CrearResults = new javax.swing.JButton();
+        AnaluseResultsCrear = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        ExpertResult = new java.awt.Choice();
-        SaveExpert = new javax.swing.JButton();
+        ExpertNoteList = new java.awt.Choice();
+        ExpertNoteSave = new javax.swing.JButton();
         ResultData = new java.awt.TextArea();
         DeleteFile = new javax.swing.JButton();
-        ExpertSelectionMode = new java.awt.Checkbox();
-        ExpertResult3 = new java.awt.Choice();
+        ExpertNoteSelector = new java.awt.Choice();
         jSeparator1 = new javax.swing.JSeparator();
-        ExpertNote2 = new javax.swing.JTextField();
-        UserId = new javax.swing.JTextField();
-        UserName = new javax.swing.JTextField();
-        UserPhone = new javax.swing.JTextField();
+        ExpertNote = new javax.swing.JTextField();
+        Owner = new javax.swing.JTextField();
+        ShowTree = new javax.swing.JButton();
+        OwnerSelector = new java.awt.Choice();
+        SelectionList = new java.awt.Choice();
+        jLabel9 = new javax.swing.JLabel();
+        SelectionSave = new javax.swing.JButton();
+        SelectionFileRemove = new javax.swing.JButton();
+        SelectionName = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        SelectionRemove = new javax.swing.JButton();
 
         setLayout(null);
 
@@ -207,64 +228,52 @@ public class LEP500Experience extends LEP500BasePanel {
             }
         });
         add(AddMeasure);
-        AddMeasure.setBounds(690, 40, 40, 30);
-        add(Selection);
-        Selection.setBounds(90, 120, 530, 20);
+        AddMeasure.setBounds(750, 90, 40, 30);
+        add(SelectionMeasureList);
+        SelectionMeasureList.setBounds(90, 170, 530, 20);
 
-        jLabel1.setText("Параметры");
+        jLabel1.setText("Анализ");
         add(jLabel1);
-        jLabel1.setBounds(10, 150, 70, 14);
+        jLabel1.setBounds(830, 200, 70, 16);
 
-        FromSelect.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/up.PNG"))); // NOI18N
-        FromSelect.setBorderPainted(false);
-        FromSelect.setContentAreaFilled(false);
-        FromSelect.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FromSelectActionPerformed(evt);
-            }
-        });
-        add(FromSelect);
-        FromSelect.setBounds(580, 75, 40, 40);
-
-        Linked.setLabel("Опора/Линия");
-        Linked.addItemListener(new java.awt.event.ItemListener() {
+        LineSupportState.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                LinkedItemStateChanged(evt);
+                LineSupportStateItemStateChanged(evt);
             }
         });
-        add(Linked);
-        Linked.setBounds(290, 40, 130, 20);
+        add(LineSupportState);
+        LineSupportState.setBounds(60, 30, 30, 20);
 
-        PowerLine.addItemListener(new java.awt.event.ItemListener() {
+        PowerLineList.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                PowerLineItemStateChanged(evt);
+                PowerLineListItemStateChanged(evt);
             }
         });
-        add(PowerLine);
-        PowerLine.setBounds(90, 70, 190, 20);
+        add(PowerLineList);
+        PowerLineList.setBounds(90, 30, 190, 20);
 
         jLabel3.setText("Опора");
         add(jLabel3);
-        jLabel3.setBounds(10, 40, 70, 14);
+        jLabel3.setBounds(10, 60, 70, 16);
 
-        Support.addItemListener(new java.awt.event.ItemListener() {
+        SupportList.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                SupportItemStateChanged(evt);
+                SupportListItemStateChanged(evt);
             }
         });
-        add(Support);
-        Support.setBounds(90, 40, 190, 20);
+        add(SupportList);
+        SupportList.setBounds(90, 60, 190, 20);
 
-        ProcSelection.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/lep500button.png"))); // NOI18N
-        ProcSelection.setBorderPainted(false);
-        ProcSelection.setContentAreaFilled(false);
-        ProcSelection.addActionListener(new java.awt.event.ActionListener() {
+        AnalyseSelection.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/lep500button.png"))); // NOI18N
+        AnalyseSelection.setBorderPainted(false);
+        AnalyseSelection.setContentAreaFilled(false);
+        AnalyseSelection.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ProcSelectionActionPerformed(evt);
+                AnalyseSelectionActionPerformed(evt);
             }
         });
-        add(ProcSelection);
-        ProcSelection.setBounds(640, 110, 35, 35);
+        add(AnalyseSelection);
+        AnalyseSelection.setBounds(780, 200, 35, 35);
 
         Refresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/refresh.png"))); // NOI18N
         Refresh.setBorderPainted(false);
@@ -275,18 +284,18 @@ public class LEP500Experience extends LEP500BasePanel {
             }
         });
         add(Refresh);
-        Refresh.setBounds(640, 40, 30, 30);
+        Refresh.setBounds(660, 30, 30, 30);
 
-        ToSelect.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/updown.png"))); // NOI18N
-        ToSelect.setBorderPainted(false);
-        ToSelect.setContentAreaFilled(false);
-        ToSelect.addActionListener(new java.awt.event.ActionListener() {
+        SelectuionAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/updown.png"))); // NOI18N
+        SelectuionAdd.setBorderPainted(false);
+        SelectuionAdd.setContentAreaFilled(false);
+        SelectuionAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ToSelectActionPerformed(evt);
+                SelectuionAddActionPerformed(evt);
             }
         });
-        add(ToSelect);
-        ToSelect.setBounds(580, 35, 40, 40);
+        add(SelectuionAdd);
+        SelectuionAdd.setBounds(660, 90, 38, 35);
 
         MeasureList.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -294,17 +303,17 @@ public class LEP500Experience extends LEP500BasePanel {
             }
         });
         add(MeasureList);
-        MeasureList.setBounds(90, 10, 530, 20);
+        MeasureList.setBounds(90, 90, 560, 20);
 
-        jLabel4.setText("Линия");
+        jLabel4.setText("Собственник");
         add(jLabel4);
-        jLabel4.setBounds(10, 70, 70, 14);
-        add(Params);
-        Params.setBounds(90, 150, 190, 20);
+        jLabel4.setBounds(500, 6, 130, 20);
+        add(AnalyseParams);
+        AnalyseParams.setBounds(730, 170, 170, 20);
 
         jLabel5.setText("Выборка");
         add(jLabel5);
-        jLabel5.setBounds(10, 120, 70, 14);
+        jLabel5.setBounds(10, 130, 70, 16);
 
         Results.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -312,22 +321,22 @@ public class LEP500Experience extends LEP500BasePanel {
             }
         });
         add(Results);
-        Results.setBounds(90, 190, 530, 20);
+        Results.setBounds(90, 200, 530, 20);
 
         jLabel6.setText("Измерения");
         add(jLabel6);
-        jLabel6.setBounds(10, 10, 70, 14);
+        jLabel6.setBounds(10, 170, 70, 16);
 
-        RemoveResults.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/remove.png"))); // NOI18N
-        RemoveResults.setBorderPainted(false);
-        RemoveResults.setContentAreaFilled(false);
-        RemoveResults.addActionListener(new java.awt.event.ActionListener() {
+        AnaluseResultRemove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/remove.png"))); // NOI18N
+        AnaluseResultRemove.setBorderPainted(false);
+        AnaluseResultRemove.setContentAreaFilled(false);
+        AnaluseResultRemove.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RemoveResultsActionPerformed(evt);
+                AnaluseResultRemoveActionPerformed(evt);
             }
         });
-        add(RemoveResults);
-        RemoveResults.setBounds(640, 180, 30, 30);
+        add(AnaluseResultRemove);
+        AnaluseResultRemove.setBounds(630, 200, 30, 30);
 
         ShowGraph.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/graph.png"))); // NOI18N
         ShowGraph.setBorderPainted(false);
@@ -338,39 +347,39 @@ public class LEP500Experience extends LEP500BasePanel {
             }
         });
         add(ShowGraph);
-        ShowGraph.setBounds(750, 175, 40, 40);
+        ShowGraph.setBounds(730, 200, 40, 40);
 
-        CrearResults.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/clear.png"))); // NOI18N
-        CrearResults.setBorderPainted(false);
-        CrearResults.setContentAreaFilled(false);
-        CrearResults.addActionListener(new java.awt.event.ActionListener() {
+        AnaluseResultsCrear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/clear.png"))); // NOI18N
+        AnaluseResultsCrear.setBorderPainted(false);
+        AnaluseResultsCrear.setContentAreaFilled(false);
+        AnaluseResultsCrear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CrearResultsActionPerformed(evt);
+                AnaluseResultsCrearActionPerformed(evt);
             }
         });
-        add(CrearResults);
-        CrearResults.setBounds(695, 180, 30, 30);
+        add(AnaluseResultsCrear);
+        AnaluseResultsCrear.setBounds(670, 200, 30, 30);
 
         jLabel7.setText("Результаты");
         add(jLabel7);
-        jLabel7.setBounds(10, 190, 70, 14);
+        jLabel7.setBounds(10, 200, 70, 16);
 
         jLabel8.setText("Оценка эксперта");
         add(jLabel8);
-        jLabel8.setBounds(10, 230, 110, 14);
-        add(ExpertResult);
-        ExpertResult.setBounds(140, 230, 190, 20);
+        jLabel8.setBounds(10, 230, 110, 16);
+        add(ExpertNoteList);
+        ExpertNoteList.setBounds(140, 230, 190, 20);
 
-        SaveExpert.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/save.png"))); // NOI18N
-        SaveExpert.setBorderPainted(false);
-        SaveExpert.setContentAreaFilled(false);
-        SaveExpert.addActionListener(new java.awt.event.ActionListener() {
+        ExpertNoteSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/save.png"))); // NOI18N
+        ExpertNoteSave.setBorderPainted(false);
+        ExpertNoteSave.setContentAreaFilled(false);
+        ExpertNoteSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SaveExpertActionPerformed(evt);
+                ExpertNoteSaveActionPerformed(evt);
             }
         });
-        add(SaveExpert);
-        SaveExpert.setBounds(340, 220, 30, 30);
+        add(ExpertNoteSave);
+        ExpertNoteSave.setBounds(340, 230, 30, 30);
         add(ResultData);
         ResultData.setBounds(420, 250, 460, 370);
 
@@ -383,42 +392,103 @@ public class LEP500Experience extends LEP500BasePanel {
             }
         });
         add(DeleteFile);
-        DeleteFile.setBounds(750, 40, 30, 30);
+        DeleteFile.setBounds(710, 90, 30, 30);
 
-        ExpertSelectionMode.setLabel("Оценка");
-        ExpertSelectionMode.addItemListener(new java.awt.event.ItemListener() {
+        ExpertNoteSelector.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                ExpertSelectionModeItemStateChanged(evt);
+                ExpertNoteSelectorItemStateChanged(evt);
             }
         });
-        add(ExpertSelectionMode);
-        ExpertSelectionMode.setBounds(290, 70, 70, 20);
-
-        ExpertResult3.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                ExpertResult3ItemStateChanged(evt);
-            }
-        });
-        add(ExpertResult3);
-        ExpertResult3.setBounds(370, 70, 170, 20);
+        add(ExpertNoteSelector);
+        ExpertNoteSelector.setBounds(340, 30, 150, 20);
         add(jSeparator1);
-        jSeparator1.setBounds(10, 108, 560, 2);
+        jSeparator1.setBounds(10, 120, 610, 3);
 
-        ExpertNote2.setEnabled(false);
-        add(ExpertNote2);
-        ExpertNote2.setBounds(640, 10, 140, 25);
+        ExpertNote.setEnabled(false);
+        add(ExpertNote);
+        ExpertNote.setBounds(340, 60, 150, 25);
 
-        UserId.setEnabled(false);
-        add(UserId);
-        UserId.setBounds(790, 70, 90, 25);
+        Owner.setEnabled(false);
+        add(Owner);
+        Owner.setBounds(500, 60, 150, 25);
 
-        UserName.setEnabled(false);
-        add(UserName);
-        UserName.setBounds(790, 10, 90, 25);
+        ShowTree.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/question.png"))); // NOI18N
+        ShowTree.setBorderPainted(false);
+        ShowTree.setContentAreaFilled(false);
+        ShowTree.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ShowTreeActionPerformed(evt);
+            }
+        });
+        add(ShowTree);
+        ShowTree.setBounds(290, 20, 40, 40);
 
-        UserPhone.setEnabled(false);
-        add(UserPhone);
-        UserPhone.setBounds(790, 40, 90, 25);
+        OwnerSelector.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                OwnerSelectorItemStateChanged(evt);
+            }
+        });
+        add(OwnerSelector);
+        OwnerSelector.setBounds(500, 30, 150, 20);
+
+        SelectionList.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                SelectionListItemStateChanged(evt);
+            }
+        });
+        add(SelectionList);
+        SelectionList.setBounds(90, 130, 250, 20);
+
+        jLabel9.setText("Измерения");
+        add(jLabel9);
+        jLabel9.setBounds(10, 90, 70, 16);
+
+        SelectionSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/save.png"))); // NOI18N
+        SelectionSave.setBorderPainted(false);
+        SelectionSave.setContentAreaFilled(false);
+        SelectionSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SelectionSaveActionPerformed(evt);
+            }
+        });
+        add(SelectionSave);
+        SelectionSave.setBounds(390, 130, 30, 30);
+
+        SelectionFileRemove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/remove.png"))); // NOI18N
+        SelectionFileRemove.setBorderPainted(false);
+        SelectionFileRemove.setContentAreaFilled(false);
+        SelectionFileRemove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SelectionFileRemoveActionPerformed(evt);
+            }
+        });
+        add(SelectionFileRemove);
+        SelectionFileRemove.setBounds(630, 165, 30, 30);
+        add(SelectionName);
+        SelectionName.setBounds(430, 130, 230, 25);
+
+        jLabel10.setText("Линия");
+        add(jLabel10);
+        jLabel10.setBounds(10, 30, 70, 16);
+
+        jLabel11.setText("Оценка");
+        add(jLabel11);
+        jLabel11.setBounds(340, 10, 70, 16);
+
+        jLabel2.setText("Параметры анализа");
+        add(jLabel2);
+        jLabel2.setBounds(730, 150, 170, 16);
+
+        SelectionRemove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/remove.png"))); // NOI18N
+        SelectionRemove.setBorderPainted(false);
+        SelectionRemove.setContentAreaFilled(false);
+        SelectionRemove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SelectionRemoveActionPerformed(evt);
+            }
+        });
+        add(SelectionRemove);
+        SelectionRemove.setBounds(350, 130, 30, 30);
     }// </editor-fold>//GEN-END:initComponents
 
     private void AddMeasureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddMeasureActionPerformed
@@ -439,49 +509,107 @@ public class LEP500Experience extends LEP500BasePanel {
         });
     }//GEN-LAST:event_AddMeasureActionPerformed
 
-    public void refreshSelection(){
-        MeasureList.removeAll();
-        for(MeasureFile ss : measureFiles)
-            MeasureList.add(ss.getTitle());
-        Selection.removeAll();
-        for(MeasureFile ss : selectedFiles)
-            Selection.add(ss.getTitle());
-        selectExperienceResult2();
+    public void askForSaveChanges(Runnable code){
+        if (!selectionChanged)
+            code.run();
+        else
+            new OKFull(200, 200, "Несохраненные изменения, продолжить?", new I_ButtonFull() {
+                @Override
+                public void onPush(boolean yes) {
+                    if (!yes)
+                        return;
+                    selectionChanged=false;
+                    SelectionSave.setEnabled(false);
+                    code.run();
+                }
+            });
         }
 
-    private void FromSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FromSelectActionPerformed
-        if(selectedFiles.size()==0)
-            return;
-        measureFiles.add(selectedFiles.remove(Selection.getSelectedIndex()));
-        refreshSelection();
-    }//GEN-LAST:event_FromSelectActionPerformed
+    public void refreshSelectionAsk(){
+        askForSaveChanges(new Runnable() {
+            @Override
+            public void run() {
+                refreshSelection();
+                }
+            });
+        }
 
-    private void LinkedItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_LinkedItemStateChanged
-        ExpertSelectionMode.setState(false);
+    public void wasChanged(){
+        selectionChanged=true;
+        SelectionSave.setEnabled(true);
+        SelectionList.setEnabled(false);
+        SelectionName.setEnabled(true);
+        }
+    public void clearChanges(){
+        selectionChanged=false;
+        SelectionSave.setEnabled(false);
+        SelectionList.setEnabled(true);
+        SelectionName.setEnabled(false);
+        }
+
+    public void loadSelection(MFSelection mfs){
+        new APICall<DBRequest>(main){
+            @Override
+            public Call<DBRequest> apiFun() {
+                return main.service.getEntity(main.debugToken,"MFSelection", mfs.getOid(), 2);
+                }
+            @Override
+            public void onSucess(DBRequest oo) {
+                    try {
+                        MFSelection mfSelection = (MFSelection) oo.get(main.gson);
+                        selection.clear();
+                        SelectionMeasureList.removeAll();
+                        for(EntityLink<MeasureFile> file : mfSelection.getFiles()){
+                            selection.add(file.getRef());
+                            SelectionMeasureList.add(file.getTitle());
+                            }
+                        } catch (UniException e) {
+                            System.out.println(e);
+                            }
+                }
+            };
+        }
+
+    public void refreshSelection(){
+        int idx = SelectionList.getSelectedIndex();
+        if (idx!=0){
+            loadSelection(selectionList.get(idx-1));
+            }
+        else{
+            tempSelection = selection;
+            SelectionMeasureList.removeAll();
+            for(MeasureFile file : selection){
+                SelectionMeasureList.add("["+file.getOid()+"] "+file.getTitle());
+                }
+            }
+        }
+
+    private void LineSupportStateItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_LineSupportStateItemStateChanged
         refreshAll();
-    }//GEN-LAST:event_LinkedItemStateChanged
+    }//GEN-LAST:event_LineSupportStateItemStateChanged
 
-    private void SupportItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_SupportItemStateChanged
-        if (Linked.getState())
-            refreshMeasure(true);
-    }//GEN-LAST:event_SupportItemStateChanged
+    private void SupportListItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_SupportListItemStateChanged
+        if (supports.size()==0)
+            return;
+        measureFiles = supports.get(SupportList.getSelectedIndex()).getFiles();
+        refreshMeasureList();
+    }//GEN-LAST:event_SupportListItemStateChanged
 
-    private void PowerLineItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_PowerLineItemStateChanged
-        if (Linked.getState())
-            refreshSupport();
-    }//GEN-LAST:event_PowerLineItemStateChanged
+    private void PowerLineListItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_PowerLineListItemStateChanged
+        refreshSupport();
+    }//GEN-LAST:event_PowerLineListItemStateChanged
 
-    private void ProcSelectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProcSelectionActionPerformed
-        if (selectedFiles.size()==0 || params.size()==0)
+    private void AnalyseSelectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnalyseSelectionActionPerformed
+        if (selection.size()==0 || params.size()==0)
             return;
         OidList  list = new OidList();
-        for(MeasureFile ss : selectedFiles){
+        for(MeasureFile ss : selection){
             list.oids.add(ss.getOid());
             }
         new APICall<ArrayList<AnalyseResult>>(main){
             @Override
             public Call<ArrayList<AnalyseResult>> apiFun() {
-                return main2.service2.analyse(main.debugToken,params.get(Params.getSelectedIndex()).getOid(),list);
+                return main2.service2.analyse(main.debugToken,params.get(AnalyseParams.getSelectedIndex()).getOid(),list);
                 }
             @Override
             public void onSucess(ArrayList<AnalyseResult> oo) {
@@ -492,31 +620,34 @@ public class LEP500Experience extends LEP500BasePanel {
             }
         };
 
-    }//GEN-LAST:event_ProcSelectionActionPerformed
+    }//GEN-LAST:event_AnalyseSelectionActionPerformed
 
     private void RefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshActionPerformed
         refreshAll();
     }//GEN-LAST:event_RefreshActionPerformed
 
-    private void ToSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ToSelectActionPerformed
+    private void SelectuionAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectuionAddActionPerformed
         if(measureFiles.size()==0)
             return;
-        selectedFiles.add(measureFiles.remove(MeasureList.getSelectedIndex()));
-        refreshSelection();
+        MeasureFile file = measureFiles.remove(MeasureList.getSelectedIndex());
+        MeasureList.remove(MeasureList.getSelectedIndex());
+        selection.add(file);
+        SelectionMeasureList.add("["+file.getOid()+"] "+file.getTitle());
+        wasChanged();
 
-    }//GEN-LAST:event_ToSelectActionPerformed
+    }//GEN-LAST:event_SelectuionAddActionPerformed
 
-    private void RemoveResultsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoveResultsActionPerformed
+    private void AnaluseResultRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnaluseResultRemoveActionPerformed
         if(results.size()==0)
             return;
         results.remove(Results.getSelectedIndex());
         refreshResults();
-    }//GEN-LAST:event_RemoveResultsActionPerformed
+    }//GEN-LAST:event_AnaluseResultRemoveActionPerformed
 
-    private void CrearResultsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CrearResultsActionPerformed
+    private void AnaluseResultsCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnaluseResultsCrearActionPerformed
         results.clear();
         refreshResults();
-    }//GEN-LAST:event_CrearResultsActionPerformed
+    }//GEN-LAST:event_AnaluseResultsCrearActionPerformed
 
     private void ResultsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_ResultsItemStateChanged
         showOneResult();
@@ -528,12 +659,12 @@ public class LEP500Experience extends LEP500BasePanel {
         main.sendEventPanel(EventGraph,0,0,"",results);
     }//GEN-LAST:event_ShowGraphActionPerformed
 
-    private void SaveExpertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveExpertActionPerformed
+    private void ExpertNoteSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExpertNoteSaveActionPerformed
         if (selectedResult==null)
             return;
-        selectedResult.measure.setExpertResult(ExpertResult.getSelectedIndex());
+        selectedResult.measure.setExpertResult(ExpertNoteList.getSelectedIndex());
         try {
-            Response<JEmpty> wsr = main2.service2.setExpertNote(main.debugToken,selectedResult.measure.getOid(),ExpertResult.getSelectedIndex()).execute();
+            Response<JEmpty> wsr = main2.service2.setExpertNote(main.debugToken,selectedResult.measure.getOid(),ExpertNoteList.getSelectedIndex()).execute();
             if (!wsr.isSuccessful()){
                 popup("Ошибка обновления параметров  " + httpError(wsr));
                 return;
@@ -543,7 +674,48 @@ public class LEP500Experience extends LEP500BasePanel {
             } catch (IOException e) {
                 popup(e.toString());
                 }
-    }//GEN-LAST:event_SaveExpertActionPerformed
+    }//GEN-LAST:event_ExpertNoteSaveActionPerformed
+
+
+    private void refreshSelectionList(){
+        if (!selectionChanged)
+            refreshSelectionListForced();
+        else{
+            new OK(200, 200, "Есть несохранные изменения, продолжить?", new I_Button() {
+                @Override
+                public void onPush() {
+                    refreshSelectionListForced();
+                    }
+                });
+            }
+        }
+
+    private void refreshSelectionListForced(){
+        SelectionList.removeAll();
+        selectionList.clear();
+        tempSelection.clear();
+        new APICall<ArrayList<DBRequest>>(main) {
+            @Override
+            public Call<ArrayList<DBRequest>> apiFun() {
+                return main.service.getEntityList(main.debugToken,"MFSelection",Values.GetAllModeActual,1);
+            }
+            @Override
+            public void onSucess(ArrayList<DBRequest> oo) {
+                SelectionList.add("Временная...");
+                try{
+                    for(DBRequest request : oo){
+                        MFSelection selection = (MFSelection) request.get(main.gson);
+                        selectionList.add(selection);
+                        SelectionList.add(selection.getTitle());
+                    }
+                refreshSelection();
+                } catch (UniException ee){
+                    System.out.println("");
+                }
+            }
+        };
+    }
+
 
     private void DeleteFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteFileActionPerformed
         if (measureFiles.size()==0)
@@ -578,35 +750,172 @@ public class LEP500Experience extends LEP500BasePanel {
     }//GEN-LAST:event_DeleteFileActionPerformed
 
     private void MeasureListItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_MeasureListItemStateChanged
-        selectExperienceResult2();
+        refreshMeasure();
     }//GEN-LAST:event_MeasureListItemStateChanged
 
-    private void ExpertSelectionModeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_ExpertSelectionModeItemStateChanged
-        Linked.setState(false);
+    private void ExpertNoteSelectorItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_ExpertNoteSelectorItemStateChanged
         refreshAll();
-    }//GEN-LAST:event_ExpertSelectionModeItemStateChanged
+    }//GEN-LAST:event_ExpertNoteSelectorItemStateChanged
 
-    private void ExpertResult3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_ExpertResult3ItemStateChanged
-        if (ExpertSelectionMode.getState())
-            refreshAll();
-    }//GEN-LAST:event_ExpertResult3ItemStateChanged
+    private void ShowTreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShowTreeActionPerformed
+        if (lineSupportState){
+            System.out.println("______________________________________________________________________________");
+            for(PowerLine line : lines){
+                System.out.println("Линия "+line.getTitle());
+                for(Support support : line.getGroup()){
+                    System.out.println("______________ Опора "+support.getTitle());
+                    for(MeasureFile file : support.getFiles())
+                        System.out.println("........................"+file.toString());
+                    }
+                }
+            }
+        new APICall<ArrayList<DBRequest>>(main) {
+                @Override
+                public Call<ArrayList<DBRequest>> apiFun() {
+                    return main.service.getEntityList(main.debugToken,"MFSelection",Values.GetAllModeActual,2);
+                    }
+                @Override
+                public void onSucess(ArrayList<DBRequest> oo) {
+                    System.out.println("______________________________________________________________________________");
+                    try{
+                        for(DBRequest request : oo){
+                            MFSelection selection = (MFSelection) request.get(main.gson);
+                            System.out.println("______________ Выборка "+selection.getTitle());
+                            for(EntityLink<MeasureFile> file : selection.getFiles())
+                                System.out.println("........................"+file.toString());
+                                }
+                        } catch (UniException ee){
+                            System.out.println("");
+                             }
+                }
+            };
+    }//GEN-LAST:event_ShowTreeActionPerformed
 
-    private void selectExperienceResult2(){
-        ExpertNote2.setVisible(measureFiles.size()!=0);
-        UserId.setVisible(measureFiles.size()!=0);
+    private void OwnerSelectorItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_OwnerSelectorItemStateChanged
+        refreshAll();
+    }//GEN-LAST:event_OwnerSelectorItemStateChanged
+
+    private void SelectionSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectionSaveActionPerformed
+        if (!selectionChanged)
+            return;
+        int idx = SelectionList.getSelectedIndex();
+        if (idx==0){
+            new OKFull(200, 200, "Сохранить выборку?", new I_ButtonFull() {
+                @Override
+                public void onPush(boolean yes) {
+                    if (!yes){
+                        clearChanges();
+                        tempSelection.clear();
+                        refreshSelection();
+                        return;
+                        }
+                    String name = SelectionName.getText();
+                    if (name.length()==0){
+                        popup("Название выборки?");
+                        return;
+                        }
+                    final MFSelection mfSelection = new MFSelection();
+                    mfSelection.setName(name);
+                    mfSelection.getUser().setOidRef(main.loginUser);
+                    for(MeasureFile file : selection)
+                        mfSelection.getFiles().addOidRef(file);
+                    clearChanges();
+                    new APICall<JLong>(main) {
+                        @Override
+                        public Call<JLong> apiFun() {
+                            return main.service.addEntity(main.debugToken,new DBRequest(mfSelection,main.gson),0);
+                            }
+                        @Override
+                        public void onSucess(JLong oo) {
+                            refreshSelectionListForced();
+                            }
+                        };
+                    }
+                });
+            }
+        else{
+            MFSelection mfSelection = selectionList.get(idx-1);
+            new OKFull(200, 200, "Обновить выборку?", new I_ButtonFull() {
+                @Override
+                public void onPush(boolean yes) {
+                    if (!yes){
+                        clearChanges();
+                        refreshSelection();
+                        return;
+                        }
+                    mfSelection.getFiles().clear();
+                    for(MeasureFile file : selection)
+                        mfSelection.getFiles().addOidRef(file);
+                    clearChanges();
+                    new APICall<JEmpty>(main) {
+                        @Override
+                        public Call<JEmpty> apiFun() {
+                            return main.service.updateEntity(main.debugToken,new DBRequest(mfSelection,main.gson));
+                            }
+                        @Override
+                        public void onSucess(JEmpty oo) {
+                            refreshSelectionListForced();
+                            }
+                        };
+                    }
+            });
+        }
+    }//GEN-LAST:event_SelectionSaveActionPerformed
+
+    private void SelectionFileRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectionFileRemoveActionPerformed
+        if (SelectionMeasureList.getItemCount()==0)
+            return;
+        int idx= SelectionMeasureList.getSelectedIndex();
+        selection.remove(idx);
+        SelectionMeasureList.remove(idx);
+        wasChanged();
+    }//GEN-LAST:event_SelectionFileRemoveActionPerformed
+
+    private void SelectionListItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_SelectionListItemStateChanged
+        refreshSelection();
+    }//GEN-LAST:event_SelectionListItemStateChanged
+
+    private void SelectionRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectionRemoveActionPerformed
+        int idx = SelectionList.getSelectedIndex();
+        new OK(200, 200, "Удалить выборку?", new I_Button() {
+            @Override
+            public void onPush() {
+                final int idx = SelectionList.getSelectedIndex();
+                if (idx==0){
+                    tempSelection.clear();
+                    clearChanges();
+                    refreshSelectionListForced();
+                    }
+                else
+                    new APICall<JBoolean>(main) {
+                        @Override
+                        public Call<JBoolean> apiFun() {
+                            return main.service.removeEntity(main.debugToken,"MFSelection",selectionList.get(idx-1).getOid());
+                            }
+                        @Override
+                        public void onSucess(JBoolean oo) {
+                            clearChanges();
+                            refreshSelectionListForced();
+                        }
+                    };
+
+
+            }
+        });
+    }//GEN-LAST:event_SelectionRemoveActionPerformed
+
+    private void refreshMeasure(){
+        ExpertNote.setVisible(measureFiles.size()!=0);
+        Owner.setVisible(measureFiles.size()!=0);
         if (measureFiles.size()==0) return;
         MeasureFile file  = measureFiles.get(MeasureList.getSelectedIndex());
-        ExpertNote2.setText(expertNoteMap.get(file.getExpertResult()).title());
+        ExpertNote.setText(expertNoteMap.get(file.getExpertResult()).title());
         if (file.getUserID()==0){
-            UserPhone.setText("");
-            UserName.setText("");
-            UserId.setText("0");
+            Owner.setText("");
             }
         else{
             User user = userMap.get(file.getUserID());
-            UserPhone.setText(user.getLoginPhone());
-            UserName.setText(user.getLastName());
-            UserId.setText(""+user.getOid());
+            Owner.setText("["+user.getOid()+"] "+user.getLastName());
             }
         }
 
@@ -621,7 +930,7 @@ public class LEP500Experience extends LEP500BasePanel {
         clearResultsCriteriaList();
         URL url = getClass().getResource("/drawable/status_gray.png");
         selectedResult=null;
-        ExpertResult.removeAll();
+        ExpertNoteList.removeAll();
         }
     private void showOneResultByCriteria(int idx){
         if (selectedResult==null)
@@ -629,8 +938,8 @@ public class LEP500Experience extends LEP500BasePanel {
         ExtremeList extreme = selectedResult.data.get(idx);
         int res = extreme.getTestResult();
         ResultData.append(res+"----------------------------------------------\n");
-        String ss = analyseStateList.get(res);
-        criteriaResults.get(idx).setText(ss == null ? "Недопустимый результат" : ss);
+        ConstValue ss = algResultMap.get(res);
+        criteriaResults.get(idx).setText(ss == null ? "Недопустимый результат" : ss.title());
         String icon = StateColors.get(res);
         if (icon==null){
             System.out.println("Не найден результат анализа: "+res);
@@ -651,38 +960,34 @@ public class LEP500Experience extends LEP500BasePanel {
             }
         ResultData.setText(selectedResult.message);
         for (ConstValue cc : resultStates)
-            ExpertResult.add(cc.title());
-        ExpertResult.select(selectedResult.measure.getExpertResult());
+            ExpertNoteList.add(cc.title());
+        ExpertNoteList.select(selectedResult.measure.getExpertResult());
         for(int idx=0;idx<criterisList.size();idx++){
             showOneResultByCriteria(idx);
             }
         }
 
-    private void refreshMeasure(boolean byLine){
-        ExpertResult.removeAll();
+    private void refreshMeasureList(){
         MeasureList.removeAll();
-        if (byLine)
-            measureFiles = supports.get(Support.getSelectedIndex()).getFiles();
         for(MeasureFile ss : measureFiles){
-            MeasureList.add(ss.getTitle());
+            MeasureList.add("["+ss.getOid()+"] "+ss.getTitle());
             }
-        selectExperienceResult2();
+        refreshMeasure();
         }
     private void refreshSupport(){
-        ExpertResult.removeAll();
-        Support.removeAll();
-        supports.clear();
-        if(lines.size()!=0){
-            supports = lines.get(PowerLine.getSelectedIndex()).getGroup();
-            for(Support ss : supports){
-                Support.add(ss.getName());
-                }
+        SupportList.removeAll();
+        if(lines.size()==0)
+            return;
+        supports = lines.get(PowerLineList.getSelectedIndex()).getGroup();
+        for(Support ss : supports){
+            SupportList.add(ss.getName());
             }
-        refreshMeasure(true);
+        measureFiles = supports.get(0).getFiles();
+        refreshMeasureList();
         }
 
     private void refreshParams(){
-        Params.removeAll();
+        AnalyseParams.removeAll();
         params.clear();
         new APICall<ArrayList<DBRequest>>(main){
             @Override
@@ -695,7 +1000,7 @@ public class LEP500Experience extends LEP500BasePanel {
                 for(DBRequest dd : oo){
                     try {
                         LEP500Params param = (LEP500Params) dd.get(main.gson);
-                        Params.add(param.getTitle());
+                        AnalyseParams.add(param.getTitle());
                         params.add(param);
                         } catch (UniException e) {
                             System.out.println(e);
@@ -706,126 +1011,106 @@ public class LEP500Experience extends LEP500BasePanel {
         }
 
     private void refreshAll(){
+        lineSupportState = LineSupportState.getState();
         refreshParams();
         clearResultsCriteriaList();
-        ExpertResult.removeAll();
-        Selection.removeAll();
+        ExpertNoteList.removeAll();
+        SelectionMeasureList.removeAll();
         MeasureList.removeAll();
-        PowerLine.removeAll();
-        Support.removeAll();
+        PowerLineList.removeAll();
+        SupportList.removeAll();
         supports.clear();
-        selectedFiles.clear();
         measureFiles.clear();
         lines.clear();
-        ExpertResult3.setVisible(ExpertSelectionMode.getState());
-        if (ExpertSelectionMode.getState()){
-            int idx= ExpertResult3.getSelectedIndex();
-            DBQueryList query = idx!=0 ?
-                    new DBQueryList().add(new DBQueryInt("expertResult",idx-1))  :
-                    new DBQueryList().add(new DBQueryInt(I_DBQuery.ModeNEQ,"expertResult",0));
-            final String xmlQuery = new DBXStream().toXML(query);
-            new APICall<ArrayList<DBRequest>>(main){
+        OwnerSelector.setEnabled(!lineSupportState);
+        ExpertNoteSelector.setEnabled(!lineSupportState);
+        PowerLineList.setEnabled(lineSupportState);
+        SupportList.setEnabled(lineSupportState);
+        if (!lineSupportState){
+            int idx= ExpertNoteSelector.getSelectedIndex();
+            int note = idx==0 ? 0 :  resultStates.get(idx-1).value();
+            idx = OwnerSelector.getSelectedIndex();
+            long userId = idx==0 ? 0 : userList.get(idx-1).getOid();
+            new APICall<ArrayList<MeasureFile>>(main){
                 @Override
-                public Call<ArrayList<DBRequest>> apiFun() {
-                    return main.service.getEntityListByQuery(main.debugToken,"MeasureFile",xmlQuery,1);
+                public Call<ArrayList<MeasureFile>> apiFun() {
+                    return main2.service2.getMeasureSelection(main.debugToken,note,userId,"","");
                     }
                 @Override
-                public void onSucess(ArrayList<DBRequest> oo) {
+                public void onSucess(ArrayList<MeasureFile> oo) {
                     measureFiles.clear();
-                    for(DBRequest dd : oo){
-                        try {
-                            MeasureFile ss = (MeasureFile) dd.get(main.gson);
-                            MeasureList.add(ss.getTitle());
-                            measureFiles.add(ss);
-                            } catch (UniException e) {
-                                System.out.println(e);
-                                }
+                    measureFiles = oo;
+                    for(MeasureFile ss : oo){
+                        MeasureList.add("["+ss.getOid()+"] "+ss.getTitle());
                         }
-                    refreshMeasure(false);
-                }
-            };
-            return;
-            }
-        if (!Linked.getState()){
-            new APICall<ArrayList<DBRequest>>(main){
-                @Override
-                public Call<ArrayList<DBRequest>> apiFun() {
-                    return main.service.getEntityList(main.debugToken,"MeasureFile", Values.GetAllModeActual,1);
-                    }
-                @Override
-                public void onSucess(ArrayList<DBRequest> oo) {
-                    measureFiles.clear();
-                    for(DBRequest dd : oo){
-                        try {
-                            MeasureFile ss = (MeasureFile) dd.get(main.gson);
-                            MeasureList.add(ss.getTitle());
-                            measureFiles.add(ss);
-                            } catch (UniException e) {
-                                System.out.println(e);
-                                }
-                            }
-                    refreshMeasure(false);
+                    refreshMeasure();
                     }
                 };
+            return;
             }
-        else{
-            new APICall<ArrayList<DBRequest>>(main){
-                @Override
-                public Call<ArrayList<DBRequest>> apiFun() {
-                    return main.service.getEntityList(main.debugToken,"PowerLine", Values.GetAllModeActual,3);
-                    }
-                @Override
-                public void onSucess(ArrayList<DBRequest> oo) {
-                    lines.clear();
-                    for(DBRequest dd : oo){
-                        try {
-                            PowerLine line = (PowerLine) dd.get(main.gson);
-                            lines.add(line);
-                            PowerLine.add(line.getName());
-                            } catch (UniException e) {
-                                System.out.println(e);
-                                }
+        new APICall<ArrayList<DBRequest>>(main){
+            @Override
+            public Call<ArrayList<DBRequest>> apiFun() {
+                return main.service.getEntityList(main.debugToken,"PowerLine", Values.GetAllModeActual,3);
+                }
+            @Override
+            public void onSucess(ArrayList<DBRequest> oo) {
+                lines.clear();
+                for(DBRequest dd : oo){
+                    try {
+                        PowerLine line = (PowerLine) dd.get(main.gson);
+                        lines.add(line);
+                        PowerLineList.add(line.getName());
+                        } catch (UniException e) {
+                             System.out.println(e);
                             }
+                        }
                     refreshSupport();
                     }
                 };
-            }
-    }
+        }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddMeasure;
-    private javax.swing.JButton CrearResults;
+    private javax.swing.JButton AnaluseResultRemove;
+    private javax.swing.JButton AnaluseResultsCrear;
+    private java.awt.Choice AnalyseParams;
+    private javax.swing.JButton AnalyseSelection;
     private javax.swing.JButton DeleteFile;
-    private javax.swing.JTextField ExpertNote2;
-    private java.awt.Choice ExpertResult;
-    private java.awt.Choice ExpertResult3;
-    private java.awt.Checkbox ExpertSelectionMode;
-    private javax.swing.JButton FromSelect;
-    private java.awt.Checkbox Linked;
+    private javax.swing.JTextField ExpertNote;
+    private java.awt.Choice ExpertNoteList;
+    private javax.swing.JButton ExpertNoteSave;
+    private java.awt.Choice ExpertNoteSelector;
+    private java.awt.Checkbox LineSupportState;
     private java.awt.Choice MeasureList;
-    private java.awt.Choice Params;
-    private java.awt.Choice PowerLine;
-    private javax.swing.JButton ProcSelection;
+    private javax.swing.JTextField Owner;
+    private java.awt.Choice OwnerSelector;
+    private java.awt.Choice PowerLineList;
     private javax.swing.JButton Refresh;
-    private javax.swing.JButton RemoveResults;
     private java.awt.TextArea ResultData;
     private java.awt.Choice Results;
-    private javax.swing.JButton SaveExpert;
-    private java.awt.Choice Selection;
+    private javax.swing.JButton SelectionFileRemove;
+    private java.awt.Choice SelectionList;
+    private java.awt.Choice SelectionMeasureList;
+    private javax.swing.JTextField SelectionName;
+    private javax.swing.JButton SelectionRemove;
+    private javax.swing.JButton SelectionSave;
+    private javax.swing.JButton SelectuionAdd;
     private javax.swing.JButton ShowGraph;
-    private java.awt.Choice Support;
-    private javax.swing.JButton ToSelect;
-    private javax.swing.JTextField UserId;
-    private javax.swing.JTextField UserName;
-    private javax.swing.JTextField UserPhone;
+    private javax.swing.JButton ShowTree;
+    private java.awt.Choice SupportList;
     private java.awt.Choice choice1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
 }

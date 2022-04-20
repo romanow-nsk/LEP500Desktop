@@ -17,11 +17,18 @@ import static romanow.abc.core.constants.ValuesBase.UserSuperAdminType;
 
 
 public class LEP500Client extends Client{
+    public LEP500Client(boolean admin){
+        this(admin,true);
+    }
     public LEP500Client(){
-        this(true);
+        this(false,true);
         }
-    public LEP500Client(boolean setLog){
+    public LEP500Client(boolean admin,boolean setLog){
         super(setLog);
+        if (admin){
+            setLoginName("9130000000");
+            setPassword("pi31415926");
+            }
         }
     public void initPanels() {
         super.initPanels();

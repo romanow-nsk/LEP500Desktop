@@ -9,12 +9,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dd0d4f89-2465-418c-9c78-71fb44c9bc3c" name="Default Changelist" comment="Mongo Dump Restore">
-      <change beforePath="$PROJECT_DIR$/../../ABC/ABCDataServer/src/main/java/romanow/abc/dataserver/APIAdmin.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../ABC/ABCDataServer/src/main/java/romanow/abc/dataserver/APIAdmin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ABC/ABCDesktop/src/main/java/romanow/abc/desktop/ServerPanel.form" beforeDir="false" afterPath="$PROJECT_DIR$/../../ABC/ABCDesktop/src/main/java/romanow/abc/desktop/ServerPanel.form" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ABC/ABCDesktop/src/main/java/romanow/abc/desktop/ServerPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../ABC/ABCDesktop/src/main/java/romanow/abc/desktop/ServerPanel.java" afterDir="false" />
+    <list default="true" id="dd0d4f89-2465-418c-9c78-71fb44c9bc3c" name="Default Changelist" comment="-----">
+      <change afterPath="$PROJECT_DIR$/../../ABC/ABCCore/.idea/artifacts/ABCCore_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../ABC/ABCDesktop/src/main/java/romanow/abc/desktop/OKFull.form" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../ABC/ABCDesktop/src/main/java/romanow/abc/desktop/OKFull.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/abc/core/entity/subjectarea/MFSelection.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500ClientAdmin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ABC/ABCCore/src/main/java/romanow/abc/core/entity/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../ABC/ABCCore/src/main/java/romanow/abc/core/entity/Entity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ABC/ABCDesktop/src/main/java/romanow/abc/desktop/Cabinet.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../ABC/ABCDesktop/src/main/java/romanow/abc/desktop/Cabinet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ABC/ABCDesktop/src/main/java/romanow/abc/desktop/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../ABC/ABCDesktop/src/main/java/romanow/abc/desktop/Login.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/abc/core/API/RestAPILEP500.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/abc/core/API/RestAPILEP500.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/abc/core/constants/Values.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/abc/core/constants/Values.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/abc/core/entity/subjectarea/MeasureFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/abc/core/entity/subjectarea/MeasureFile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LEP500DataServer/src/main/java/romanow/abc/dataserver/APILEP500.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500DataServer/src/main/java/romanow/abc/dataserver/APILEP500.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500.class" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/LEP500ConsoleServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/LEP500ConsoleServer.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Experience.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Experience.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Experience.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Experience.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +47,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../ABC/ABCDataServer" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="GitSEFilterConfiguration">
@@ -81,20 +95,7 @@
       <recent name="D:\CASA_Java\LEP500Desktop\src\main\java\romanow\abc\desktop.graph" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.LEP500Cabinet">
-    <configuration name="ConsoleClient" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="romanow.abc.desktop.console.ConsoleClient" />
-      <module name="LEP500Desktop" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="romanow.abc.desktop.console.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="Application.LEP500ClientAdmin">
     <configuration name="LEP500Cabinet" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="romanow.abc.desktop.LEP500Cabinet" />
       <module name="LEP500Desktop" />
@@ -110,6 +111,19 @@
     </configuration>
     <configuration name="LEP500Client" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="romanow.abc.desktop.LEP500Client" />
+      <module name="LEP500Desktop" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="romanow.abc.desktop.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LEP500ClientAdmin" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="romanow.abc.desktop.LEP500ClientAdmin" />
       <module name="LEP500Desktop" />
       <extension name="coverage">
         <pattern>
@@ -149,11 +163,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.LEP500Cabinet" />
+        <item itemvalue="Application.LEP500ClientAdmin" />
         <item itemvalue="Application.LEP500Client" />
+        <item itemvalue="Application.LEP500Cabinet" />
         <item itemvalue="Application.LEP500MainBase" />
         <item itemvalue="Application.LEP500ConsoleExample" />
-        <item itemvalue="Application.ConsoleClient" />
       </list>
     </recent_temporary>
   </component>
@@ -460,7 +474,14 @@
       <option name="project" value="LOCAL" />
       <updated>1648964851969</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="-----">
+      <created>1650045906753</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1650045906753</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -506,14 +527,15 @@
     <MESSAGE value="037 Values ValuesBase" />
     <MESSAGE value="008 Expert" />
     <MESSAGE value="Экспертная оценка" />
-    <option name="LAST_COMMIT_MESSAGE" value="Экспертная оценка" />
+    <MESSAGE value="-----" />
+    <option name="LAST_COMMIT_MESSAGE" value="-----" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Client.java</url>
-          <line>40</line>
+          <line>47</line>
           <option name="timeStamp" value="32" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -553,8 +575,28 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Experience.java</url>
-          <line>598</line>
-          <option name="timeStamp" value="52" />
+          <line>825</line>
+          <option name="timeStamp" value="62" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Experience.java</url>
+          <line>829</line>
+          <option name="timeStamp" value="64" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Experience.java</url>
+          <line>907</line>
+          <option name="timeStamp" value="69" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Experience.java</url>
+          <line>1014</line>
+          <option name="timeStamp" value="70" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Experience.java</url>
+          <line>977</line>
+          <option name="timeStamp" value="71" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
