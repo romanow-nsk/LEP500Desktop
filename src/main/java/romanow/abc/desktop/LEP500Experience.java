@@ -158,7 +158,7 @@ public class LEP500Experience extends LEP500BasePanel {
                 OwnerSelector.add("Все ");
                 for(User user : oo){
                     userMap.put(user.getOid(),user);
-                    OwnerSelector.add(user.getTitle());
+                    OwnerSelector.add("["+user.getOid()+"] "+user.getTitle());
                     }
                 refreshAll();
                 }
