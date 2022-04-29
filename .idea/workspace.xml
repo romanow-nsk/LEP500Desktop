@@ -9,10 +9,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dd0d4f89-2465-418c-9c78-71fb44c9bc3c" name="Default Changelist" comment="11 Пароль суперадмина при системных операциях">
-      <change beforePath="$PROJECT_DIR$/../../ABC/ABCCore/src/main/java/romanow/abc/core/export/Excel.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../ABC/ABCCore/src/main/java/romanow/abc/core/export/Excel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ABC/ABCCore/src/main/java/romanow/abc/core/export/ExcelX.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../ABC/ABCCore/src/main/java/romanow/abc/core/export/ExcelX.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ABC/ABCDataServer/src/main/java/romanow/abc/dataserver/APIUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../ABC/ABCDataServer/src/main/java/romanow/abc/dataserver/APIUser.java" afterDir="false" />
+    <list default="true" id="dd0d4f89-2465-418c-9c78-71fb44c9bc3c" name="Default Changelist" comment="12 Пароль суперадмина при системных операциях">
+      <change beforePath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/lep500/AnalyseResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/lep500/AnalyseResult.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/lep500/fft/FFTStatistic.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/lep500/fft/FFTStatistic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LEP500DataServer/src/main/java/romanow/abc/dataserver/APILEP500.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500DataServer/src/main/java/romanow/abc/dataserver/APILEP500.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500.class" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/LEP500ConsoleServer$1$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/LEP500ConsoleServer$1$1.class" afterDir="false" />
@@ -21,7 +21,10 @@
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/LEP500ConsoleServer$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/LEP500ConsoleServer$3.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/LEP500ConsoleServer$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/LEP500ConsoleServer$4.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/LEP500ConsoleServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/LEP500ConsoleServer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Experience.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Experience.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Experience.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Experience.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,8 +43,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../ABC/ABCDataServer" />
-    <option name="UPDATE_TYPE" value="REBASE" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../LEP500Core" />
   </component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
@@ -88,7 +90,7 @@
       <recent name="D:\CASA_Java\LEP500Desktop\src\main\java\romanow\abc\desktop.graph" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.LEP500Cabinet">
+  <component name="RunManager" selected="Application.LEP500Client">
     <configuration name="LEP500Cabinet" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="romanow.abc.desktop.LEP500Cabinet" />
       <module name="LEP500Desktop" />
@@ -156,8 +158,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.LEP500Cabinet" />
         <item itemvalue="Application.LEP500Client" />
+        <item itemvalue="Application.LEP500Cabinet" />
         <item itemvalue="Application.LEP500ClientAdmin" />
         <item itemvalue="Application.LEP500MainBase" />
         <item itemvalue="Application.LEP500ConsoleExample" />
@@ -172,20 +174,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1634483190603</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Fix-1 API добавления настройки параметров">
-      <created>1634556415542</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1634556415542</updated>
-    </task>
-    <task id="LOCAL-00007" summary="Добавление дерева линия-опора-измерение">
-      <created>1634577662405</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1634577662405</updated>
     </task>
     <task id="LOCAL-00008" summary="Добавление дерева линия-опора-измерение">
       <created>1634817226396</created>
@@ -516,7 +504,21 @@
       <option name="project" value="LOCAL" />
       <updated>1650971933666</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="12 Пароль суперадмина при системных операциях">
+      <created>1651163220072</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1651163220073</updated>
+    </task>
+    <task id="LOCAL-00056" summary="12 Пароль суперадмина при системных операциях">
+      <created>1651163354263</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1651163354263</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -538,7 +540,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fix-1 API добавления настройки параметров" />
     <MESSAGE value="Добавление дерева линия-опора-измерение" />
     <MESSAGE value="API сервера - обработка измерений - 7-311" />
     <MESSAGE value="API сервера - обработка измерений" />
@@ -563,7 +564,8 @@
     <MESSAGE value="10 Выборки" />
     <MESSAGE value="11 Консольный сервер с логин-паролем" />
     <MESSAGE value="11 Пароль суперадмина при системных операциях" />
-    <option name="LAST_COMMIT_MESSAGE" value="11 Пароль суперадмина при системных операциях" />
+    <MESSAGE value="12 Пароль суперадмина при системных операциях" />
+    <option name="LAST_COMMIT_MESSAGE" value="12 Пароль суперадмина при системных операциях" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -574,18 +576,13 @@
           <option name="timeStamp" value="32" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/lep500/fft/ExtremeList.java</url>
-          <line>58</line>
-          <option name="timeStamp" value="35" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/romanow/abc/desktop.graph/TrendPanel.java</url>
           <line>380</line>
           <option name="timeStamp" value="36" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/lep500/fft/FFTStatistic.java</url>
-          <line>295</line>
+          <line>296</line>
           <option name="timeStamp" value="37" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -605,33 +602,43 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Experience.java</url>
-          <line>825</line>
+          <line>839</line>
           <option name="timeStamp" value="62" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Experience.java</url>
-          <line>829</line>
+          <line>843</line>
           <option name="timeStamp" value="64" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Experience.java</url>
-          <line>907</line>
-          <option name="timeStamp" value="69" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Experience.java</url>
-          <line>1013</line>
-          <option name="timeStamp" value="70" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Experience.java</url>
-          <line>977</line>
+          <line>993</line>
           <option name="timeStamp" value="71" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/../../ABC/ABCDataServer/src/main/java/romanow/abc/dataserver/APIAdmin.java</url>
           <line>355</line>
           <option name="timeStamp" value="88" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/lep500/fft/FFTStatistic.java</url>
+          <line>205</line>
+          <option name="timeStamp" value="91" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/lep500/fft/FFTStatistic.java</url>
+          <line>192</line>
+          <option name="timeStamp" value="92" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/lep500/AnalyseResult.java</url>
+          <line>42</line>
+          <option name="timeStamp" value="104" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/lep500/AnalyseResult.java</url>
+          <line>34</line>
+          <option name="timeStamp" value="105" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

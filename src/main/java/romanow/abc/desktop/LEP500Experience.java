@@ -236,7 +236,7 @@ public class LEP500Experience extends LEP500BasePanel {
 
         jLabel1.setText("Анализ");
         add(jLabel1);
-        jLabel1.setBounds(830, 200, 70, 14);
+        jLabel1.setBounds(790, 210, 70, 16);
 
         LineSupportState.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -256,7 +256,7 @@ public class LEP500Experience extends LEP500BasePanel {
 
         jLabel3.setText("Опора");
         add(jLabel3);
-        jLabel3.setBounds(10, 60, 70, 14);
+        jLabel3.setBounds(10, 60, 70, 16);
 
         SupportList.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -275,7 +275,7 @@ public class LEP500Experience extends LEP500BasePanel {
             }
         });
         add(AnalyseSelection);
-        AnalyseSelection.setBounds(780, 200, 35, 35);
+        AnalyseSelection.setBounds(700, 205, 35, 35);
 
         Refresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/refresh.png"))); // NOI18N
         Refresh.setBorderPainted(false);
@@ -311,11 +311,11 @@ public class LEP500Experience extends LEP500BasePanel {
         add(jLabel4);
         jLabel4.setBounds(500, 6, 130, 20);
         add(AnalyseParams);
-        AnalyseParams.setBounds(730, 170, 170, 20);
+        AnalyseParams.setBounds(740, 180, 160, 20);
 
         jLabel5.setText("Выборка");
         add(jLabel5);
-        jLabel5.setBounds(10, 130, 70, 14);
+        jLabel5.setBounds(10, 130, 70, 16);
 
         Results.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -327,7 +327,7 @@ public class LEP500Experience extends LEP500BasePanel {
 
         jLabel6.setText("Измерения");
         add(jLabel6);
-        jLabel6.setBounds(10, 170, 70, 14);
+        jLabel6.setBounds(10, 170, 70, 16);
 
         AnaluseResultRemove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/remove.png"))); // NOI18N
         AnaluseResultRemove.setBorderPainted(false);
@@ -338,7 +338,7 @@ public class LEP500Experience extends LEP500BasePanel {
             }
         });
         add(AnaluseResultRemove);
-        AnaluseResultRemove.setBounds(630, 200, 30, 30);
+        AnaluseResultRemove.setBounds(630, 205, 30, 30);
 
         ShowGraph.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/graph.png"))); // NOI18N
         ShowGraph.setBorderPainted(false);
@@ -349,7 +349,7 @@ public class LEP500Experience extends LEP500BasePanel {
             }
         });
         add(ShowGraph);
-        ShowGraph.setBounds(730, 200, 40, 40);
+        ShowGraph.setBounds(740, 205, 40, 40);
 
         AnaluseResultsCrear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/clear.png"))); // NOI18N
         AnaluseResultsCrear.setBorderPainted(false);
@@ -360,15 +360,15 @@ public class LEP500Experience extends LEP500BasePanel {
             }
         });
         add(AnaluseResultsCrear);
-        AnaluseResultsCrear.setBounds(670, 200, 30, 30);
+        AnaluseResultsCrear.setBounds(670, 205, 30, 30);
 
         jLabel7.setText("Результаты");
         add(jLabel7);
-        jLabel7.setBounds(10, 200, 70, 14);
+        jLabel7.setBounds(10, 200, 70, 16);
 
         jLabel8.setText("Оценка эксперта");
         add(jLabel8);
-        jLabel8.setBounds(10, 230, 110, 14);
+        jLabel8.setBounds(10, 230, 110, 16);
         add(ExpertNoteList);
         ExpertNoteList.setBounds(140, 230, 190, 20);
 
@@ -404,7 +404,7 @@ public class LEP500Experience extends LEP500BasePanel {
         add(ExpertNoteSelector);
         ExpertNoteSelector.setBounds(340, 30, 150, 20);
         add(jSeparator1);
-        jSeparator1.setBounds(10, 120, 610, 2);
+        jSeparator1.setBounds(10, 120, 610, 3);
 
         ExpertNote.setEnabled(false);
         add(ExpertNote);
@@ -443,7 +443,7 @@ public class LEP500Experience extends LEP500BasePanel {
 
         jLabel9.setText("Измерения");
         add(jLabel9);
-        jLabel9.setBounds(10, 90, 70, 14);
+        jLabel9.setBounds(10, 90, 70, 16);
 
         SelectionSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/save.png"))); // NOI18N
         SelectionSave.setBorderPainted(false);
@@ -471,15 +471,15 @@ public class LEP500Experience extends LEP500BasePanel {
 
         jLabel10.setText("Линия");
         add(jLabel10);
-        jLabel10.setBounds(10, 30, 70, 14);
+        jLabel10.setBounds(10, 30, 70, 16);
 
         jLabel11.setText("Оценка");
         add(jLabel11);
-        jLabel11.setBounds(340, 10, 70, 14);
+        jLabel11.setBounds(340, 10, 70, 16);
 
         jLabel2.setText("Параметры анализа");
         add(jLabel2);
-        jLabel2.setBounds(730, 150, 170, 14);
+        jLabel2.setBounds(740, 160, 170, 16);
 
         SelectionRemove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/remove.png"))); // NOI18N
         SelectionRemove.setBorderPainted(false);
@@ -1038,6 +1038,7 @@ public class LEP500Experience extends LEP500BasePanel {
         supports.clear();
         measureFiles.clear();
         lines.clear();
+        selection.clear();
         OwnerSelector.setEnabled(!lineSupportState);
         ExpertNoteSelector.setEnabled(!lineSupportState);
         PowerLineList.setEnabled(lineSupportState);
