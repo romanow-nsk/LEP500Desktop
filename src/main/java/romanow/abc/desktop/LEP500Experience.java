@@ -178,7 +178,6 @@ public class LEP500Experience extends LEP500BasePanel {
         choice1 = new java.awt.Choice();
         AddMeasure = new javax.swing.JButton();
         SelectionMeasureList = new java.awt.Choice();
-        jLabel1 = new javax.swing.JLabel();
         LineSupportState = new java.awt.Checkbox();
         PowerLineList = new java.awt.Choice();
         jLabel3 = new javax.swing.JLabel();
@@ -218,6 +217,10 @@ public class LEP500Experience extends LEP500BasePanel {
         SelectionRemove = new javax.swing.JButton();
         SelectionCount = new javax.swing.JTextField();
         MeasuresCount = new javax.swing.JTextField();
+        BOMBOM = new javax.swing.JCheckBox();
+        SkipPeaks = new javax.swing.JTextField();
+        StartDiff = new javax.swing.JTextField();
+        StartLevel = new javax.swing.JTextField();
 
         setLayout(null);
 
@@ -233,10 +236,6 @@ public class LEP500Experience extends LEP500BasePanel {
         AddMeasure.setBounds(810, 80, 40, 30);
         add(SelectionMeasureList);
         SelectionMeasureList.setBounds(90, 170, 530, 20);
-
-        jLabel1.setText("Анализ");
-        add(jLabel1);
-        jLabel1.setBounds(790, 210, 70, 16);
 
         LineSupportState.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -311,7 +310,7 @@ public class LEP500Experience extends LEP500BasePanel {
         add(jLabel4);
         jLabel4.setBounds(500, 6, 130, 20);
         add(AnalyseParams);
-        AnalyseParams.setBounds(740, 180, 160, 20);
+        AnalyseParams.setBounds(740, 140, 160, 20);
 
         jLabel5.setText("Выборка");
         add(jLabel5);
@@ -383,7 +382,7 @@ public class LEP500Experience extends LEP500BasePanel {
         add(ExpertNoteSave);
         ExpertNoteSave.setBounds(340, 230, 30, 30);
         add(ResultData);
-        ResultData.setBounds(420, 250, 460, 370);
+        ResultData.setBounds(420, 270, 480, 350);
 
         DeleteFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/remove.png"))); // NOI18N
         DeleteFile.setBorderPainted(false);
@@ -479,7 +478,7 @@ public class LEP500Experience extends LEP500BasePanel {
 
         jLabel2.setText("Параметры анализа");
         add(jLabel2);
-        jLabel2.setBounds(740, 160, 170, 16);
+        jLabel2.setBounds(740, 120, 170, 16);
 
         SelectionRemove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/remove.png"))); // NOI18N
         SelectionRemove.setBorderPainted(false);
@@ -499,6 +498,22 @@ public class LEP500Experience extends LEP500BasePanel {
         MeasuresCount.setEnabled(false);
         add(MeasuresCount);
         MeasuresCount.setBounds(660, 90, 50, 25);
+
+        BOMBOM.setText("БОМ-БОМ");
+        add(BOMBOM);
+        BOMBOM.setBounds(740, 170, 100, 20);
+
+        SkipPeaks.setText("10");
+        add(SkipPeaks);
+        SkipPeaks.setBounds(840, 230, 60, 25);
+
+        StartDiff.setText("3");
+        add(StartDiff);
+        StartDiff.setBounds(840, 170, 60, 25);
+
+        StartLevel.setText("0.7");
+        add(StartLevel);
+        StartLevel.setBounds(840, 200, 60, 25);
     }// </editor-fold>//GEN-END:initComponents
 
     private void AddMeasureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddMeasureActionPerformed
@@ -618,10 +633,29 @@ public class LEP500Experience extends LEP500BasePanel {
         for(MeasureFile ss : selection){
             list.oids.add(ss.getOid());
             }
+        double dd1=0,dd2=0;
+        int kk=0;
+        if (BOMBOM.isSelected()){
+            try {
+                dd1 = Double.parseDouble(StartDiff.getText());
+                dd2 = Double.parseDouble(StartLevel.getText());
+                kk = Integer.parseInt(SkipPeaks.getText());
+                } catch (Exception ee){
+                    System.out.println("Недопустимый формат вещ/целого - БОМ-БОМ");
+                    return;
+                    }
+            }
+        final double dd3 = dd1;
+        final double dd4 = dd2;
+        final int kk1 = kk;
         new APICall<ArrayList<AnalyseResult>>(main){
             @Override
             public Call<ArrayList<AnalyseResult>> apiFun() {
-                return main2.service2.analyse(main.debugToken,params.get(AnalyseParams.getSelectedIndex()).getOid(),list);
+                if (BOMBOM.isSelected()){
+                    return main2.service2.analyseShake(main.debugToken,params.get(AnalyseParams.getSelectedIndex()).getOid(),dd3,dd4,kk1,list);
+                    }
+                else
+                    return main2.service2.analyse(main.debugToken,params.get(AnalyseParams.getSelectedIndex()).getOid(),list);
                 }
             @Override
             public void onSucess(ArrayList<AnalyseResult> oo) {
@@ -1094,6 +1128,7 @@ public class LEP500Experience extends LEP500BasePanel {
     private javax.swing.JButton AnaluseResultsCrear;
     private java.awt.Choice AnalyseParams;
     private javax.swing.JButton AnalyseSelection;
+    private javax.swing.JCheckBox BOMBOM;
     private javax.swing.JButton DeleteFile;
     private javax.swing.JTextField ExpertNote;
     private java.awt.Choice ExpertNoteList;
@@ -1118,9 +1153,11 @@ public class LEP500Experience extends LEP500BasePanel {
     private javax.swing.JButton SelectuionAdd;
     private javax.swing.JButton ShowGraph;
     private javax.swing.JButton ShowTree;
+    private javax.swing.JTextField SkipPeaks;
+    private javax.swing.JTextField StartDiff;
+    private javax.swing.JTextField StartLevel;
     private java.awt.Choice SupportList;
     private java.awt.Choice choice1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
