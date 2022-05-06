@@ -1078,9 +1078,13 @@ public class LEP500Experience extends LEP500BasePanel {
         }
 
     public void showPeakPlaces(){
+        ResultCommonData.setText("");
+        for(MeasureFile ss : selection){
+            ResultCommonData.append(ss.toString()+"\n");
+            }
         AnalyseResultList list = new AnalyseResultList(results);
         ArrayList<PeakPlace> res = list.calcPeakPlaces();
-        ResultCommonData.setText("Суммарный вес пиков:\n");
+        ResultCommonData.append("Суммарный вес пиков:\n");
         ResultCommonData.append("частота кол-во ∑мест ∑значений ∑мест*знач. декремент\n");
         for(PeakPlace pp : res)
             ResultCommonData.append(pp.toString()+"\n");
