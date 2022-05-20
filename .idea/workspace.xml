@@ -9,12 +9,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dd0d4f89-2465-418c-9c78-71fb44c9bc3c" name="Default Changelist" comment="14 - Нарезка-выборка">
-      <change beforePath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/abc/core/constants/Values.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/abc/core/constants/Values.java" afterDir="false" />
+    <list default="true" id="dd0d4f89-2465-418c-9c78-71fb44c9bc3c" name="Default Changelist" comment="15 автокорреляция">
       <change beforePath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/lep500/LEP500Params.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/lep500/LEP500Params.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/lep500/fft/FFT.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/lep500/fft/FFT.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/lep500/fft/FFTParams.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/lep500/fft/FFTParams.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../LEP500DataServer/src/main/java/romanow/abc/dataserver/APILEP500.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500DataServer/src/main/java/romanow/abc/dataserver/APILEP500.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500$1.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/LEP500ConsoleServer$1$1.class" beforeDir="false" />
@@ -178,13 +176,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1634483190603</updated>
-    </task>
-    <task id="LOCAL-00017" summary="API сервера - обработка измерений">
-      <created>1635172981705</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1635172981705</updated>
     </task>
     <task id="LOCAL-00018" summary="API сервера - обработка измерений">
       <created>1635181229006</created>
@@ -522,7 +513,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651834599875</updated>
     </task>
-    <option name="localTasksCounter" value="66" />
+    <task id="LOCAL-00066" summary="15 автокорреляция">
+      <created>1652975799363</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1652975799363</updated>
+    </task>
+    <option name="localTasksCounter" value="67" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -544,7 +542,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="002 - идентификатор сим карты" />
     <MESSAGE value="баги модулей" />
     <MESSAGE value="Граничные частоты" />
     <MESSAGE value="Удаление измерения" />
@@ -569,7 +566,8 @@
     <MESSAGE value="12 - декремент по МОЩНОСТИ" />
     <MESSAGE value="13 - БОМ-БОМ" />
     <MESSAGE value="14 - Нарезка-выборка" />
-    <option name="LAST_COMMIT_MESSAGE" value="14 - Нарезка-выборка" />
+    <MESSAGE value="15 автокорреляция" />
+    <option name="LAST_COMMIT_MESSAGE" value="15 автокорреляция" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

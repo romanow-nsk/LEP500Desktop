@@ -78,7 +78,7 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
         WinFun.select(params.winFun);
         ParamListName.setText(params.paramListName);
         KSmooth.setText(""+params.kSmooth);
-        AutoCorrelation.setSelected(params.autoCorrelation);
+        AutoCorrelation.setText(""+params.autoCorrelation);
         busy=false;
         }
     public void updateParams(){
@@ -133,7 +133,8 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
         jLabel29 = new javax.swing.JLabel();
         jLabel36 = new javax.swing.JLabel();
         KSmooth = new javax.swing.JTextField();
-        AutoCorrelation = new javax.swing.JCheckBox();
+        AutoCorrelation = new javax.swing.JTextField();
+        jLabel44 = new javax.swing.JLabel();
 
         setDoubleBuffered(false);
         setLayout(null);
@@ -357,14 +358,17 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
         add(KSmooth);
         KSmooth.setBounds(310, 150, 70, 25);
 
-        AutoCorrelation.setText("Автокорреляция");
-        AutoCorrelation.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                AutoCorrelationItemStateChanged(evt);
+        AutoCorrelation.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                AutoCorrelationKeyPressed(evt);
             }
         });
         add(AutoCorrelation);
-        AutoCorrelation.setBounds(420, 300, 130, 20);
+        AutoCorrelation.setBounds(510, 310, 30, 25);
+
+        jLabel44.setText("Автокорреляция");
+        add(jLabel44);
+        jLabel44.setBounds(390, 315, 110, 10);
     }// </editor-fold>//GEN-END:initComponents
 
     private void P_BlockSizeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_P_BlockSizeKeyPressed
@@ -640,17 +644,20 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
         refresh();
     }//GEN-LAST:event_KSmoothKeyPressed
 
-    private void AutoCorrelationItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_AutoCorrelationItemStateChanged
-        if (busy)
-            return;
+    private void AutoCorrelationKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AutoCorrelationKeyPressed
+        if(evt.getKeyCode()!=10) return;
         LEP500Params params = (LEP500Params) paramsList.current;
         if (params==null)
             return;
-        params.autoCorrelation = AutoCorrelation.isSelected();
-        updateSettings(null,"autoCorrelation");
+        try {
+            params.autoCorrelation = Integer.parseInt(AutoCorrelation.getText());
+            } catch (Exception ee){
+                popup("Недопустимый формат целого");
+                return;
+            }
+        updateSettings(evt,"AutoCorrelation");
         refresh();
-
-    }//GEN-LAST:event_AutoCorrelationItemStateChanged
+    }//GEN-LAST:event_AutoCorrelationKeyPressed
 
     @Override
     public void refresh() {
@@ -687,7 +694,7 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField AmplLevelProc;
-    private javax.swing.JCheckBox AutoCorrelation;
+    private javax.swing.JTextField AutoCorrelation;
     private javax.swing.JTextField FirstFreq;
     private javax.swing.JTextField K1;
     private javax.swing.JTextField K2;
@@ -723,6 +730,7 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
     private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel43;
+    private javax.swing.JLabel jLabel44;
     private javax.swing.JSeparator jSeparator2;
     // End of variables declaration//GEN-END:variables
 }

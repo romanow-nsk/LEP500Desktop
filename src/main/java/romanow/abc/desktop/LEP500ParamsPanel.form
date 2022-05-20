@@ -391,16 +391,23 @@
         </Constraint>
       </Constraints>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="AutoCorrelation">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="&#x410;&#x432;&#x442;&#x43e;&#x43a;&#x43e;&#x440;&#x440;&#x435;&#x43b;&#x44f;&#x446;&#x438;&#x44f;"/>
-      </Properties>
+    <Component class="javax.swing.JTextField" name="AutoCorrelation">
       <Events>
-        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="AutoCorrelationItemStateChanged"/>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="AutoCorrelationKeyPressed"/>
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="420" y="300" width="130" height="-1"/>
+          <AbsoluteConstraints x="510" y="310" width="30" height="25"/>
+        </Constraint>
+      </Constraints>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel44">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x410;&#x432;&#x442;&#x43e;&#x43a;&#x43e;&#x440;&#x440;&#x435;&#x43b;&#x44f;&#x446;&#x438;&#x44f;"/>
+      </Properties>
+      <Constraints>
+        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+          <AbsoluteConstraints x="390" y="315" width="110" height="10"/>
         </Constraint>
       </Constraints>
     </Component>
