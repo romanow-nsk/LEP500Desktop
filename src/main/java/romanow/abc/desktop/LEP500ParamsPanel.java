@@ -655,7 +655,7 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
                 popup("Недопустимый формат целого");
                 return;
             }
-        updateSettings(evt,"AutoCorrelation");
+        updateSettings(evt,"autoCorrelation");
         refresh();
     }//GEN-LAST:event_AutoCorrelationKeyPressed
 
