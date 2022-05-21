@@ -135,6 +135,9 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
         KSmooth = new javax.swing.JTextField();
         AutoCorrelation = new javax.swing.JTextField();
         jLabel44 = new javax.swing.JLabel();
+        jLabel45 = new javax.swing.JLabel();
+        jLabel46 = new javax.swing.JLabel();
+        GroupNormalize = new javax.swing.JCheckBox();
 
         setDoubleBuffered(false);
         setLayout(null);
@@ -366,9 +369,25 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
         add(AutoCorrelation);
         AutoCorrelation.setBounds(510, 310, 30, 25);
 
-        jLabel44.setText("Автокорреляция");
+        jLabel44.setText("нормализация");
         add(jLabel44);
-        jLabel44.setBounds(390, 315, 110, 10);
+        jLabel44.setBounds(390, 355, 90, 16);
+
+        jLabel45.setText("Автокорреляция");
+        add(jLabel45);
+        jLabel45.setBounds(390, 315, 110, 16);
+
+        jLabel46.setText("Групповая");
+        add(jLabel46);
+        jLabel46.setBounds(390, 340, 90, 16);
+
+        GroupNormalize.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                GroupNormalizeItemStateChanged(evt);
+            }
+        });
+        add(GroupNormalize);
+        GroupNormalize.setBounds(510, 350, 30, 19);
     }// </editor-fold>//GEN-END:initComponents
 
     private void P_BlockSizeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_P_BlockSizeKeyPressed
@@ -659,6 +678,10 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
         refresh();
     }//GEN-LAST:event_AutoCorrelationKeyPressed
 
+    private void GroupNormalizeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_GroupNormalizeItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_GroupNormalizeItemStateChanged
+
     @Override
     public void refresh() {
         showParams();
@@ -696,6 +719,7 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
     private javax.swing.JTextField AmplLevelProc;
     private javax.swing.JTextField AutoCorrelation;
     private javax.swing.JTextField FirstFreq;
+    private javax.swing.JCheckBox GroupNormalize;
     private javax.swing.JTextField K1;
     private javax.swing.JTextField K2;
     private javax.swing.JTextField K3;
@@ -731,6 +755,8 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
     private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel43;
     private javax.swing.JLabel jLabel44;
+    private javax.swing.JLabel jLabel45;
+    private javax.swing.JLabel jLabel46;
     private javax.swing.JSeparator jSeparator2;
     // End of variables declaration//GEN-END:variables
 }
