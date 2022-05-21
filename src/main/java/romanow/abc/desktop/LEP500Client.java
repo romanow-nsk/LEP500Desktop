@@ -40,6 +40,8 @@ public class LEP500Client extends Client{
                 {UserSuperAdminType,UserLEP500Analytic}));
         panelDescList.add(new PanelDescriptor("Графики", LEP500TrendPanel.class,new int[]
                 {UserSuperAdminType,UserLEP500Analytic}));
+        panelDescList.add(new PanelDescriptor("Анализ", LEP500NNPanel.class,new int[]
+                {UserSuperAdminType,UserLEP500Analytic}));
         }
     //-------------------------------------------------------------------------------------------------------
     RestAPILEP500 service2;

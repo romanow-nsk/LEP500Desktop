@@ -1,5 +1,7 @@
 package romanow.abc.desktop;
 
+import romanow.abc.core.constants.Values;
+
 public class LEP500BasePanel extends BasePanel{
     public int EventGraph=6;
     LEP500Client main2;
@@ -13,5 +15,8 @@ public class LEP500BasePanel extends BasePanel{
     public void initPanel(MainBaseFrame main0){
         super.initPanel(main0);
         main2 = (LEP500Client)main0;
+        }
+    public void runInGUI(Runnable code){
+        java.awt.EventQueue.invokeLater(code);
         }
 }
