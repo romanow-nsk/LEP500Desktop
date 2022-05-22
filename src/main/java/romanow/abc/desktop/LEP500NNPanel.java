@@ -28,6 +28,7 @@ import romanow.abc.core.UniException;
 import romanow.abc.core.constants.OidList;
 import romanow.abc.core.constants.Values;
 import romanow.abc.core.constants.ValuesBase;
+import romanow.abc.core.dll.DLLClass;
 import romanow.abc.core.entity.EntityList;
 import romanow.abc.core.entity.subjectarea.MeasureFile;
 import romanow.abc.core.entity.users.User;
@@ -394,7 +395,7 @@ public class LEP500NNPanel extends LEP500BasePanel {
         add(Education);
         Education.setBounds(330, 90, 130, 22);
         add(DLLog);
-        DLLog.setBounds(30, 240, 360, 310);
+        DLLog.setBounds(30, 240, 860, 310);
 
         LoadModel.setText("Загрузка модели");
         LoadModel.addActionListener(new java.awt.event.ActionListener() {
@@ -539,27 +540,30 @@ public class LEP500NNPanel extends LEP500BasePanel {
 
 
     //Метод для вывода результата обучения на тестовой выборке
-    public static void getEvaluation(MultiLayerNetwork model, DataSet testData){
+    public void getEvaluation(MultiLayerNetwork model, DataSet testData){
         //Оцениваем модель на тестовом наборе
         Evaluation eval = new Evaluation(10);
         INDArray output = model.output(testData.getFeatures());
         eval.eval(testData.getLabels(), output);
-
         //Вывод оценки модели
-        System.out.println(eval.stats()); //confusion matrix, evaluation metrics
-        System.out.println("-----------------------------------");
-        System.out.println(eval.confusionToString());
-        System.out.println("-----------------------------------");
-        System.out.println(output);
-        System.out.println("-----------------------------------");
-
+        DLLog.setText("");
+        DLLog.append(eval.stats()+"\n"); //confusion matrix, evaluation metrics
+        DLLog.append("-----------------------------------\n");
+        DLLog.append(eval.confusionToString()+"\n");
+        DLLog.append("-----------------------------------\n");
+        DLLog.append(output+"\n");
+        DLLog.append("-----------------------------------\n");
         //Вывод результата по каждому экземпляру данных
+        int count=0;
         for(int i = 0;i<output.rows();i++) {
             String actual = String.valueOf(testData.get(i).outcome());
             String prediction = String.valueOf(output.getRow(i).argMax());
-            System.out.printf((i+1) + ". Actual: " + actual + "  Predicted: " + prediction);
-            System.out.println(!prediction.equals(actual) ? " *" : "");
-        }
+            DLLog.append((i+1) + ". реальное: " + actual + "  предсказанное: " + prediction);
+            if (prediction.equals(actual))
+                count++;
+            DLLog.append(!prediction.equals(actual) ? " *\n" : "\n");
+            }
+        DLLog.append("Процент верных предсказаний: "+count*100/output.rows());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
