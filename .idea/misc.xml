@@ -4,13 +4,13 @@
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
-        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/../../ABC/ABCCore/pom.xml" />
         <option value="$PROJECT_DIR$/../../ABC/ABCDataServer/pom.xml" />
-        <option value="$PROJECT_DIR$/../LEP500Core/pom.xml" />
-        <option value="$PROJECT_DIR$/../LEP500DataServer/pom.xml" />
         <option value="$PROJECT_DIR$/../../ABC/ABSDesktop/pom.xml" />
         <option value="$PROJECT_DIR$/../../ABC/ABCDesktop/pom.xml" />
+        <option value="$PROJECT_DIR$/../LEP500Core/pom.xml" />
+        <option value="$PROJECT_DIR$/../LEP500DataServer/pom.xml" />
+        <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>
   </component>

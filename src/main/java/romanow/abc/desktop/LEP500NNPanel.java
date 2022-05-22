@@ -8,7 +8,6 @@ import com.google.gson.Gson;
 import org.datavec.api.records.reader.RecordReader;
 import org.datavec.api.records.reader.impl.csv.CSVRecordReader;
 import org.datavec.api.split.FileSplit;
-import org.datavec.api.util.ClassPathResource;
 import org.deeplearning4j.datasets.datavec.RecordReaderDataSetIterator;
 import org.deeplearning4j.eval.Evaluation;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
@@ -28,7 +27,6 @@ import romanow.abc.core.UniException;
 import romanow.abc.core.constants.OidList;
 import romanow.abc.core.constants.Values;
 import romanow.abc.core.constants.ValuesBase;
-import romanow.abc.core.dll.DLLClass;
 import romanow.abc.core.entity.EntityList;
 import romanow.abc.core.entity.subjectarea.MeasureFile;
 import romanow.abc.core.entity.users.User;
@@ -176,6 +174,7 @@ public class LEP500NNPanel extends LEP500BasePanel {
         working = bb;
         Working.setSelected(bb);
         Education.setEnabled(!bb);
+        EducationAndTest.setEnabled(!bb);
         DataFileCreate.setEnabled(!bb);
         LoadModel.setEnabled(!bb);
         }
