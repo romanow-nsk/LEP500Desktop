@@ -4,5 +4,6 @@ import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
 import romanow.abc.core.Pair;
 
 public abstract class DLConfiguration {
-    public abstract Pair<String, MultiLayerConfiguration> create();
+    public abstract String getName();
+    public abstract MultiLayerConfiguration create(int hiddenLayerCount);
 }

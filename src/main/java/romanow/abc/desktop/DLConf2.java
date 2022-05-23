@@ -14,7 +14,7 @@ import static romanow.abc.desktop.LEP500NNPanel.*;
 
 public class DLConf2 extends DLConfiguration{
     @Override
-    public Pair<String, MultiLayerConfiguration> create() {
+    public MultiLayerConfiguration create(int hiddenCount) {
         MultiLayerConfiguration conf2 = new NeuralNetConfiguration.Builder()
                 .seed(seed)
                 .activation(Activation.TANH)
@@ -26,15 +26,20 @@ public class DLConf2 extends DLConfiguration{
                         .build())
                 .layer(1, new DenseLayer.Builder().nIn(25).nOut(15)
                         .build())
-                .layer(2, new DenseLayer.Builder().nIn(15).nOut(numHiddenLayers)
+                .layer(2, new DenseLayer.Builder().nIn(15).nOut(hiddenCount)
                         .build())
-                .layer(3, new DenseLayer.Builder().nIn(numHiddenLayers).nOut(numHiddenLayers)
+                .layer(3, new DenseLayer.Builder().nIn(hiddenCount).nOut(hiddenCount)
                         .build())
                 .layer(4, new OutputLayer.Builder(LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD)
                         //Переопределить глобальную активацию TANH с помощью softmax для этого слоя
                         .activation(Activation.SOFTMAX)
-                        .nIn(numHiddenLayers).nOut(numOutput).build())
+                        .nIn(hiddenCount).nOut(numOutput).build())
                 .build();
-        return new Pair("Модель 2",conf2);
+        return conf2;
     }
+    @Override
+    public String getName() {
+        return "Модель 2";
+        }
+
 }

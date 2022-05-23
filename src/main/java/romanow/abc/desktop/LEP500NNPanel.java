@@ -24,6 +24,7 @@ import romanow.abc.core.API.APICallSynch;
 import romanow.abc.core.DBRequest;
 import romanow.abc.core.Pair;
 import romanow.abc.core.UniException;
+import romanow.abc.core.constants.ConstValue;
 import romanow.abc.core.constants.OidList;
 import romanow.abc.core.constants.Values;
 import romanow.abc.core.constants.ValuesBase;
@@ -45,6 +46,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
@@ -54,20 +56,20 @@ public class LEP500NNPanel extends LEP500BasePanel {
     public final static int ExtremeCount=5;
     public final static int ExtremeTypesCount=5;
     public static final int labelIndex = ExtremeCount*ExtremeTypesCount*2;  //сколько значений в каждой строке CSV-файла
-    public final int numClasses = 10;                                       //сколько классов в наборе данных
+    public final int numClasses = Values.EState2Count;                      //сколько классов в наборе данных
     public static final int batchSize = 120;                                //сколько всего примеров
-    public static final int numInputs = 50;                                 //колво-нейронов входной слой
-    public static final int numHiddenLayers = 5;                            //колво-нейронов скрытый слой
-    public static final int numOutput = 10;                                 //колво-нейронов выходной слой
-    public static final int nEpoch = 1000;                                  //колво эпох
+    public static final int numInputs = ExtremeCount*ExtremeTypesCount*2;   //кол-во нейронов входной слой
+    public static final int numOutput = Values.EState2Count;                //кол-во нейронов выходной слой
     public static final long seed = 6;
-
     //-------------------------------------------------------------------------------------------------------------------
+    private int numHiddenLayers = 5;                                        //кол-во нейронов скрытый слой
+    private int nEpoch = 1000;                                              //кол-во эпох
     private ArrayList<MeasureFile> measureFiles = new ArrayList<>();
     private ArrayList<LEP500Params> params = new ArrayList<>();
     private ArrayList<AnalyseResult> results = new ArrayList<>();
     private EntityList<User> users = new EntityList<>();
-    private ArrayList<Pair<String, MultiLayerConfiguration>> configs = new ArrayList<>();
+    private HashMap<Integer, ConstValue> state2Map = new HashMap<>();
+    private ArrayList<DLConfiguration> configs = new ArrayList<>();
     private boolean working=false;
     public LEP500NNPanel() {
         initComponents();
@@ -80,16 +82,27 @@ public class LEP500NNPanel extends LEP500BasePanel {
     public void shutDown() {}
     public void initPanel(MainBaseFrame main0){
         super.initPanel(main0);
+        state2Map = Values.constMap().getGroupMapByValue("EState2");
         refreshModels();
         refreshAll();
         }
     public void refreshModels(){
         Models.removeAll();
         configs.clear();
-        configs.add(new DLConf1().create());
-        configs.add(new DLConf2().create());
+        configs.add(new DLConf1());
+        configs.add(new DLConf2());
         for(int i=0;i<configs.size();i++)
-            Models.add(configs.get(i).o1);
+            Models.add(configs.get(i).getName());
+        }
+    public boolean getModelParams(){
+        try {
+            nEpoch = Integer.parseInt(EpochCount.getText());
+            numHiddenLayers = Integer.parseInt(HiddenLayersCount.getText());
+            } catch (Exception ee){
+                popup("Недопустимый формат параметра модели");
+                return false;
+                }
+        return true;
         }
     public void loadParamsList(){
         params.clear();
@@ -200,6 +213,10 @@ public class LEP500NNPanel extends LEP500BasePanel {
         }
 
     public ArrayList<String> createTeachParamString(int typesCount,int extremeCount){
+        int stateCounts[] = new int[Values.EState2Count];
+        int totalCount=0;
+        for(int i=0;i<Values.EState2Count;i++)
+            stateCounts[i]=0;
         int size = Values.extremeFacade.length;
         ExtremeFacade facades[] = new ExtremeFacade[size];
         for(int i=0;i<size;i++){
@@ -226,7 +243,7 @@ public class LEP500NNPanel extends LEP500BasePanel {
             if (!result.valid){
                 System.out.println("Ошибка анализа: "+result.getTitle()+"\n"+result.message);
                 continue;
-            }
+                }
             for(int k=0;k<typesCount && k<result.data.size();k++){
                 ExtremeFacade facade = facades[k];
                 ExtremeList list = result.data.get(k);
@@ -242,9 +259,16 @@ public class LEP500NNPanel extends LEP500BasePanel {
                         }
                     }
                 }
-            ss.append(","+measureFiles.get(i).getExpertResult());
-            out.add(ss.toString());
-            }
+                int state2 = Values.stateToState2.get(measureFiles.get(i).getExpertResult());
+                stateCounts[state2]++;
+                totalCount++;
+                ss.append(","+state2);
+                out.add(ss.toString());
+                }
+            DLLog.append("Файлов в выборке "+totalCount+",по состояниям:\n");
+            for(int i=0;i<stateCounts.length;i++){
+                DLLog.append(""+state2Map.get(i).title()+": "+stateCounts[i]+"\n");
+                }
             return out;
         }
 
@@ -342,6 +366,10 @@ public class LEP500NNPanel extends LEP500BasePanel {
         EducationAndTest = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         Models = new java.awt.Choice();
+        EpochCount = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        HiddenLayersCount = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
 
         setLayout(null);
 
@@ -442,6 +470,22 @@ public class LEP500NNPanel extends LEP500BasePanel {
         jLabel5.setBounds(60, 50, 130, 16);
         add(Models);
         Models.setBounds(60, 110, 140, 20);
+
+        EpochCount.setText("1000");
+        add(EpochCount);
+        EpochCount.setBounds(60, 170, 50, 25);
+
+        jLabel6.setText("Эпох обучения");
+        add(jLabel6);
+        jLabel6.setBounds(120, 175, 110, 16);
+
+        HiddenLayersCount.setText("5");
+        add(HiddenLayersCount);
+        HiddenLayersCount.setBounds(60, 140, 50, 25);
+
+        jLabel7.setText("Скрытых слоев");
+        add(jLabel7);
+        jLabel7.setBounds(120, 145, 110, 16);
     }// </editor-fold>//GEN-END:initComponents
 
     private void RefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshActionPerformed
@@ -492,7 +536,9 @@ public class LEP500NNPanel extends LEP500BasePanel {
         DataSet trainingData = loadOnlyTraining(fileNameExt);
         if (trainingData==null)
             return;
-        MultiLayerNetwork model = new MultiLayerNetwork(configs.get(Models.getSelectedIndex()).o2);
+        if (!getModelParams())
+            return;
+        MultiLayerNetwork model = new MultiLayerNetwork(configs.get(Models.getSelectedIndex()).create(numHiddenLayers));
         model.init();
         //Записываем оценку один раз каждые 100 итераций
         model.setListeners(new ScoreIterationListener(100));
@@ -527,7 +573,9 @@ public class LEP500NNPanel extends LEP500BasePanel {
         Pair<DataSet,DataSet>  data = loadTrainingAndTest(fileNameExt,percent);
         if (data==null)
             return;
-        MultiLayerNetwork model = new MultiLayerNetwork(configs.get(Models.getSelectedIndex()).o2);
+        if (!getModelParams())
+            return;
+        MultiLayerNetwork model = new MultiLayerNetwork(configs.get(Models.getSelectedIndex()).create(numHiddenLayers));
         model.init();
         //Записываем оценку один раз каждые 100 итераций
         model.setListeners(new ScoreIterationListener(100));
@@ -541,7 +589,7 @@ public class LEP500NNPanel extends LEP500BasePanel {
     //Метод для вывода результата обучения на тестовой выборке
     public void getEvaluation(MultiLayerNetwork model, DataSet testData){
         //Оцениваем модель на тестовом наборе
-        Evaluation eval = new Evaluation(10);
+        Evaluation eval = new Evaluation(numOutput);
         INDArray output = model.output(testData.getFeatures());
         eval.eval(testData.getLabels(), output);
         //Вывод оценки модели
@@ -570,6 +618,8 @@ public class LEP500NNPanel extends LEP500BasePanel {
     private javax.swing.JButton DataFileCreate;
     private javax.swing.JButton Education;
     private javax.swing.JButton EducationAndTest;
+    private javax.swing.JTextField EpochCount;
+    private javax.swing.JTextField HiddenLayersCount;
     private javax.swing.JButton LoadModel;
     private javax.swing.JTextField MeasuresNum;
     private javax.swing.JTextField MeasuresNumProceed;
@@ -584,5 +634,7 @@ public class LEP500NNPanel extends LEP500BasePanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     // End of variables declaration//GEN-END:variables
 }
