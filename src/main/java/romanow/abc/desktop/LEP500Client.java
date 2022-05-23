@@ -1,6 +1,7 @@
 package romanow.abc.desktop;
 
 import okhttp3.OkHttpClient;
+import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import romanow.abc.core.API.RestAPIBase;
@@ -45,6 +46,7 @@ public class LEP500Client extends Client{
         }
     //-------------------------------------------------------------------------------------------------------
     RestAPILEP500 service2;
+    MultiLayerNetwork network = null;
     @Override
     public void onLoginSuccess(){
         try {

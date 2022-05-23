@@ -230,6 +230,7 @@ public class LEP500Experience extends LEP500BasePanel {
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         WithFiles = new javax.swing.JCheckBox();
+        ShowTree1 = new javax.swing.JButton();
 
         setLayout(null);
 
@@ -378,7 +379,7 @@ public class LEP500Experience extends LEP500BasePanel {
         add(jLabel8);
         jLabel8.setBounds(10, 230, 110, 16);
         add(ExpertNoteList);
-        ExpertNoteList.setBounds(140, 230, 190, 20);
+        ExpertNoteList.setBounds(120, 230, 170, 20);
 
         ExpertNoteSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/save.png"))); // NOI18N
         ExpertNoteSave.setBorderPainted(false);
@@ -389,7 +390,7 @@ public class LEP500Experience extends LEP500BasePanel {
             }
         });
         add(ExpertNoteSave);
-        ExpertNoteSave.setBounds(340, 230, 30, 30);
+        ExpertNoteSave.setBounds(300, 230, 30, 30);
         add(ResultData);
         ResultData.setBounds(420, 270, 480, 390);
 
@@ -487,7 +488,7 @@ public class LEP500Experience extends LEP500BasePanel {
 
         jLabel2.setText("Параметры анализа");
         add(jLabel2);
-        jLabel2.setBounds(420, 245, 170, 16);
+        jLabel2.setBounds(430, 245, 140, 16);
 
         SelectionRemove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/remove.png"))); // NOI18N
         SelectionRemove.setBorderPainted(false);
@@ -555,6 +556,17 @@ public class LEP500Experience extends LEP500BasePanel {
         WithFiles.setText("с файлами");
         add(WithFiles);
         WithFiles.setBounds(460, 150, 100, 20);
+
+        ShowTree1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/question.png"))); // NOI18N
+        ShowTree1.setBorderPainted(false);
+        ShowTree1.setContentAreaFilled(false);
+        ShowTree1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ShowTree1ActionPerformed(evt);
+            }
+        });
+        add(ShowTree1);
+        ShowTree1.setBounds(330, 225, 40, 40);
     }// </editor-fold>//GEN-END:initComponents
 
     private void AddMeasureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddMeasureActionPerformed
@@ -1031,6 +1043,10 @@ public class LEP500Experience extends LEP500BasePanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_StartLevelProcActionPerformed
 
+    private void ShowTree1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShowTree1ActionPerformed
+        evaluateOneResult();
+    }//GEN-LAST:event_ShowTree1ActionPerformed
+
     private void refreshMeasure(){
         ExpertNote.setVisible(measureFiles.size()!=0);
         Owner.setVisible(measureFiles.size()!=0);
@@ -1106,6 +1122,12 @@ public class LEP500Experience extends LEP500BasePanel {
         for(int idx=0;idx<criterisList.size();idx++){
             showOneResultByCriteria(idx);
             }
+        }
+
+    private void evaluateOneResult(){
+        if (results.size()==0)
+            return;
+        main.sendEventPanel(EventNetwork,0,0,"",results.get(Results.getSelectedIndex()));
         }
 
     private void refreshMeasureList(){
@@ -1246,6 +1268,7 @@ public class LEP500Experience extends LEP500BasePanel {
     private javax.swing.JButton SelectuionAdd;
     private javax.swing.JButton ShowGraph;
     private javax.swing.JButton ShowTree;
+    private javax.swing.JButton ShowTree1;
     private javax.swing.JCheckBox Size32768;
     private javax.swing.JTextField SkipTimeMS;
     private javax.swing.JButton SplitMeasure;

@@ -9,13 +9,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dd0d4f89-2465-418c-9c78-71fb44c9bc3c" name="Default Changelist" comment="LEP500 - фРЕЙМВОРК ЗАВИСИМОСТИ">
-      <change afterPath="$PROJECT_DIR$/../LEP500Core/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ABC/ABCCore/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../ABC/ABCCore/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ABC/ABCDataServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../ABC/ABCDataServer/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ABC/ABCDesktop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../ABC/ABCDesktop/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../LEP500Core/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500Core/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../LEP500DataServer/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500DataServer/pom.xml" afterDir="false" />
+    <list default="true" id="dd0d4f89-2465-418c-9c78-71fb44c9bc3c" name="Default Changelist" comment="LEP500 - параметры НС">
+      <change beforePath="$PROJECT_DIR$/../LEP500Core/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500Core/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500$1.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/LEP500ConsoleServer$1$1.class" beforeDir="false" />
@@ -24,9 +19,13 @@
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/LEP500ConsoleServer$3.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/LEP500ConsoleServer$4.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/LEP500ConsoleServer.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/LEP500Desktop_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/LEP500Desktop_jar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500BasePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500BasePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Experience.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Experience.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Experience.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Experience.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500NNPanel.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500NNPanel.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500NNPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500NNPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +44,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../ABC/ABCDesktop" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
@@ -185,20 +184,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1634483190603</updated>
-    </task>
-    <task id="LOCAL-00025" summary="баги модулей">
-      <created>1635418773016</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1635418773016</updated>
-    </task>
-    <task id="LOCAL-00026" summary="Граничные частоты">
-      <created>1635422538600</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1635422538600</updated>
     </task>
     <task id="LOCAL-00027" summary="Удаление измерения">
       <created>1635479303443</created>
@@ -529,7 +514,21 @@
       <option name="project" value="LOCAL" />
       <updated>1653226832578</updated>
     </task>
-    <option name="localTasksCounter" value="74" />
+    <task id="LOCAL-00074" summary="LEP500 - Сборка артефакта">
+      <created>1653237121869</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1653237121869</updated>
+    </task>
+    <task id="LOCAL-00075" summary="LEP500 - параметры НС">
+      <created>1653321317993</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1653321317994</updated>
+    </task>
+    <option name="localTasksCounter" value="76" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -551,8 +550,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="004" />
-    <MESSAGE value="005 - добавить класс модулей" />
     <MESSAGE value="005" />
     <MESSAGE value="005 - манифест" />
     <MESSAGE value="006 - манифест" />
@@ -576,14 +573,16 @@
     <MESSAGE value="Ошибки анализа" />
     <MESSAGE value="НС !!!!!!!!!!!!!!!!!!!!!!!" />
     <MESSAGE value="LEP500 - фРЕЙМВОРК ЗАВИСИМОСТИ" />
-    <option name="LAST_COMMIT_MESSAGE" value="LEP500 - фРЕЙМВОРК ЗАВИСИМОСТИ" />
+    <MESSAGE value="LEP500 - Сборка артефакта" />
+    <MESSAGE value="LEP500 - параметры НС" />
+    <option name="LAST_COMMIT_MESSAGE" value="LEP500 - параметры НС" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Client.java</url>
-          <line>49</line>
+          <line>51</line>
           <option name="timeStamp" value="32" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -602,28 +601,18 @@
           <option name="timeStamp" value="43" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500MainBase.java</url>
-          <line>83</line>
-          <option name="timeStamp" value="50" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500MainBase.java</url>
-          <line>29</line>
-          <option name="timeStamp" value="51" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Experience.java</url>
-          <line>896</line>
+          <line>908</line>
           <option name="timeStamp" value="62" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Experience.java</url>
-          <line>900</line>
+          <line>912</line>
           <option name="timeStamp" value="64" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500Experience.java</url>
-          <line>1119</line>
+          <line>1141</line>
           <option name="timeStamp" value="71" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -653,13 +642,28 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500NNPanel.java</url>
-          <line>158</line>
-          <option name="timeStamp" value="132" />
+          <line>336</line>
+          <option name="timeStamp" value="134" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500NNPanel.java</url>
-          <line>279</line>
-          <option name="timeStamp" value="134" />
+          <line>228</line>
+          <option name="timeStamp" value="137" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500NNPanel.java</url>
+          <line>257</line>
+          <option name="timeStamp" value="138" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500NNPanel.java</url>
+          <line>268</line>
+          <option name="timeStamp" value="139" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500NNPanel.java</url>
+          <line>290</line>
+          <option name="timeStamp" value="140" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

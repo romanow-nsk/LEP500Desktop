@@ -41,10 +41,7 @@ import romanow.lep500.fft.ExtremeFacade;
 import romanow.lep500.fft.ExtremeList;
 import romanow.lep500.fft.ExtremeNull;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -61,6 +58,7 @@ public class LEP500NNPanel extends LEP500BasePanel {
     public static final int numInputs = ExtremeCount*ExtremeTypesCount*2;   //кол-во нейронов входной слой
     public static final int numOutput = Values.EState2Count;                //кол-во нейронов выходной слой
     public static final long seed = 6;
+    public final static String tmpCsv="temp.csv";
     //-------------------------------------------------------------------------------------------------------------------
     private int numHiddenLayers = 5;                                        //кол-во нейронов скрытый слой
     private int nEpoch = 1000;                                              //кол-во эпох
@@ -76,8 +74,7 @@ public class LEP500NNPanel extends LEP500BasePanel {
     }
     @Override
     public void refresh() {}
-    @Override
-    public void eventPanel(int code, int par1, long par2, String par3, Object oo) {}
+
     @Override
     public void shutDown() {}
     public void initPanel(MainBaseFrame main0){
@@ -166,21 +163,26 @@ public class LEP500NNPanel extends LEP500BasePanel {
                 FileNameExt fileNameExt = main.getOutputFileName("Результаты анализа (каталог)","a.csv","");
                 if (fileNameExt==null)
                     return;
-                ArrayList<String> list = createTeachParamString(ExtremeTypesCount,ExtremeCount);
-                try {
-                    String dd = fileNameExt.getPath()+fName;
-                    BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(dd),"Windows-1251"));
-                    for(String ss :list){
-                        out.write(ss);
-                        out.newLine();
-                        }
-                    out.flush();
-                    out.close();
-                    } catch (Exception ee){
-                        System.out.println("Ошибка записи файла: "+ee.toString());
-                        }
+                ArrayList<String> list = createTeachParamString(results,ExtremeTypesCount,ExtremeCount);
+                String dd = fileNameExt.getPath()+fName;
+                saveFile(dd,list);
                 }
             });
+        }
+    public boolean saveFile(String fname, ArrayList<String> list){
+        try {
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fname),"Windows-1251"));
+            for(String ss :list){
+                out.write(ss);
+                out.newLine();
+                }
+            out.flush();
+            out.close();
+            } catch (Exception ee){
+                System.out.println("Ошибка записи файла: "+ee.toString());
+                return false;
+                }
+        return true;
         }
 
     public void setWorking(boolean bb){
@@ -208,11 +210,38 @@ public class LEP500NNPanel extends LEP500BasePanel {
             public void run() {
                 analyseInThread(paramOid,groupSize);
             }
-        }).start();
-
+            }).start();
         }
 
-    public ArrayList<String> createTeachParamString(int typesCount,int extremeCount){
+
+    @Override
+    public void eventPanel(int code, int par1, long par2, String par3, Object oo) {
+        if (code==EventNetwork){
+            if (main2.network==null){
+                popup("Модель не загружена");
+                return;
+                }
+            evaluateOne((AnalyseResult) oo);
+            }
+        }
+
+    public void evaluateOne(AnalyseResult result){
+        DataSet dataSet = new DataSet();
+        ArrayList<AnalyseResult> xx = new ArrayList<>();
+        xx.add(result);
+        ArrayList<String> ss = createTeachParamString(xx,ExtremeTypesCount,ExtremeCount);
+        if (!saveFile(tmpCsv,ss));
+        DataSet set = loadData(tmpCsv);
+        INDArray output = main2.network.output(set.getFeatures());
+        Evaluation eval = new Evaluation(numOutput);
+        eval.eval(set.getLabels(), output);
+        int actual = set.get(0).outcome();
+        int prediction = Integer.parseInt(String.valueOf(output.getRow(0).argMax()));
+        popup("Эксперт: "+state2Map.get(actual).title() +  " Предсказание: "+state2Map.get(prediction).title());
+        }
+
+
+    public ArrayList<String> createTeachParamString(ArrayList<AnalyseResult> resList,int typesCount,int extremeCount){
         int stateCounts[] = new int[Values.EState2Count];
         int totalCount=0;
         for(int i=0;i<Values.EState2Count;i++)
@@ -237,9 +266,9 @@ public class LEP500NNPanel extends LEP500BasePanel {
             header+="ExpertResult";
             }
         out.add(header);
-        for (int i=0;i<results.size();i++){
+        for (int i=0;i<resList.size();i++){
             StringBuffer ss = new StringBuffer();
-            AnalyseResult result = results.get(i);
+            AnalyseResult result = resList.get(i);
             if (!result.valid){
                 System.out.println("Ошибка анализа: "+result.getTitle()+"\n"+result.message);
                 continue;
@@ -259,7 +288,8 @@ public class LEP500NNPanel extends LEP500BasePanel {
                         }
                     }
                 }
-                int state2 = Values.stateToState2.get(measureFiles.get(i).getExpertResult());
+                //int state2 = Values.stateToState2.get(measureFiles.get(i).getExpertResult());
+                int state2 = Values.stateToState2.get(result.measure.getExpertResult());
                 stateCounts[state2]++;
                 totalCount++;
                 ss.append(","+state2);
@@ -298,9 +328,12 @@ public class LEP500NNPanel extends LEP500BasePanel {
         }
 
     public DataSet loadData(FileNameExt fileNameExt){
+        String ss = fileNameExt.getPath()+fileNameExt.fileName();
+        return loadData(ss);
+        }
+    public DataSet loadData(String ss){
         try {
             RecordReader recordReader3 = new CSVRecordReader(1, ',');
-            String ss = fileNameExt.getPath()+fileNameExt.fileName();
             recordReader3.initialize(new FileSplit(new File(ss)));
             //DataSetIterator управляет обходом набора данных и подготовкой данные для нейронной сети.
             DataSetIterator iterator = new RecordReaderDataSetIterator(recordReader3, batchSize, labelIndex, numClasses);
@@ -483,9 +516,9 @@ public class LEP500NNPanel extends LEP500BasePanel {
         add(HiddenLayersCount);
         HiddenLayersCount.setBounds(60, 140, 50, 25);
 
-        jLabel7.setText("Скрытых слоев");
+        jLabel7.setText("Нейронов скрытого слоя");
         add(jLabel7);
-        jLabel7.setBounds(120, 145, 110, 16);
+        jLabel7.setBounds(120, 145, 160, 16);
     }// </editor-fold>//GEN-END:initComponents
 
     private void RefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshActionPerformed
@@ -547,15 +580,26 @@ public class LEP500NNPanel extends LEP500BasePanel {
             }
         //Сохранение модели в файл
         try {
-            String path = fileNameExt.getPath()+"/"+Models.getSelectedItem()+"_"+fileNameExt.getName()+".model";
+            String fname = Models.getSelectedItem()+"_"+fileNameExt.getName()+".model";
+            String path = fileNameExt.getPath()+"/"+fname;
             model.save(new File(path));
+            popup("Модель сохранена: "+fname);
             } catch (Exception ee){
                 System.out.println("Ошибка сохранения НС: "+ee.toString());
                 }
         }//GEN-LAST:event_EducationActionPerformed
 
     private void LoadModelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoadModelActionPerformed
-        // TODO add your handling code here:
+        try {
+            FileNameExt fileNameExt = main.getInputFileName("Файл модели НС","*.model","");
+            if (fileNameExt==null)
+                return;
+            main2.network = MultiLayerNetwork.load(new File(fileNameExt.fullName()),true);
+            popup("Модель загружена");
+            } catch (Exception e) {
+                popup("Ошибка загрузки модели");
+                System.out.println("Ошибка загрузки модели: "+e.toString());
+                }
     }//GEN-LAST:event_LoadModelActionPerformed
 
     private void EducationAndTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EducationAndTestActionPerformed
@@ -589,8 +633,8 @@ public class LEP500NNPanel extends LEP500BasePanel {
     //Метод для вывода результата обучения на тестовой выборке
     public void getEvaluation(MultiLayerNetwork model, DataSet testData){
         //Оцениваем модель на тестовом наборе
-        Evaluation eval = new Evaluation(numOutput);
         INDArray output = model.output(testData.getFeatures());
+        Evaluation eval = new Evaluation(numOutput);
         eval.eval(testData.getLabels(), output);
         //Вывод оценки модели
         DLLog.setText("");
@@ -602,13 +646,13 @@ public class LEP500NNPanel extends LEP500BasePanel {
         DLLog.append("-----------------------------------\n");
         //Вывод результата по каждому экземпляру данных
         int count=0;
+        DLLog.append("Эксперт -> Предсказание\n");
         for(int i = 0;i<output.rows();i++) {
-            String actual = String.valueOf(testData.get(i).outcome());
-            String prediction = String.valueOf(output.getRow(i).argMax());
-            DLLog.append((i+1) + ". реальное: " + actual + "  предсказанное: " + prediction);
-            if (prediction.equals(actual))
+            int actual = testData.get(i).outcome();
+            int prediction = Integer.parseInt(String.valueOf(output.getRow(i).argMax()));
+            DLLog.append((i+1) + " "+state2Map.get(actual).title() + (prediction==actual ? "" : "->"+state2Map.get(prediction).title())+"\n");
+            if (prediction==actual)
                 count++;
-            DLLog.append(!prediction.equals(actual) ? " *\n" : "\n");
             }
         DLLog.append("Процент верных предсказаний: "+count*100/output.rows());
     }

@@ -241,11 +241,11 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel7">
       <Properties>
-        <Property name="text" type="java.lang.String" value="&#x421;&#x43a;&#x440;&#x44b;&#x442;&#x44b;&#x445; &#x441;&#x43b;&#x43e;&#x435;&#x432;"/>
+        <Property name="text" type="java.lang.String" value="&#x41d;&#x435;&#x439;&#x440;&#x43e;&#x43d;&#x43e;&#x432; &#x441;&#x43a;&#x440;&#x44b;&#x442;&#x43e;&#x433;&#x43e; &#x441;&#x43b;&#x43e;&#x44f;"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="120" y="145" width="110" height="-1"/>
+          <AbsoluteConstraints x="120" y="145" width="160" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>
