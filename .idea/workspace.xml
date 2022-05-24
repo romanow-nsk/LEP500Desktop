@@ -10,9 +10,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dd0d4f89-2465-418c-9c78-71fb44c9bc3c" name="Default Changelist" comment="LEP500 - параметры НС">
-      <change beforePath="$PROJECT_DIR$/../../ABC/ABCCore/.idea/artifacts/ABCCore_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../ABC/ABCCore/.idea/artifacts/ABCCore_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../ABC/ABCCore/.idea/artifacts/ABCCoreOnly_jar2.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../ABC/ABCCore/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../ABC/ABCCore/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ABC/ABCCore/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../ABC/ABCCore/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LEP500Core/.idea/artifacts/LEP500Core_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500Core/.idea/artifacts/LEP500Core_jar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500Core/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500Core/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500$1.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500.class" beforeDir="false" />
@@ -23,8 +23,6 @@
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/LEP500ConsoleServer$4.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/LEP500ConsoleServer.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500NNPanel.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500NNPanel.form" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500NNPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500NNPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -183,13 +181,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1634483190603</updated>
-    </task>
-    <task id="LOCAL-00028" summary="Селекция рез. анализа. Пример консоли">
-      <created>1636813693642</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1636813693642</updated>
     </task>
     <task id="LOCAL-00029" summary="004">
       <created>1636813884778</created>
@@ -527,7 +518,14 @@
       <option name="project" value="LOCAL" />
       <updated>1653328746072</updated>
     </task>
-    <option name="localTasksCounter" value="77" />
+    <task id="LOCAL-00077" summary="LEP500 - параметры НС">
+      <created>1653376189307</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1653376189308</updated>
+    </task>
+    <option name="localTasksCounter" value="78" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
