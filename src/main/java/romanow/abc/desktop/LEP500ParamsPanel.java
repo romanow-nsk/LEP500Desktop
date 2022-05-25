@@ -79,6 +79,7 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
         ParamListName.setText(params.paramListName);
         KSmooth.setText(""+params.kSmooth);
         AutoCorrelation.setText(""+params.autoCorrelation);
+        GroupNormalize.setSelected(params.groupNormalize);
         busy=false;
         }
     public void updateParams(){
@@ -679,7 +680,13 @@ public class LEP500ParamsPanel extends LEP500BasePanel {
     }//GEN-LAST:event_AutoCorrelationKeyPressed
 
     private void GroupNormalizeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_GroupNormalizeItemStateChanged
-        // TODO add your handling code here:
+        if (busy)
+            return;
+        LEP500Params params = (LEP500Params) paramsList.current;
+        if (params==null)
+            return;
+        params.groupNormalize = GroupNormalize.isSelected();
+        updateSettings(null,"groupNormalize");
     }//GEN-LAST:event_GroupNormalizeItemStateChanged
 
     @Override
