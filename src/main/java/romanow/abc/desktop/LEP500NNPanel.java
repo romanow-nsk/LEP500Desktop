@@ -68,6 +68,7 @@ public class LEP500NNPanel extends LEP500BasePanel {
     private HashMap<Integer, ConstValue> state2Map = new HashMap<>();
     private ArrayList<DLConfiguration> configs = new ArrayList<>();
     private boolean working=false;
+    private boolean interrupted=false;
     public LEP500NNPanel() {
         initComponents();
     }
@@ -125,8 +126,13 @@ public class LEP500NNPanel extends LEP500BasePanel {
         };
     }
 
-
+    private void stopAnalyse(){
+        Interrupt.setEnabled(false);
+        interrupted=false;
+        }
     void analyseInThread(final long paramOid, final int groupSize,final boolean onSpectrumMode){
+        Interrupt.setEnabled(true);
+        interrupted=false;
         for(int idx=0;idx<measureFiles.size();idx+=groupSize) {
             OidList list = new OidList();
             for (int ii=idx; ii<measureFiles.size() && ii-idx < groupSize; ii++)
@@ -149,17 +155,24 @@ public class LEP500NNPanel extends LEP500BasePanel {
                 }.call();
                 for (AnalyseResult dd : oo) {
                     results.add(dd);
-                }
+                    }
+                if (interrupted){
+                    stopAnalyse();
+                    setWorking(false);
+                    return;
+                    }
             } catch (UniException e) {
                 System.out.println("Ошибка чтения данных анализа: " + e.toString());
+                stopAnalyse();
                 }
             }
         popup("Анализ завершен");
+        stopAnalyse();
         runInGUI(new Runnable() {
             @Override
             public void run() {
                 setWorking(false);
-                FileNameExt fileNameExt = main.getOutputFileName("Результаты анализа (каталог)","a.csv","");
+                FileNameExt fileNameExt = main.getOutputFileName("Результаты анализа (каталог)","a.csv","a.csv");
                 if (fileNameExt==null)
                     return;
                 ArrayList<String> list = onSpectrumMode ? createTeachDataSpectrum(results) : createTeachData(results,ExtremeTypesCount,ExtremeCount);
@@ -328,6 +341,7 @@ public class LEP500NNPanel extends LEP500BasePanel {
             stateCounts[i]=0;
         ArrayList<String> out = new ArrayList<>();
         AnalyseResult result = resList.get(0);
+        int dataSize = result.spectrum.length-result.nFirst;
         String header="";
         for(int i=result.nFirst;i<result.spectrum.length;i++){
             header+="A"+(i-result.nFirst+1)+",";
@@ -340,9 +354,15 @@ public class LEP500NNPanel extends LEP500BasePanel {
                 System.out.println("Ошибка анализа: "+result.getTitle()+"\n"+result.message);
                 continue;
                 }
+            if (dataSize!=result.spectrum.length-result.nFirst){
+                System.out.println("Несовпадение размернстей: "+result.getTitle()+" "+(result.spectrum.length-result.nFirst)+" вместо "+dataSize);
+                }
             String ss="";
-            for(int k=result.nFirst;k<result.spectrum.length;k++){
-                ss+=replace(result.spectrum[k])+",";
+            for(int k=0;k<dataSize;k++){
+                if (k+result.nFirst>=result.spectrum.length)
+                    ss+="0.0,";
+                else
+                    ss+=replace(result.spectrum[k+result.nFirst])+",";
                 }
             int state2 = Values.stateToState2.get(result.measure.getExpertResult());
             stateCounts[state2]++;
@@ -464,6 +484,7 @@ public class LEP500NNPanel extends LEP500BasePanel {
         BatchSize = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         OnSpectrumMode = new javax.swing.JCheckBox();
+        Interrupt = new javax.swing.JButton();
 
         setLayout(null);
 
@@ -484,15 +505,15 @@ public class LEP500NNPanel extends LEP500BasePanel {
             }
         });
         add(Refresh);
-        Refresh.setBounds(10, 20, 30, 30);
+        Refresh.setBounds(20, 20, 30, 30);
 
         jLabel1.setText("Модель (конфигурация НС)");
         add(jLabel1);
-        jLabel1.setBounds(60, 90, 180, 16);
+        jLabel1.setBounds(60, 90, 180, 14);
 
         jLabel2.setText("Измерений с оценкой");
         add(jLabel2);
-        jLabel2.setBounds(150, 10, 130, 16);
+        jLabel2.setBounds(150, 10, 130, 14);
 
         MeasuresNumProceed.setEnabled(false);
         add(MeasuresNumProceed);
@@ -505,7 +526,7 @@ public class LEP500NNPanel extends LEP500BasePanel {
             }
         });
         add(DataFileCreate);
-        DataFileCreate.setBounds(330, 30, 130, 22);
+        DataFileCreate.setBounds(330, 30, 130, 23);
 
         Education.setText("Обучение");
         Education.addActionListener(new java.awt.event.ActionListener() {
@@ -514,7 +535,7 @@ public class LEP500NNPanel extends LEP500BasePanel {
             }
         });
         add(Education);
-        Education.setBounds(330, 90, 130, 22);
+        Education.setBounds(330, 90, 130, 23);
         add(DLLog);
         DLLog.setBounds(30, 240, 860, 310);
 
@@ -525,7 +546,7 @@ public class LEP500NNPanel extends LEP500BasePanel {
             }
         });
         add(LoadModel);
-        LoadModel.setBounds(330, 120, 130, 22);
+        LoadModel.setBounds(330, 120, 130, 23);
 
         TestPercent.setText("75");
         add(TestPercent);
@@ -533,11 +554,11 @@ public class LEP500NNPanel extends LEP500BasePanel {
 
         jLabel3.setText("% обучения");
         add(jLabel3);
-        jLabel3.setBounds(470, 40, 70, 16);
+        jLabel3.setBounds(470, 90, 70, 14);
 
         jLabel4.setText("Собственник");
         add(jLabel4);
-        jLabel4.setBounds(60, 10, 130, 16);
+        jLabel4.setBounds(60, 10, 130, 14);
         add(Params);
         Params.setBounds(60, 70, 140, 20);
 
@@ -548,7 +569,7 @@ public class LEP500NNPanel extends LEP500BasePanel {
         Working.setText("в работе");
         Working.setEnabled(false);
         add(Working);
-        Working.setBounds(210, 70, 90, 20);
+        Working.setBounds(510, 30, 90, 23);
 
         EducationAndTest.setText("Обучение+тест");
         EducationAndTest.addActionListener(new java.awt.event.ActionListener() {
@@ -557,11 +578,11 @@ public class LEP500NNPanel extends LEP500BasePanel {
             }
         });
         add(EducationAndTest);
-        EducationAndTest.setBounds(330, 60, 130, 22);
+        EducationAndTest.setBounds(330, 60, 130, 23);
 
         jLabel5.setText("Параметры анализа");
         add(jLabel5);
-        jLabel5.setBounds(60, 50, 130, 16);
+        jLabel5.setBounds(60, 50, 130, 14);
         add(Models);
         Models.setBounds(60, 110, 140, 20);
 
@@ -571,7 +592,7 @@ public class LEP500NNPanel extends LEP500BasePanel {
 
         jLabel6.setText("Выборка (0 - все)");
         add(jLabel6);
-        jLabel6.setBounds(120, 205, 140, 16);
+        jLabel6.setBounds(120, 205, 140, 14);
 
         HiddenLayersCount.setText("5");
         add(HiddenLayersCount);
@@ -579,7 +600,7 @@ public class LEP500NNPanel extends LEP500BasePanel {
 
         jLabel7.setText("Нейронов скрытого слоя");
         add(jLabel7);
-        jLabel7.setBounds(120, 145, 160, 16);
+        jLabel7.setBounds(120, 145, 160, 14);
 
         BatchSize.setText("0");
         add(BatchSize);
@@ -587,11 +608,23 @@ public class LEP500NNPanel extends LEP500BasePanel {
 
         jLabel8.setText("Эпох обучения");
         add(jLabel8);
-        jLabel8.setBounds(120, 175, 110, 16);
+        jLabel8.setBounds(120, 175, 110, 14);
 
         OnSpectrumMode.setText("Обучение на пиках(0)/спектре(1)");
         add(OnSpectrumMode);
-        OnSpectrumMode.setBounds(330, 150, 230, 20);
+        OnSpectrumMode.setBounds(330, 150, 230, 23);
+
+        Interrupt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/problem.png"))); // NOI18N
+        Interrupt.setBorderPainted(false);
+        Interrupt.setContentAreaFilled(false);
+        Interrupt.setEnabled(false);
+        Interrupt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                InterruptActionPerformed(evt);
+            }
+        });
+        add(Interrupt);
+        Interrupt.setBounds(470, 20, 35, 35);
     }// </editor-fold>//GEN-END:initComponents
 
     private void RefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshActionPerformed
@@ -704,6 +737,11 @@ public class LEP500NNPanel extends LEP500BasePanel {
         evaluate(model,data.o2);
     }//GEN-LAST:event_EducationAndTestActionPerformed
 
+    private void InterruptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InterruptActionPerformed
+        interrupted=true;
+        popup("Анализ будет прерван");
+    }//GEN-LAST:event_InterruptActionPerformed
+
 
     //Метод для вывода результата обучения на тестовой выборке
     public void evaluate(MultiLayerNetwork model, DataSet testData){
@@ -740,6 +778,7 @@ public class LEP500NNPanel extends LEP500BasePanel {
     private javax.swing.JButton EducationAndTest;
     private javax.swing.JTextField EpochCount;
     private javax.swing.JTextField HiddenLayersCount;
+    private javax.swing.JButton Interrupt;
     private javax.swing.JButton LoadModel;
     private javax.swing.JTextField MeasuresNum;
     private javax.swing.JTextField MeasuresNumProceed;
