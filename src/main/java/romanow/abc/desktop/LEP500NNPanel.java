@@ -96,6 +96,7 @@ public class LEP500NNPanel extends LEP500BasePanel {
         configs.clear();
         configs.add(new DLConf1());
         configs.add(new DLConf2());
+        configs.add(new DLConf3());
         for(int i=0;i<configs.size();i++)
             Models.add(configs.get(i).getName());
         }
@@ -882,11 +883,11 @@ case 1:             list = createTeachDataSpectrum(results);
         //Вывод оценки модели
         DLLog.append("\"-----------------------------------\n");
         DLLog.append(eval.stats()+"\n"); //confusion matrix, evaluation metrics
-        DLLog.append("-----------------------------------\n");
-        DLLog.append(eval.confusionToString()+"\n");
-        DLLog.append("-----------------------------------\n");
-        DLLog.append(output+"\n");
-        DLLog.append("-----------------------------------\n");
+        //DLLog.append("-----------------------------------\n");
+        //DLLog.append(eval.confusionToString()+"\n");
+        //DLLog.append("-----------------------------------\n");
+        //DLLog.append(output+"\n");
+        //DLLog.append("-----------------------------------\n");
         //Вывод результата по каждому экземпляру данных
         int count=0;
         DLLog.append("Эксперт -> Предсказание\n");

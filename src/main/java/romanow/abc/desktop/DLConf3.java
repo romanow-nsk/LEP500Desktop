@@ -8,34 +8,35 @@ import org.deeplearning4j.nn.weights.WeightInit;
 import org.nd4j.linalg.activations.Activation;
 import org.nd4j.linalg.learning.config.Sgd;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
-import romanow.abc.core.Pair;
 
-import static romanow.abc.desktop.LEP500NNPanel.*;
+import static romanow.abc.desktop.LEP500NNPanel.numOutput;
 
-public class DLConf1 extends DLConfiguration{
+public class DLConf3 extends DLConfiguration{
     @Override
     public MultiLayerConfiguration create(int hiddenCount, int numInputs, int numOutputs, int seed) {
-        MultiLayerConfiguration conf1 = new NeuralNetConfiguration.Builder()
+        MultiLayerConfiguration conf2 = new NeuralNetConfiguration.Builder()
                 .seed(seed)
                 .activation(Activation.SIGMOID)
-                .weightInit(WeightInit.XAVIER)
+                .weightInit(WeightInit.SIGMOID_UNIFORM)
                 .updater(new Sgd(0.1))
                 .l2(1e-4)
                 .list()
-                .layer(0, new DenseLayer.Builder().nIn(numInputs).nOut(hiddenCount)
+                .layer(0, new DenseLayer.Builder().nIn(numInputs).nOut(50)
                         .build())
-                .layer(1, new DenseLayer.Builder().nIn(hiddenCount).nOut(hiddenCount)
+                .layer(1, new DenseLayer.Builder().nIn(50).nOut(25)
                         .build())
-                .layer(2, new OutputLayer.Builder(LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD)
-                        //Переопределить глобальную активацию TANH с помощью softmax для этого слоя
+                .layer(2, new DenseLayer.Builder().nIn(25).nOut(hiddenCount)
+                        .build())
+                .layer(3, new OutputLayer.Builder(LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD)
+                        //Переопределить глобальную активацию  с помощью softmax для этого слоя
                         .activation(Activation.SOFTMAX)
                         .nIn(hiddenCount).nOut(numOutput).build())
                 .build();
-        return conf1;
-        }
-
+        return conf2;
+    }
     @Override
     public String getName() {
-        return "Модель 1";
+        return "Модель 3";
         }
+
 }

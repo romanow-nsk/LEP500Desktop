@@ -17,7 +17,7 @@ public class DLConf2 extends DLConfiguration{
     public MultiLayerConfiguration create(int hiddenCount, int numInputs, int numOutputs, int seed) {
         MultiLayerConfiguration conf2 = new NeuralNetConfiguration.Builder()
                 .seed(seed)
-                .activation(Activation.TANH)
+                .activation(Activation.SIGMOID)
                 .weightInit(WeightInit.XAVIER)
                 .updater(new Sgd(0.1))
                 .l2(1e-4)
