@@ -13,7 +13,7 @@ import static romanow.abc.desktop.LEP500NNPanel.numOutput;
 
 public class DLConf3 extends DLConfiguration{
     @Override
-    public MultiLayerConfiguration create(int hiddenCount, int numInputs, int numOutputs, int seed) {
+    public MultiLayerConfiguration create(int hiddenCount, int numInputs, int numOutputs, int seed,int l1, int l2) {
         MultiLayerConfiguration conf2 = new NeuralNetConfiguration.Builder()
                 .seed(seed)
                 .activation(Activation.SIGMOID)
@@ -21,11 +21,11 @@ public class DLConf3 extends DLConfiguration{
                 .updater(new Sgd(0.1))
                 .l2(1e-4)
                 .list()
-                .layer(0, new DenseLayer.Builder().nIn(numInputs).nOut(50)
+                .layer(0, new DenseLayer.Builder().nIn(numInputs).nOut(l1)
                         .build())
-                .layer(1, new DenseLayer.Builder().nIn(50).nOut(25)
+                .layer(1, new DenseLayer.Builder().nIn(l1).nOut(l2)
                         .build())
-                .layer(2, new DenseLayer.Builder().nIn(25).nOut(hiddenCount)
+                .layer(2, new DenseLayer.Builder().nIn(l2).nOut(hiddenCount)
                         .build())
                 .layer(3, new OutputLayer.Builder(LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD)
                         //Переопределить глобальную активацию  с помощью softmax для этого слоя

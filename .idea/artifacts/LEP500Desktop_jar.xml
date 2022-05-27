@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="LEP500Desktop:jar">
-    <output-path>$PROJECT_DIR$/../LEP500APIExample</output-path>
+    <output-path>$PROJECT_DIR$/../../YandexDisk/Проекты/Опора России</output-path>
     <root id="archive" name="LEP500Desktop.jar">
       <element id="module-output" name="LEP500Core" />
       <element id="module-output" name="ABCCore" />

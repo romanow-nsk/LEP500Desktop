@@ -14,7 +14,7 @@ import static romanow.abc.desktop.LEP500NNPanel.*;
 
 public class DLConf1 extends DLConfiguration{
     @Override
-    public MultiLayerConfiguration create(int hiddenCount, int numInputs, int numOutputs, int seed) {
+    public MultiLayerConfiguration create(int hiddenCount, int numInputs, int numOutputs, int seed,int l1, int l2) {
         MultiLayerConfiguration conf1 = new NeuralNetConfiguration.Builder()
                 .seed(seed)
                 .activation(Activation.SIGMOID)
