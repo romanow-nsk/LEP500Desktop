@@ -9,7 +9,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dd0d4f89-2465-418c-9c78-71fb44c9bc3c" name="Default Changelist" comment="LEP500 - групповая нормализация">
+    <list default="true" id="dd0d4f89-2465-418c-9c78-71fb44c9bc3c" name="Default Changelist" comment="LEP500 - обучение на спектре">
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500$1.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/LEP500ConsoleServer$1$1.class" beforeDir="false" />
@@ -43,6 +43,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
@@ -98,7 +99,7 @@
       <recent name="romanow.abc.dataserver" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.LEP500MainBase">
+  <component name="RunManager" selected="Application.LEP500Client">
     <configuration name="FFTAudioTextFile" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="romanow.lep500.FFTAudioTextFile" />
       <module name="LEP500Core" />
@@ -166,8 +167,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.LEP500MainBase" />
         <item itemvalue="Application.LEP500Client" />
+        <item itemvalue="Application.LEP500MainBase" />
         <item itemvalue="Application.LEP500Cabinet" />
         <item itemvalue="Application.FFTAudioTextFile" />
         <item itemvalue="Application.LEP500ClientAdmin" />
@@ -182,13 +183,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1634483190603</updated>
-    </task>
-    <task id="LOCAL-00031" summary="005 - добавить класс модулей">
-      <created>1636911354763</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1636911354763</updated>
     </task>
     <task id="LOCAL-00032" summary="005">
       <created>1637073230105</created>
@@ -526,7 +520,14 @@
       <option name="project" value="LOCAL" />
       <updated>1653498616440</updated>
     </task>
-    <option name="localTasksCounter" value="80" />
+    <task id="LOCAL-00080" summary="LEP500 - обучение на спектре">
+      <created>1653503235856</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1653503235856</updated>
+    </task>
+    <option name="localTasksCounter" value="81" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -548,7 +549,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="005 - манифест" />
     <MESSAGE value="006 - манифест" />
     <MESSAGE value="Логин - подстановки иконки и надписи" />
     <MESSAGE value="037 проверка типа сервера" />
@@ -573,7 +573,8 @@
     <MESSAGE value="LEP500 - Сборка артефакта" />
     <MESSAGE value="LEP500 - параметры НС" />
     <MESSAGE value="LEP500 - групповая нормализация" />
-    <option name="LAST_COMMIT_MESSAGE" value="LEP500 - групповая нормализация" />
+    <MESSAGE value="LEP500 - обучение на спектре" />
+    <option name="LAST_COMMIT_MESSAGE" value="LEP500 - обучение на спектре" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -640,12 +641,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500NNPanel.java</url>
-          <line>309</line>
+          <line>358</line>
           <option name="timeStamp" value="140" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500NNPanel.java</url>
-          <line>642</line>
+          <line>792</line>
           <option name="timeStamp" value="141" />
         </line-breakpoint>
       </breakpoints>

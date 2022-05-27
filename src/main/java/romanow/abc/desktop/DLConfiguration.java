@@ -5,5 +5,5 @@ import romanow.abc.core.Pair;
 
 public abstract class DLConfiguration {
     public abstract String getName();
-    public abstract MultiLayerConfiguration create(int hiddenLayerCount, int numInputs, int numOutputs);
+    public abstract MultiLayerConfiguration create(int hiddenLayerCount, int numInputs, int numOutputs, int seed);
 }
