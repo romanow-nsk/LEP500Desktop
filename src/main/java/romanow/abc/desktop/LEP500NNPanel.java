@@ -75,6 +75,7 @@ public class LEP500NNPanel extends LEP500BasePanel {
     private int seed2=123456789;
     private int layer1Count=50;
     private int layer2Count=25;
+    private double learningRate=0.1;
     private boolean interrupted=false;
     public LEP500NNPanel() {
         initComponents();
@@ -89,10 +90,12 @@ public class LEP500NNPanel extends LEP500BasePanel {
         Seed.setText(""+seed2);
         Layer1Count.setText(""+layer1Count);
         Layer2Count.setText(""+layer2Count);
+        LearningRate.setText(""+learningRate);
         state2Map = Values.constMap().getGroupMapByValue("EState2");
         AnalyseMode.removeAll();
         AnalyseMode.add("Пики");
         AnalyseMode.add("Спектр");
+        AnalyseMode.add("Эвристики");
         refreshModels();
         refreshAll();
         }
@@ -113,6 +116,7 @@ public class LEP500NNPanel extends LEP500BasePanel {
             seed2 = Integer.parseInt(Seed.getText());
             layer1Count = Integer.parseInt(Layer1Count.getText());
             layer2Count = Integer.parseInt(Layer2Count.getText());
+            learningRate = Double.parseDouble(LearningRate.getText());
             } catch (Exception ee){
                 popup("Недопустимый формат параметра модели");
                 return false;
@@ -200,6 +204,9 @@ case 0:             list = createTeachDataPeaks(results,ExtremeTypesCount,Extrem
                     break;
 case 1:             list = createTeachDataSpectrum(results);
                     fname ="S_"+(list.size()-1)+"_"+title;
+                    break;
+case 2:             list = createTeachDataHeuristic(results);
+                    fname ="H_"+(list.size()-1)+"_"+title;
                     break;
                     }
                 String ss = "_"+params.get(Params.getSelectedIndex()).getTitle()+"_"+new OwnDateTime().toString2()+".csv";;
@@ -421,6 +428,46 @@ case 1:             list = createTeachDataSpectrum(results);
         return out;
     }
 
+    public ArrayList<String> createTeachDataHeuristic(ArrayList<AnalyseResult> resList){
+        int stateCounts[] = new int[Values.EState2Count];
+        int totalCount=0;
+        for(int i=0;i<Values.EState2Count;i++)
+            stateCounts[i]=0;
+        int size = Values.extremeFacade.length;
+        ArrayList<String> out = new ArrayList<>();
+        String header="";
+        for(int i=0;i<size;i++){
+            String bb = Values.extremeFacade[i].getSimpleName()+"Mode";
+            header+=bb+",";
+            }
+            header+="ExpertResult";
+        out.add(header);
+        for (int i=0;i<resList.size();i++){
+            StringBuffer ss = new StringBuffer();
+            AnalyseResult result = resList.get(i);
+            if (!result.valid){
+                System.out.println("Ошибка анализа: "+result.getTitle()+"\n"+result.message);
+                continue;
+                }
+            for(int k=0;k<size;k++){
+                ExtremeList list = result.data.get(k);
+                ss.append(""+list.getTestResult()+",");
+                }
+            int state2 = Values.stateToState2.get(result.measure.getExpertResult());
+            stateCounts[state2]++;
+            totalCount++;
+            ss.append(state2);
+            out.add(ss.toString());
+            }
+        DLLog.append("Файлов в выборке "+totalCount+",по состояниям:\n");
+        for(int i=0;i<stateCounts.length;i++){
+            DLLog.append(""+state2Map.get(i).title()+": "+stateCounts[i]+"\n");
+            }
+        return out;
+    }
+
+
+
 
 
     public static String replace(double vv){
@@ -561,6 +608,8 @@ case 1:             list = createTeachDataSpectrum(results);
         jLabel11 = new javax.swing.JLabel();
         Layer1Count = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
+        LearningRate = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
 
         setLayout(null);
 
@@ -666,9 +715,9 @@ case 1:             list = createTeachDataSpectrum(results);
         add(EpochCount);
         EpochCount.setBounds(60, 210, 50, 25);
 
-        jLabel6.setText("Нейронов - слой 3");
+        jLabel6.setText("Скорость обучения");
         add(jLabel6);
-        jLabel6.setBounds(120, 335, 140, 16);
+        jLabel6.setBounds(120, 365, 140, 16);
 
         HiddenLayersCount.setText("5");
         add(HiddenLayersCount);
@@ -748,6 +797,14 @@ case 1:             list = createTeachDataSpectrum(results);
         jLabel12.setText("Нейронов - слой 2");
         add(jLabel12);
         jLabel12.setBounds(120, 305, 140, 16);
+
+        LearningRate.setText("0");
+        add(LearningRate);
+        LearningRate.setBounds(60, 360, 50, 25);
+
+        jLabel13.setText("Нейронов - слой 3");
+        add(jLabel13);
+        jLabel13.setBounds(120, 335, 140, 16);
     }// </editor-fold>//GEN-END:initComponents
 
     private void RefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshActionPerformed
@@ -823,7 +880,7 @@ case 1:             list = createTeachDataSpectrum(results);
             return;
         if (!getModelParams())
             return;
-        MultiLayerNetwork model = new MultiLayerNetwork(configs.get(Models.getSelectedIndex()).create(numHiddenLayers,valuesCount,numOutput,seed,layer1Count,layer1Count));
+        MultiLayerNetwork model = new MultiLayerNetwork(configs.get(Models.getSelectedIndex()).create(numHiddenLayers,valuesCount,numOutput,seed,layer1Count,layer1Count,learningRate));
         model.init();
         //Записываем оценку один раз каждые 100 итераций
         model.setListeners(new ScoreIterationListener(100));
@@ -872,7 +929,7 @@ case 1:             list = createTeachDataSpectrum(results);
             return;
         if (!getModelParams())
             return;
-        MultiLayerNetwork model = new MultiLayerNetwork(configs.get(Models.getSelectedIndex()).create(numHiddenLayers,valuesCount,numOutput,seed,layer1Count,layer1Count));
+        MultiLayerNetwork model = new MultiLayerNetwork(configs.get(Models.getSelectedIndex()).create(numHiddenLayers,valuesCount,numOutput,seed,layer1Count,layer1Count,learningRate));
         model.init();
         //Записываем оценку один раз каждые 100 итераций
         model.setListeners(new ScoreIterationListener(100));
@@ -941,6 +998,7 @@ case 1:             list = createTeachDataSpectrum(results);
     private javax.swing.JButton Interrupt;
     private javax.swing.JTextField Layer1Count;
     private javax.swing.JTextField Layer2Count;
+    private javax.swing.JTextField LearningRate;
     private javax.swing.JButton LoadModel;
     private javax.swing.JTextField MeasuresNumProceed;
     private javax.swing.JTextField MeasuresSelectionNum;
@@ -957,6 +1015,7 @@ case 1:             list = createTeachDataSpectrum(results);
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
