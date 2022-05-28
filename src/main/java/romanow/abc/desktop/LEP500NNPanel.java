@@ -42,6 +42,7 @@ import romanow.lep500.fft.ExtremeFacade;
 import romanow.lep500.fft.ExtremeList;
 import romanow.lep500.fft.ExtremeNull;
 
+import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,10 +52,6 @@ import java.util.HashMap;
  * @author Admin
  */
 public class LEP500NNPanel extends LEP500BasePanel {
-    public final static int ExtremeCount=5;
-    public final static int ExtremeTypesCount=5;
-    //public static final int labelIndex = ExtremeCount*ExtremeTypesCount*2;  //сколько значений в каждой строке CSV-файла
-    //public static final int numInputs = ExtremeCount*ExtremeTypesCount*2;   //кол-во нейронов входной слой
     public final int numClasses = Values.EState2Count;                      //сколько классов в наборе данных
     public static final int numOutput = Values.EState2Count;                //кол-во нейронов выходной слой
     public final static String tmpCsv="temp.csv";
@@ -73,10 +70,13 @@ public class LEP500NNPanel extends LEP500BasePanel {
     private boolean working=false;
     private int seed=6;
     private int seed2=123456789;
-    private int layer1Count=50;
+    private int layer1Size =50;
     private int layer2Count=25;
     private double learningRate=0.1;
+    private int extremeNum =10;
     private boolean interrupted=false;
+    private ExtremeFacade facades[];
+    private JCheckBox facadesCheck[];
     public LEP500NNPanel() {
         initComponents();
     }
@@ -87,8 +87,9 @@ public class LEP500NNPanel extends LEP500BasePanel {
     public void shutDown() {}
     public void initPanel(MainBaseFrame main0){
         super.initPanel(main0);
+        createFacades();
         Seed.setText(""+seed2);
-        Layer1Count.setText(""+layer1Count);
+        Layer1Count.setText(""+ layer1Size);
         Layer2Count.setText(""+layer2Count);
         LearningRate.setText(""+learningRate);
         state2Map = Values.constMap().getGroupMapByValue("EState2");
@@ -96,6 +97,7 @@ public class LEP500NNPanel extends LEP500BasePanel {
         AnalyseMode.add("Пики");
         AnalyseMode.add("Спектр");
         AnalyseMode.add("Эвристики");
+        AnalyseMode.add("Нормализ. пики");
         refreshModels();
         refreshAll();
         }
@@ -114,7 +116,7 @@ public class LEP500NNPanel extends LEP500BasePanel {
             numHiddenLayers = Integer.parseInt(HiddenLayersCount.getText());
             batchSize = Integer.parseInt(BatchSize.getText());
             seed2 = Integer.parseInt(Seed.getText());
-            layer1Count = Integer.parseInt(Layer1Count.getText());
+            layer1Size = Integer.parseInt(Layer1Count.getText());
             layer2Count = Integer.parseInt(Layer2Count.getText());
             learningRate = Double.parseDouble(LearningRate.getText());
             } catch (Exception ee){
@@ -199,7 +201,7 @@ public class LEP500NNPanel extends LEP500BasePanel {
                 ArrayList<String> list=null;
                 String fname="";
                 switch (analyseMode){
-case 0:             list = createTeachDataPeaks(results,ExtremeTypesCount,ExtremeCount);
+case 0:             list = createTeachDataPeaks(results, extremeNum);
                     fname ="P_"+(list.size()-1)+"_"+title;
                     break;
 case 1:             list = createTeachDataSpectrum(results);
@@ -207,6 +209,9 @@ case 1:             list = createTeachDataSpectrum(results);
                     break;
 case 2:             list = createTeachDataHeuristic(results);
                     fname ="H_"+(list.size()-1)+"_"+title;
+                    break;
+case 3:             list = createTeachDataNormalised(results,extremeNum);
+                    fname ="N_"+(list.size()-1)+"_"+title;
                     break;
                     }
                 String ss = "_"+params.get(Params.getSelectedIndex()).getTitle()+"_"+new OwnDateTime().toString2()+".csv";;
@@ -262,10 +267,18 @@ case 2:             list = createTeachDataHeuristic(results);
     public void analyseUserData(final int groupSize){
         if (params.size()==0){
             popup("Нет наборов параметров анализа");
+            return;
             }
         if (measureFilesU.size()==0){
             popup("Нет выборки файлов измерений");
+            return;
             }
+        try{
+            extremeNum = Integer.parseInt(PeakNum.getText());
+            }catch (Exception ee){
+                popup("Формат количества пиков");
+                return;
+                }
         setWorking(true);
         MeasuresNumProceed.setText("0");
         final long paramOid = params.get(Params.getSelectedIndex()).getOid();
@@ -312,7 +325,7 @@ case 2:             list = createTeachDataHeuristic(results);
         DataSet dataSet = new DataSet();
         ArrayList<AnalyseResult> xx = new ArrayList<>();
         xx.add(result);
-        ArrayList<String> ss = createTeachDataPeaks(xx,ExtremeTypesCount,ExtremeCount);
+        ArrayList<String> ss = createTeachDataPeaks(xx, extremeNum);
         if (!saveFile(tmpCsv,ss));
         DataSet set = loadData(tmpCsv);
         INDArray output = main2.network.output(set.getFeatures());
@@ -322,27 +335,38 @@ case 2:             list = createTeachDataHeuristic(results);
         int prediction = Integer.parseInt(String.valueOf(output.getRow(0).argMax()));
         popup("Эксперт: "+state2Map.get(actual).title() +  " Предсказание: "+state2Map.get(prediction).title());
         }
+    public void createFacades(){
+        int size = Values.extremeFacade.length;
+        facades  = new ExtremeFacade[size];
+        facadesCheck = new JCheckBox[size];
+        for(int i=0;i<size;i++){
+            try {
+                facades[i] = (ExtremeFacade)Values.extremeFacade[i].newInstance();
+                JCheckBox bb = new JCheckBox();
+                bb.setText(facades[i].getTitle());
+                bb.setBounds(310,200+i*25,200,20);
+                bb.setSelected(true);
+                facadesCheck[i]=bb;
+                add(bb);
+                } catch (Exception e) {
+                    facades[i] = new ExtremeNull();
+                    }
+            }
+        }
 
-
-    public ArrayList<String> createTeachDataPeaks(ArrayList<AnalyseResult> resList, int typesCount, int extremeCount){
+    public ArrayList<String> createTeachDataPeaks(ArrayList<AnalyseResult> resList, int extremeCount){
         int stateCounts[] = new int[Values.EState2Count];
         int totalCount=0;
         for(int i=0;i<Values.EState2Count;i++)
             stateCounts[i]=0;
-        int size = Values.extremeFacade.length;
-        ExtremeFacade facades[] = new ExtremeFacade[size];
-        for(int i=0;i<size;i++){
-            try {
-                facades[i] = (ExtremeFacade)Values.extremeFacade[i].newInstance();
-                } catch (Exception e) {
-                    facades[i] = new ExtremeNull();
-                    }
-                }
+
         ArrayList<String> out = new ArrayList<>();
         String header="";
-        for(int i=0;i<ExtremeTypesCount;i++){
+        for(int i=0;i<facades.length;i++){
+            if (!facadesCheck[i].isSelected())
+                continue;
             String bb = Values.extremeFacade[i].getSimpleName()+"Mode";
-            for(int j=0;j<ExtremeCount;j++) {
+            for(int j = 0; j< this.extremeNum; j++) {
                 String bb2 = bb+(j+1);
                 header+=bb2+"-Value,"+bb2+"-freq,";
                 }
@@ -356,7 +380,9 @@ case 2:             list = createTeachDataHeuristic(results);
                 System.out.println("Ошибка анализа: "+result.getTitle()+"\n"+result.message);
                 continue;
                 }
-            for(int k=0;k<typesCount && k<result.data.size();k++){
+            for(int k=0;k<facades.length && k<result.data.size();k++){
+                if (!facadesCheck[k].isSelected())
+                    continue;
                 ExtremeFacade facade = facades[k];
                 ExtremeList list = result.data.get(k);
                 for (int j=0;j<extremeCount;j++) {
@@ -426,7 +452,66 @@ case 2:             list = createTeachDataHeuristic(results);
             DLLog.append(""+state2Map.get(i).title()+": "+stateCounts[i]+"\n");
         }
         return out;
+        }
+
+    public ArrayList<String> createTeachDataNormalised(ArrayList<AnalyseResult> resList, int extremeCount){
+        int stateCounts[] = new int[Values.EState2Count];
+        int totalCount=0;
+        for(int i=0;i<Values.EState2Count;i++)
+            stateCounts[i]=0;
+        String header="";
+        ArrayList<String> out = new ArrayList<>();
+        int facadeCount=0;
+        for(int i=0;i<extremeCount;i++){
+            header+="Freq"+(i+1)+",";
+            for(int k=0;k<facadesCheck.length;k++)
+                if (facadesCheck[k].isSelected()){
+                    header+=Values.extremeFacade[k].getSimpleName()+"Mode"+(i+1)+",";
+                    facadeCount++;
+                    }
+                }
+        header+="ExpertResult";
+        out.add(header);
+        double freq0=0;
+        for (int i=0;i<resList.size();i++){
+            String ss="";
+            AnalyseResult result = resList.get(i);
+            if (!result.valid){
+                System.out.println("Ошибка анализа: "+result.getTitle()+"\n"+result.message);
+                continue;
+                }
+            ExtremeList extremes = result.data.get(0);
+            int k=0;
+            for(k=0;k<extremeCount && k<extremes.data().size();k++){
+                Extreme extreme = extremes.data().get(k);
+                if (k==0)
+                    freq0 = extreme.idx*result.dFreq;
+                ss += replace(extreme.idx*result.dFreq/freq0)+",";
+                for(int j=0;j<facades.length;j++)
+                    if (facadesCheck[j].isSelected()){
+                        facades[j].setExtreme(extreme);
+                        ss += replace(facades[j].getValue())+",";
+                        }
+                    }
+            while(k<extremeCount){
+                for(int j=0;j<facadeCount+1;j++)
+                    ss += "0.0,";
+                k++;
+                }
+            int state2 = Values.stateToState2.get(result.measure.getExpertResult());
+            stateCounts[state2]++;
+            totalCount++;
+            ss+=state2;
+            out.add(ss);
+            }
+        DLLog.append("Файлов в выборке "+totalCount+",по состояниям:\n");
+        for(int i=0;i<stateCounts.length;i++){
+            DLLog.append(""+state2Map.get(i).title()+": "+stateCounts[i]+"\n");
+        }
+        return out;
     }
+
+
 
     public ArrayList<String> createTeachDataHeuristic(ArrayList<AnalyseResult> resList){
         int stateCounts[] = new int[Values.EState2Count];
@@ -476,6 +561,7 @@ case 2:             list = createTeachDataHeuristic(results);
 
     public void refreshAll(){
         DLLog.setText("");
+        PeakNum.setText(""+ extremeNum);
         loadUsers();
         loadSelections();
         loadParamsList();
@@ -610,6 +696,8 @@ case 2:             list = createTeachDataHeuristic(results);
         jLabel12 = new javax.swing.JLabel();
         LearningRate = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        PeakNum = new javax.swing.JTextField();
 
         setLayout(null);
 
@@ -660,7 +748,7 @@ case 2:             list = createTeachDataHeuristic(results);
             }
         });
         add(Education);
-        Education.setBounds(310, 240, 130, 20);
+        Education.setBounds(60, 470, 130, 20);
         add(DLLog);
         DLLog.setBounds(470, 20, 430, 540);
 
@@ -671,15 +759,15 @@ case 2:             list = createTeachDataHeuristic(results);
             }
         });
         add(LoadModel);
-        LoadModel.setBounds(310, 270, 130, 20);
+        LoadModel.setBounds(60, 500, 130, 20);
 
         TestPercent.setText("75");
         add(TestPercent);
-        TestPercent.setBounds(310, 170, 40, 25);
+        TestPercent.setBounds(60, 400, 40, 25);
 
         jLabel3.setText("% обучения");
         add(jLabel3);
-        jLabel3.setBounds(360, 180, 70, 10);
+        jLabel3.setBounds(110, 410, 70, 10);
 
         jLabel4.setText("Выборка");
         add(jLabel4);
@@ -703,7 +791,7 @@ case 2:             list = createTeachDataHeuristic(results);
             }
         });
         add(EducationAndTest);
-        EducationAndTest.setBounds(310, 210, 130, 20);
+        EducationAndTest.setBounds(60, 440, 130, 20);
 
         jLabel5.setText("Параметры анализа");
         add(jLabel5);
@@ -717,7 +805,7 @@ case 2:             list = createTeachDataHeuristic(results);
 
         jLabel6.setText("Скорость обучения");
         add(jLabel6);
-        jLabel6.setBounds(120, 365, 140, 16);
+        jLabel6.setBounds(110, 370, 140, 16);
 
         HiddenLayersCount.setText("5");
         add(HiddenLayersCount);
@@ -784,7 +872,7 @@ case 2:             list = createTeachDataHeuristic(results);
 
         Layer2Count.setText("0");
         add(Layer2Count);
-        Layer2Count.setBounds(60, 330, 50, 25);
+        Layer2Count.setBounds(60, 330, 40, 25);
 
         jLabel11.setText("Seed");
         add(jLabel11);
@@ -792,19 +880,27 @@ case 2:             list = createTeachDataHeuristic(results);
 
         Layer1Count.setText("0");
         add(Layer1Count);
-        Layer1Count.setBounds(60, 300, 50, 25);
+        Layer1Count.setBounds(60, 300, 40, 25);
 
         jLabel12.setText("Нейронов - слой 2");
         add(jLabel12);
-        jLabel12.setBounds(120, 305, 140, 16);
+        jLabel12.setBounds(110, 310, 140, 16);
 
         LearningRate.setText("0");
         add(LearningRate);
-        LearningRate.setBounds(60, 360, 50, 25);
+        LearningRate.setBounds(60, 360, 40, 25);
 
         jLabel13.setText("Нейронов - слой 3");
         add(jLabel13);
-        jLabel13.setBounds(120, 335, 140, 16);
+        jLabel13.setBounds(110, 340, 140, 16);
+
+        jLabel14.setText("Кол-во пиков");
+        add(jLabel14);
+        jLabel14.setBounds(360, 180, 90, 16);
+
+        PeakNum.setText("0");
+        add(PeakNum);
+        PeakNum.setBounds(310, 170, 40, 25);
     }// </editor-fold>//GEN-END:initComponents
 
     private void RefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshActionPerformed
@@ -880,7 +976,7 @@ case 2:             list = createTeachDataHeuristic(results);
             return;
         if (!getModelParams())
             return;
-        MultiLayerNetwork model = new MultiLayerNetwork(configs.get(Models.getSelectedIndex()).create(numHiddenLayers,valuesCount,numOutput,seed,layer1Count,layer1Count,learningRate));
+        MultiLayerNetwork model = new MultiLayerNetwork(configs.get(Models.getSelectedIndex()).create(numHiddenLayers,valuesCount,numOutput,seed, layer1Size, layer1Size,learningRate));
         model.init();
         //Записываем оценку один раз каждые 100 итераций
         model.setListeners(new ScoreIterationListener(100));
@@ -929,7 +1025,7 @@ case 2:             list = createTeachDataHeuristic(results);
             return;
         if (!getModelParams())
             return;
-        MultiLayerNetwork model = new MultiLayerNetwork(configs.get(Models.getSelectedIndex()).create(numHiddenLayers,valuesCount,numOutput,seed,layer1Count,layer1Count,learningRate));
+        MultiLayerNetwork model = new MultiLayerNetwork(configs.get(Models.getSelectedIndex()).create(numHiddenLayers,valuesCount,numOutput,seed, layer1Size, layer1Size,learningRate));
         model.init();
         //Записываем оценку один раз каждые 100 итераций
         model.setListeners(new ScoreIterationListener(100));
@@ -1005,6 +1101,7 @@ case 2:             list = createTeachDataHeuristic(results);
     private javax.swing.JTextField MeasuresUserNum;
     private java.awt.Choice Models;
     private java.awt.Choice Params;
+    private javax.swing.JTextField PeakNum;
     private javax.swing.JButton Refresh;
     private javax.swing.JTextField Seed;
     private java.awt.Choice Selection;
@@ -1016,6 +1113,7 @@ case 2:             list = createTeachDataHeuristic(results);
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
