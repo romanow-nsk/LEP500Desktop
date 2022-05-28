@@ -462,12 +462,14 @@ case 3:             list = createTeachDataNormalised(results,extremeNum);
         String header="";
         ArrayList<String> out = new ArrayList<>();
         int facadeCount=0;
+        for(int k=0;k<facadesCheck.length;k++)
+            if (facadesCheck[k].isSelected())
+                facadeCount++;
         for(int i=0;i<extremeCount;i++){
             header+="Freq"+(i+1)+",";
             for(int k=0;k<facadesCheck.length;k++)
                 if (facadesCheck[k].isSelected()){
                     header+=Values.extremeFacade[k].getSimpleName()+"Mode"+(i+1)+",";
-                    facadeCount++;
                     }
                 }
         header+="ExpertResult";
@@ -495,7 +497,7 @@ case 3:             list = createTeachDataNormalised(results,extremeNum);
                     }
             while(k<extremeCount){
                 for(int j=0;j<facadeCount+1;j++)
-                    ss += "0.0,";
+                    ss += "0,";
                 k++;
                 }
             int state2 = Values.stateToState2.get(result.measure.getExpertResult());
