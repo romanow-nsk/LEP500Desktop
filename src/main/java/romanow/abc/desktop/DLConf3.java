@@ -17,7 +17,7 @@ public class DLConf3 extends DLConfiguration{
         MultiLayerConfiguration conf2 = new NeuralNetConfiguration.Builder()
                 .seed(seed)
                 .activation(Activation.SIGMOID)
-                .weightInit(WeightInit.SIGMOID_UNIFORM)
+                .weightInit(WeightInit.XAVIER)
                 .updater(new Sgd(ll))
                 .l2(1e-4)
                 .list()

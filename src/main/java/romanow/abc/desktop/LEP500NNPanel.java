@@ -73,6 +73,7 @@ public class LEP500NNPanel extends LEP500BasePanel {
     private int layer1Size =50;
     private int layer2Count=25;
     private double learningRate=0.1;
+    private double normFreq =2.5;
     private int extremeNum =10;
     private boolean interrupted=false;
     private ExtremeFacade facades[];
@@ -92,6 +93,7 @@ public class LEP500NNPanel extends LEP500BasePanel {
         Layer1Count.setText(""+ layer1Size);
         Layer2Count.setText(""+layer2Count);
         LearningRate.setText(""+learningRate);
+        NormFreq.setText(""+ normFreq);
         state2Map = Values.constMap().getGroupMapByValue("EState2");
         AnalyseMode.removeAll();
         AnalyseMode.add("Пики");
@@ -119,6 +121,7 @@ public class LEP500NNPanel extends LEP500BasePanel {
             layer1Size = Integer.parseInt(Layer1Count.getText());
             layer2Count = Integer.parseInt(Layer2Count.getText());
             learningRate = Double.parseDouble(LearningRate.getText());
+            normFreq = Double.parseDouble(NormFreq.getText());
             } catch (Exception ee){
                 popup("Недопустимый формат параметра модели");
                 return false;
@@ -344,7 +347,7 @@ case 3:             list = createTeachDataNormalised(results,extremeNum);
                 facades[i] = (ExtremeFacade)Values.extremeFacade[i].newInstance();
                 JCheckBox bb = new JCheckBox();
                 bb.setText(facades[i].getTitle());
-                bb.setBounds(310,200+i*25,200,20);
+                bb.setBounds(310,230+i*25,200,20);
                 bb.setSelected(true);
                 facadesCheck[i]=bb;
                 add(bb);
@@ -483,12 +486,13 @@ case 3:             list = createTeachDataNormalised(results,extremeNum);
                 continue;
                 }
             ExtremeList extremes = result.data.get(0);
+            extremes.sortByFreq((int)(normFreq/result.dFreq));
             int k=0;
             for(k=0;k<extremeCount && k<extremes.data().size();k++){
                 Extreme extreme = extremes.data().get(k);
                 if (k==0)
                     freq0 = extreme.idx*result.dFreq;
-                ss += replace(extreme.idx*result.dFreq/freq0)+",";
+                ss += replace(extreme.idx*result.dFreq-normFreq)+",";
                 for(int j=0;j<facades.length;j++)
                     if (facadesCheck[j].isSelected()){
                         facades[j].setExtreme(extreme);
@@ -700,6 +704,8 @@ case 3:             list = createTeachDataNormalised(results,extremeNum);
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         PeakNum = new javax.swing.JTextField();
+        NormFreq = new javax.swing.JTextField();
+        jLabel15 = new javax.swing.JLabel();
 
         setLayout(null);
 
@@ -896,13 +902,21 @@ case 3:             list = createTeachDataNormalised(results,extremeNum);
         add(jLabel13);
         jLabel13.setBounds(110, 340, 140, 16);
 
-        jLabel14.setText("Кол-во пиков");
+        jLabel14.setText("Базовая частота");
         add(jLabel14);
-        jLabel14.setBounds(360, 180, 90, 16);
+        jLabel14.setBounds(360, 205, 90, 16);
 
         PeakNum.setText("0");
         add(PeakNum);
         PeakNum.setBounds(310, 170, 40, 25);
+
+        NormFreq.setText("0");
+        add(NormFreq);
+        NormFreq.setBounds(310, 200, 40, 25);
+
+        jLabel15.setText("Кол-во пиков");
+        add(jLabel15);
+        jLabel15.setBounds(360, 175, 90, 16);
     }// </editor-fold>//GEN-END:initComponents
 
     private void RefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshActionPerformed
@@ -1102,6 +1116,7 @@ case 3:             list = createTeachDataNormalised(results,extremeNum);
     private javax.swing.JTextField MeasuresSelectionNum;
     private javax.swing.JTextField MeasuresUserNum;
     private java.awt.Choice Models;
+    private javax.swing.JTextField NormFreq;
     private java.awt.Choice Params;
     private javax.swing.JTextField PeakNum;
     private javax.swing.JButton Refresh;
@@ -1116,6 +1131,7 @@ case 3:             list = createTeachDataNormalised(results,extremeNum);
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
