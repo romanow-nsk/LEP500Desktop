@@ -9,8 +9,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dd0d4f89-2465-418c-9c78-71fb44c9bc3c" name="Default Changelist" comment="Обучение по эвристикам">
-      <change beforePath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/lep500/fft/ExtremeList.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/lep500/fft/ExtremeList.java" afterDir="false" />
+    <list default="true" id="dd0d4f89-2465-418c-9c78-71fb44c9bc3c" name="Default Changelist" comment="Обучение норм. пикам">
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500$1.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/LEP500ConsoleServer$1$1.class" beforeDir="false" />
@@ -20,9 +19,6 @@
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/LEP500ConsoleServer$4.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/LEP500ConsoleServer.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/DLConf2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/DLConf2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/DLConf3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/DLConf3.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500NNPanel.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500NNPanel.form" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500NNPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/romanow/abc/desktop/LEP500NNPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -183,13 +179,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1634483190603</updated>
-    </task>
-    <task id="LOCAL-00038" summary="Логин - подстановки иконки и надписи">
-      <created>1641491619460</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1641491619460</updated>
     </task>
     <task id="LOCAL-00039" summary="037 проверка типа сервера">
       <created>1641555075602</created>
@@ -527,7 +516,14 @@
       <option name="project" value="LOCAL" />
       <updated>1653728075913</updated>
     </task>
-    <option name="localTasksCounter" value="87" />
+    <task id="LOCAL-00087" summary="Обучение норм. пикам">
+      <created>1653846070506</created>
+      <option name="number" value="00087" />
+      <option name="presentableId" value="LOCAL-00087" />
+      <option name="project" value="LOCAL" />
+      <updated>1653846070506</updated>
+    </task>
+    <option name="localTasksCounter" value="88" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -549,7 +545,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="037 проверка типа сервера" />
     <MESSAGE value="037 Values ValuesBase" />
     <MESSAGE value="008 Expert" />
     <MESSAGE value="Экспертная оценка" />
@@ -574,7 +569,8 @@
     <MESSAGE value="LEP500 - обучение на спектре" />
     <MESSAGE value="Модель 3" />
     <MESSAGE value="Обучение по эвристикам" />
-    <option name="LAST_COMMIT_MESSAGE" value="Обучение по эвристикам" />
+    <MESSAGE value="Обучение норм. пикам" />
+    <option name="LAST_COMMIT_MESSAGE" value="Обучение норм. пикам" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

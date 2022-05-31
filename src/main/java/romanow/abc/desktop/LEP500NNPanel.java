@@ -368,13 +368,13 @@ case 3:             list = createTeachDataNormalised(results,extremeNum);
         for(int i=0;i<facades.length;i++){
             if (!facadesCheck[i].isSelected())
                 continue;
-            String bb = Values.extremeFacade[i].getSimpleName()+"Mode";
+            String bb = Values.extremeFacade[i].getSimpleName().substring(7);
             for(int j = 0; j< this.extremeNum; j++) {
-                String bb2 = bb+(j+1);
-                header+=bb2+"-Value,"+bb2+"-freq,";
+                String bb2 = bb+"-"+(j+1);
+                header+=bb2+"-val,"+bb2+"-freq,";
                 }
-            header+="ExpertResult";
             }
+        header+="ExpertResult";
         out.add(header);
         for (int i=0;i<resList.size();i++){
             StringBuffer ss = new StringBuffer();
@@ -472,7 +472,7 @@ case 3:             list = createTeachDataNormalised(results,extremeNum);
             header+="Freq"+(i+1)+",";
             for(int k=0;k<facadesCheck.length;k++)
                 if (facadesCheck[k].isSelected()){
-                    header+=Values.extremeFacade[k].getSimpleName()+"Mode"+(i+1)+",";
+                    header+=Values.extremeFacade[k].getSimpleName().substring(7)+"-"+(i+1)+",";
                     }
                 }
         header+="ExpertResult";
