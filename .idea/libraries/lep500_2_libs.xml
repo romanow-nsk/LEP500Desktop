@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="lep500-2-libs">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../lep500-2-libs" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/../lep500-2-libs" recursive="false" />
+  </library>
+</component>
