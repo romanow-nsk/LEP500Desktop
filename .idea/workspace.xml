@@ -10,6 +10,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dd0d4f89-2465-418c-9c78-71fb44c9bc3c" name="Default Changelist" comment="Зависимости">
+      <change afterPath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/abc/core/LEP500ExportKotlin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LEP500Core/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500Core/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/abc/core/constants/Values.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/abc/core/constants/Values.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500$1.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../LEP500DataServer/target/classes/romanow/abc/dataserver/APILEP500.class" beforeDir="false" />
@@ -38,7 +40,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../ABC/ABCCore" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../LEP500Core" />
     <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="GitSEFilterConfiguration">
@@ -76,15 +78,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "F:/LEP500/lep500-2-libs/GraphView-3.1.4.jar",
-    "project.structure.last.edited": "Artifacts",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;F:/LEP500/lep500-2-libs/GraphView-3.1.4.jar&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\CASA_Java\LEP500Desktop\src\main\java\romanow\abc\desktop.graph" />
@@ -94,7 +96,7 @@
       <recent name="romanow.abc.dataserver" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.LEP500Cabinet">
+  <component name="RunManager" selected="Application.LEP500ExportKotlin">
     <configuration name="FFTAudioTextFile" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="romanow.lep500.FFTAudioTextFile" />
       <module name="LEP500Core" />
@@ -134,12 +136,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="LEP500ClientAdmin" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="romanow.abc.desktop.LEP500ClientAdmin" />
-      <module name="LEP500Desktop" />
+    <configuration name="LEP500ExportKotlin" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="romanow.abc.core.LEP500ExportKotlin" />
+      <module name="LEP500Core" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="romanow.abc.desktop.*" />
+          <option name="PATTERN" value="romanow.abc.core.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -162,11 +164,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.LEP500ExportKotlin" />
         <item itemvalue="Application.LEP500Cabinet" />
         <item itemvalue="Application.LEP500Client" />
         <item itemvalue="Application.LEP500MainBase" />
         <item itemvalue="Application.FFTAudioTextFile" />
-        <item itemvalue="Application.LEP500ClientAdmin" />
       </list>
     </recent_temporary>
   </component>
@@ -178,13 +180,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1634483190603</updated>
-    </task>
-    <task id="LOCAL-00044" summary="10 Выборки">
-      <created>1650445096635</created>
-      <option name="number" value="00044" />
-      <option name="presentableId" value="LOCAL-00044" />
-      <option name="project" value="LOCAL" />
-      <updated>1650445096635</updated>
     </task>
     <task id="LOCAL-00045" summary="10 Выборки">
       <created>1650446976253</created>
@@ -522,7 +517,14 @@
       <option name="project" value="LOCAL" />
       <updated>1665173682461</updated>
     </task>
-    <option name="localTasksCounter" value="93" />
+    <task id="LOCAL-00093" summary="Зависимости">
+      <created>1665175075245</created>
+      <option name="number" value="00093" />
+      <option name="presentableId" value="LOCAL-00093" />
+      <option name="project" value="LOCAL" />
+      <updated>1665175075245</updated>
+    </task>
+    <option name="localTasksCounter" value="94" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -661,12 +663,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/abc/core/constants/Values.java</url>
-          <line>21</line>
+          <line>22</line>
           <option name="timeStamp" value="147" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/../LEP500Core/src/main/java/romanow/abc/core/constants/Values.java</url>
-          <line>16</line>
+          <line>17</line>
           <option name="timeStamp" value="148" />
         </line-breakpoint>
       </breakpoints>
