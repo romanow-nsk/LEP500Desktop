@@ -1,13 +1,18 @@
 package romanow.abc.desktop;
 
+import com.google.gson.Gson;
 import okhttp3.OkHttpClient;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
+import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import romanow.abc.core.API.RestAPIBase;
 import romanow.abc.core.API.RestAPILEP500;
+import romanow.abc.core.DBRequest;
 import romanow.abc.core.UniException;
 import romanow.abc.core.constants.Values;
+import romanow.abc.core.constants.ValuesBase;
+import romanow.abc.core.entity.base.WorkSettingsBase;
 import romanow.abc.core.entity.subjectarea.*;
 import romanow.abc.core.entity.users.User;
 
@@ -17,71 +22,58 @@ import static romanow.abc.core.constants.Values.*;
 import static romanow.abc.core.constants.ValuesBase.UserSuperAdminType;
 
 
-public class LEP500Client extends Client{
-    public LEP500Client(boolean admin){
-        this(admin,true,false);
-    }
-    public LEP500Client(){
-        this(true,true,false);
+public class LEP500LocalClient extends LEP500Client{
+    public LEP500LocalClient(){
+        super(true,true,true);
         }
-    public LEP500Client(boolean admin,boolean setLog, boolean offline0){
-        super(setLog,offline0);
-        if (offline0)
-            return;
-        if (admin){
-            setLoginName("9139877277");
-            setPassword("schwanensee1969");
-            }
-        }
-    public void initPanels() {
-        super.initPanels();
-        panelDescList.add(new PanelDescriptor("Настройки", LEP500WorkSettingsPanel.class,new int[]
-                {UserSuperAdminType,UserLEP500Analytic}));
-        panelDescList.add(new PanelDescriptor("Параметры", LEP500ParamsPanel.class,new int[]
-                {UserSuperAdminType,UserLEP500Analytic}));
-        panelDescList.add(new PanelDescriptor("Измерения", LEP500Experience.class,new int[]
-                {UserSuperAdminType,UserLEP500Analytic}));
-        panelDescList.add(new PanelDescriptor("Графики", LEP500TrendPanel.class,new int[]
-                {UserSuperAdminType,UserLEP500Analytic}));
-        panelDescList.add(new PanelDescriptor("Анализ", LEP500NNPanel.class,new int[]
-                {UserSuperAdminType,UserLEP500Analytic}));
-        }
-    //-------------------------------------------------------------------------------------------------------
-    RestAPILEP500 service2;
-    MultiLayerNetwork network = null;
     @Override
     public void onLoginSuccess(){
         try {
-            service2 = startSecondClient(getServerIP(),""+getServerPort());
-            getWorkSettings();
-            } catch (UniException e) {
-                popup("Ошибка соединения: " +e.toString());
+            loadConstants(true);
+            setTitle(ValuesBase.env().applicationName(AppNameTitle)+": "+loginUser().getHeader());
+            debugToken = loginUser().getSessionToken();
+            setBounds(X0, Y0, ShortView, ViewHight);
+            getPanelList().setBounds(10,10,PanelW,PanelH);
+            getShowLog().setSelected(false);
+            getPanelList().removeAll();
+            getPanels().clear();
+            for(PanelDescriptor pp : panelDescList){
+                    BasePanel panel = (BasePanel) pp.view.newInstance();
+                    if (panel instanceof LogPanel){
+                        setLogPanel((LogPanel)panel);
+                        setMES(getLogPanel().mes(),getLogView(),getMESLOC());
+                        }
+                    panel.editMode = true;
+                    try {
+                        panel.initPanel(this);
+                        getPanels().add(panel);
+                        getPanelList().add(pp.name, panel);
+                        } catch (Exception ee){
+                            System.out.println("Ошибка открытия панели "+pp.name+"\n"+ee.toString());
+                            }
                 }
+            setMES(getLogPanel().mes(),getLogView(),getMESLOC());
+            BasePanel pn;
+            refresh();
+            } catch(Exception ee){
+                System.out.println(ee.toString());
+                ee.printStackTrace();
+                }
+        setVisible(true);
         }
-
-    public void setExternalData(String token, User uu, WorkSettings ws0, RestAPIBase service0, RestAPILEP500 service20, boolean localUser0){
-        debugToken = token;
-        loginUser = uu;
-        workSettings = ws0;
-        service = service0;
-        service2 = service20;
-        localUser = localUser0;
+    public void initPanels() {
+        panelDescList.clear();
+        panelDescList.add(new PanelDescriptor("Трассировка", LogPanel.class,new int[]
+                {UserSuperAdminType, UserAdminType}));
+        panelDescList.add(new PanelDescriptor("Параметры", LEP500ParamsPanel.class,new int[]
+                {UserSuperAdminType,UserLEP500Analytic}));
+        panelDescList.add(new PanelDescriptor("Измерения", LEP500LocalExperience.class,new int[]
+                {UserSuperAdminType,UserLEP500Analytic}));
+        panelDescList.add(new PanelDescriptor("Графики", LEP500TrendPanel.class,new int[]
+                {UserSuperAdminType,UserLEP500Analytic}));
+        panelDescList.add(new PanelDescriptor("Анализ", LEP500LocalNNPanel.class,new int[]
+                {UserSuperAdminType,UserLEP500Analytic}));
         }
-    public RestAPILEP500 startSecondClient(String ip, String port) throws UniException {
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .readTimeout(Values.HTTPTimeOut, TimeUnit.SECONDS)
-                .connectTimeout(Values.HTTPTimeOut, TimeUnit.SECONDS)
-                .build();
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://"+ip+":"+port)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(okHttpClient)
-                .build();
-        RestAPILEP500 service = (RestAPILEP500)retrofit.create(RestAPILEP500.class);
-        localUser = ip.equals("localhost") || port.equals("127.0.0.1");
-        return service;
-        }
-
     //-------------------------------------------------------------------------------------------------------
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -110,8 +102,7 @@ public class LEP500Client extends Client{
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 Values.init();
-                new LEP500Client().setVisible(false);
-            }
-        });
+                new LEP500LocalClient();
+        }   });
     }
 }
