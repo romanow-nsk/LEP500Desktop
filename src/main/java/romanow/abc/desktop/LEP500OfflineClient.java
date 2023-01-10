@@ -1,12 +1,10 @@
 package romanow.abc.desktop;
 
 
-import com.google.gson.Gson;
 import lombok.Getter;
 import romanow.abc.core.ErrorList;
 import romanow.abc.core.constants.Values;
 import romanow.abc.core.constants.ValuesBase;
-import romanow.abc.core.utils.Pair;
 import romanow.lep500.FFTAudioTextFile;
 import romanow.lep500.FileDescription;
 import romanow.lep500.LEP500LocalData;
@@ -14,15 +12,21 @@ import romanow.lep500.LEP500Params;
 
 import java.awt.*;
 import java.io.*;
+import romanow.abc.desktop.BasePanel;
+import romanow.abc.desktop.Client;
+import romanow.abc.desktop.LEP500Client;
+import romanow.abc.desktop.LEP500TrendPanel;
+import romanow.abc.desktop.LogPanel;
+import romanow.abc.desktop.PanelDescriptor;
 
 import static romanow.abc.core.constants.Values.*;
 import static romanow.abc.core.constants.ValuesBase.UserSuperAdminType;
 
 
-public class LEP500LocalClient extends LEP500Client{
+public class LEP500OfflineClient extends LEP500Client{
     @Getter private LEP500LocalData localData = new LEP500LocalData();
     //------------------------------------------------------------------------------------------------------------------
-    public LEP500LocalClient(){
+    public LEP500OfflineClient(){
         super(true,true,true);
         }
     @Override
@@ -36,6 +40,7 @@ public class LEP500LocalClient extends LEP500Client{
             getShowLog().setSelected(false);
             getPanelList().removeAll();
             getPanels().clear();
+            loadLocalData();
             for(PanelDescriptor pp : panelDescList){
                     BasePanel panel = (BasePanel) pp.view.newInstance();
                     if (panel instanceof LogPanel){
@@ -52,7 +57,6 @@ public class LEP500LocalClient extends LEP500Client{
                             }
                 }
             setMES(getLogPanel().mes(),getLogView(),getMESLOC());
-            loadLocalData();
             refresh();
             } catch(Exception ee){
                 System.out.println(ee.toString());
@@ -150,13 +154,13 @@ public class LEP500LocalClient extends LEP500Client{
         panelDescList.clear();
         panelDescList.add(new PanelDescriptor("Трассировка", LogPanel.class,new int[]
                 {UserSuperAdminType, UserAdminType}));
-        panelDescList.add(new PanelDescriptor("Параметры", LEP500ParamsPanel.class,new int[]
+        panelDescList.add(new PanelDescriptor("Параметры", LEP500OfflineParamsPanel.class,new int[]
                 {UserSuperAdminType,UserLEP500Analytic}));
-        panelDescList.add(new PanelDescriptor("Измерения", LEP500LocalExperience.class,new int[]
+        panelDescList.add(new PanelDescriptor("Измерения", LEP500OfflineExperience.class,new int[]
                 {UserSuperAdminType,UserLEP500Analytic}));
         panelDescList.add(new PanelDescriptor("Графики", LEP500TrendPanel.class,new int[]
                 {UserSuperAdminType,UserLEP500Analytic}));
-        panelDescList.add(new PanelDescriptor("Анализ", LEP500LocalNNPanel.class,new int[]
+        panelDescList.add(new PanelDescriptor("Анализ", LEP500OfflineNNPanel.class,new int[]
                 {UserSuperAdminType,UserLEP500Analytic}));
         }
     //-------------------------------------------------------------------------------------------------------
@@ -187,7 +191,7 @@ public class LEP500LocalClient extends LEP500Client{
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 Values.init();
-                new LEP500LocalClient();
+                new LEP500OfflineClient();
         }   });
     }
 }

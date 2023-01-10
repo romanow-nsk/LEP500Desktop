@@ -46,12 +46,19 @@ import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import romanow.abc.desktop.APICall;
+import romanow.abc.desktop.DLConf1;
+import romanow.abc.desktop.DLConf2;
+import romanow.abc.desktop.DLConf3;
+import romanow.abc.desktop.DLConfiguration;
+import romanow.abc.desktop.LEP500BasePanel;
+import romanow.abc.desktop.MainBaseFrame;
 
 /**
  *
  * @author Admin
  */
-public class LEP500LocalNNPanel extends LEP500BasePanel {
+public class LEP500OfflineNNPanel extends LEP500BasePanel {
     public final int numClasses = Values.EState2Count;                      //сколько классов в наборе данных
     public static final int numOutput = Values.EState2Count;                //кол-во нейронов выходной слой
     public final static String tmpCsv="temp.csv";
@@ -78,7 +85,7 @@ public class LEP500LocalNNPanel extends LEP500BasePanel {
     private boolean interrupted=false;
     private ExtremeFacade facades[];
     private JCheckBox facadesCheck[];
-    public LEP500LocalNNPanel() {
+    public LEP500OfflineNNPanel() {
         initComponents();
     }
     @Override

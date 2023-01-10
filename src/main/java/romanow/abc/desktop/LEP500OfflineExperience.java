@@ -26,10 +26,8 @@ import romanow.abc.core.mongo.DBQueryInt;
 import romanow.abc.core.mongo.DBQueryList;
 import romanow.abc.core.mongo.DBXStream;
 import romanow.abc.core.mongo.I_DBQuery;
-import romanow.lep500.AnalyseResult;
-import romanow.lep500.AnalyseResultList;
-import romanow.lep500.LEP500Params;
-import romanow.lep500.PeakPlace;
+import romanow.abc.dataserver.APILEP500;
+import romanow.lep500.*;
 import romanow.lep500.fft.ExtremeFacade;
 import romanow.lep500.fft.ExtremeList;
 import romanow.lep500.fft.ExtremeNull;
@@ -42,12 +40,21 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import romanow.abc.desktop.APICall;
+import romanow.abc.desktop.I_Button;
+import romanow.abc.desktop.I_ButtonFull;
+import romanow.abc.desktop.I_OK;
+import romanow.abc.desktop.LEP500BasePanel;
+import romanow.abc.desktop.MainBaseFrame;
+import romanow.abc.desktop.OK;
+import romanow.abc.desktop.OKFull;
+import romanow.abc.desktop.UploadPanel;
 
 /**
  *
  * @author romanow0
  */
-public class LEP500LocalExperience extends LEP500BasePanel {
+public class LEP500OfflineExperience extends LEP500BasePanel {
     public final static HashMap<Integer,String> StateColors=new HashMap<>();{
         StateColors.put(Values.MSUndefined,"/drawable/status_gray.png");
         StateColors.put(Values.MSNormal,"/drawable/status_green.png");
@@ -60,19 +67,21 @@ public class LEP500LocalExperience extends LEP500BasePanel {
         StateColors.put(Values.MSSumPeak1,"/drawable/status_light_red.png");
         StateColors.put(Values.MSSumPeak2,"/drawable/status_light_yellow.png");
         }
+    private LEP500OfflineClient client;
+    private LEP500LocalData localData;
+    private APILEP500 offlineAPI;
     private ArrayList<ConstValue> resultStates = new ArrayList<>();
     private HashMap<Integer,ConstValue> expertNoteMap;                  // Оценка эксперта по коду
     private HashMap<Integer,ConstValue> algResultMap;                   // Результаты алгоритмов по коду
     //private HashMap<Integer,String> analyseStateList = new HashMap<>();
+    //private ArrayList<MFSelection> selectionList = new ArrayList<>();
     private ArrayList<String> criterisList= new ArrayList<>();
     private ArrayList<MeasureFile> measureFiles = new ArrayList<>();
     private ArrayList<MeasureFile> selection = new ArrayList<>();
     private ArrayList<MeasureFile> tempSelection = new ArrayList<>();
     private boolean selectionChanged=false;
-    private ArrayList<MFSelection> selectionList = new ArrayList<>();
     private ArrayList<PowerLine> lines = new ArrayList<>();
     private ArrayList<Support> supports = new ArrayList<>();
-    private ArrayList<LEP500Params> params = new ArrayList<>();
     private ArrayList<AnalyseResult> results = new ArrayList<>();
     private AnalyseResult selectedResult=null;
     private HashMap<Long,User> userMap = new HashMap<>();
@@ -81,7 +90,7 @@ public class LEP500LocalExperience extends LEP500BasePanel {
     /**
      * Creates new form LEP500Example
      */
-    public LEP500LocalExperience() {
+    public LEP500OfflineExperience() {
         initComponents();
         algResultMap = Values.constMap().getGroupMapByValue("MState");
         expertNoteMap =Values.constMap().getGroupMapByValue("EState");
@@ -117,10 +126,13 @@ public class LEP500LocalExperience extends LEP500BasePanel {
             criteriaResultLamps.get(i).setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable/status_gray.png")));
             }
         }
-
     @Override
     public void initPanel(MainBaseFrame main0) {
         super.initPanel(main0);
+        client = ((LEP500OfflineClient)main);
+        localData = client.getLocalData();
+        offlineAPI = new APILEP500(null);
+        //-------------------------------------------------------------------------------
         lineSupportState=false;
         ExpertNoteSelector.setEnabled(false);
         SelectionName.setEnabled(false);
@@ -653,8 +665,8 @@ public class LEP500LocalExperience extends LEP500BasePanel {
 
     public void refreshSelection(){
         int idx = SelectionList.getSelectedIndex();
-        if (idx!=0){
-            loadSelection(selectionList.get(idx-1));
+        if (idx>0){
+            loadSelection(localData.getSelections().get(idx-1));
             }
         else{
             tempSelection = selection;
@@ -683,30 +695,24 @@ public class LEP500LocalExperience extends LEP500BasePanel {
 
 
     private void AnalyseSelectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnalyseSelectionActionPerformed
-        if (selection.size()==0 || params.size()==0)
+        if (selection.size()==0 || localData.getLep500ParamList().size()==0)
             return;
-        OidList  list = new OidList();
-        for(MeasureFile ss : selection){
-            list.oids.add(ss.getOid());
+        ArrayList<AnalyseResult> oo = offlineAPI.offlineAnalyse(selection,localData.getLep500ParamList().get(AnalyseParams.getSelectedIndex()));
+            for(AnalyseResult dd : oo){
+                results.add(dd);
             }
-        new APICall<ArrayList<AnalyseResult>>(main){
-            @Override
-            public Call<ArrayList<AnalyseResult>> apiFun() {
-                return main2.service2.analyse(main.debugToken,params.get(AnalyseParams.getSelectedIndex()).getOid(),list);
-                }
-            @Override
-            public void onSucess(ArrayList<AnalyseResult> oo) {
-                for(AnalyseResult dd : oo){
-                    results.add(dd);
-                }
-            refreshResults();
-            }
-        };
-
+        refreshResults();
     }//GEN-LAST:event_AnalyseSelectionActionPerformed
 
     private void RefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshActionPerformed
-        refreshAll();
+        new OK(200, 200, "Обновить локальные данные и каталог", new I_Button() {
+            @Override
+            public void onPush() {
+                client.createLocalDataDescription();
+                localData = client.getLocalData();
+                refreshAll();
+                }
+            });
     }//GEN-LAST:event_RefreshActionPerformed
 
     private void SelectuionAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectuionAddActionPerformed
@@ -777,31 +783,12 @@ public class LEP500LocalExperience extends LEP500BasePanel {
 
     private void refreshSelectionListForced(){
         SelectionList.removeAll();
-        selectionList.clear();
         tempSelection.clear();
-        /*
-        new APICall<ArrayList<DBRequest>>(main) {
-            @Override
-            public Call<ArrayList<DBRequest>> apiFun() {
-                return main.service.getEntityList(main.debugToken,"MFSelection",Values.GetAllModeActual,1);
+        for(MFSelection selection : client.getLocalData().getSelections()){
+            SelectionList.add(selection.getTitle());
             }
-            @Override
-            public void onSucess(ArrayList<DBRequest> oo) {
-                SelectionList.add("Временная...");
-                try{
-                    for(DBRequest request : oo){
-                        MFSelection selection = (MFSelection) request.get(main.gson);
-                        selectionList.add(selection);
-                        SelectionList.add(selection.getTitle());
-                    }
-                refreshSelection();
-                } catch (UniException ee){
-                    System.out.println("");
-                }
-            }
-        };
-         */
-    }
+        refreshSelection();
+        }
 
 
     private void DeleteFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteFileActionPerformed
@@ -856,26 +843,11 @@ public class LEP500LocalExperience extends LEP500BasePanel {
                     }
                 }
             }
-        new APICall<ArrayList<DBRequest>>(main) {
-                @Override
-                public Call<ArrayList<DBRequest>> apiFun() {
-                    return main.service.getEntityList(main.debugToken,"MFSelection",Values.GetAllModeActual,2);
-                    }
-                @Override
-                public void onSucess(ArrayList<DBRequest> oo) {
-                    System.out.println("______________________________________________________________________________");
-                    try{
-                        for(DBRequest request : oo){
-                            MFSelection selection = (MFSelection) request.get(main.gson);
-                            System.out.println("______________ Выборка "+selection.getTitle());
-                            for(EntityLink<MeasureFile> file : selection.getFiles())
-                                System.out.println(".............."+file.toString()+" "+expertNoteMap.get(file.getRef().getExpertResult()).title());
-                                }
-                        } catch (UniException ee){
-                            System.out.println("");
-                             }
-                }
-            };
+        for(MFSelection selection : localData.getSelections()){
+            System.out.println("______________ Выборка "+selection.getTitle());
+            for(EntityLink<MeasureFile> file : selection.getFiles())
+                System.out.println(".............."+file.toString()+" "+expertNoteMap.get(file.getRef().getExpertResult()).title());
+            }
     }//GEN-LAST:event_ShowTreeActionPerformed
 
     private void OwnerSelectorItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_OwnerSelectorItemStateChanged
@@ -907,21 +879,14 @@ public class LEP500LocalExperience extends LEP500BasePanel {
                     for(MeasureFile file : selection)
                         mfSelection.getFiles().addOidRef(file);
                     clearChanges();
-                    new APICall<JLong>(main) {
-                        @Override
-                        public Call<JLong> apiFun() {
-                            return main.service.addEntity(main.debugToken,new DBRequest(mfSelection,main.gson),0);
-                            }
-                        @Override
-                        public void onSucess(JLong oo) {
-                            refreshSelectionListForced();
-                            }
-                        };
+                    client.getLocalData().getSelections().add(mfSelection);
+                    client.saveLocalData();
+                    refreshSelectionListForced();
                     }
                 });
             }
         else{
-            MFSelection mfSelection = selectionList.get(idx-1);
+            MFSelection mfSelection = localData.getSelections().get(idx-1);
             new OKFull(200, 200, "Обновить выборку?", new I_ButtonFull() {
                 @Override
                 public void onPush(boolean yes) {
@@ -934,16 +899,9 @@ public class LEP500LocalExperience extends LEP500BasePanel {
                     for(MeasureFile file : selection)
                         mfSelection.getFiles().addOidRef(file);
                     clearChanges();
-                    new APICall<JEmpty>(main) {
-                        @Override
-                        public Call<JEmpty> apiFun() {
-                            return main.service.updateEntity(main.debugToken,new DBRequest(mfSelection,main.gson));
-                            }
-                        @Override
-                        public void onSucess(JEmpty oo) {
-                            refreshSelectionListForced();
-                            }
-                        };
+                    localData.getSelections().set(idx-1,mfSelection);
+                    client.saveLocalData();
+                    refreshSelectionListForced();
                     }
             });
         }
@@ -975,16 +933,19 @@ public class LEP500LocalExperience extends LEP500BasePanel {
                     refreshSelectionListForced();
                     }
                 else
+                    {
+
+                    }
                     new APICall<JBoolean>(main) {
                         @Override
                         public Call<JBoolean> apiFun() {
-                            return main.service.removeEntity(main.debugToken,"MFSelection",selectionList.get(idx-1).getOid());
+                            return main.service.removeEntity(main.debugToken,"MFSelection",localData.getSelections().get(idx-1).getOid());
                             }
                         @Override
                         public void onSucess(JBoolean oo) {
                             clearChanges();
                             try{
-                                MFSelection removeList = selectionList.get(idx-1);
+                                MFSelection removeList = localData.getSelections().get(idx-1);
                                 if (WithFiles.isSelected()) {
                                     for (EntityLink<MeasureFile> mfile : removeList.getFiles()) {
                                         new APICallSynch<JBoolean>() {
@@ -1156,26 +1117,9 @@ public class LEP500LocalExperience extends LEP500BasePanel {
 
     private void refreshParams(){
         AnalyseParams.removeAll();
-        params.clear();
-        new APICall<ArrayList<DBRequest>>(main){
-            @Override
-            public Call<ArrayList<DBRequest>> apiFun() {
-                return main.service.getEntityList(main.debugToken,"LEP500Params", Values.GetAllModeActual,0);
-                }
-            @Override
-            public void onSucess(ArrayList<DBRequest> oo) {
-                params.clear();
-                for(DBRequest dd : oo){
-                    try {
-                        LEP500Params param = (LEP500Params) dd.get(main.gson);
-                        AnalyseParams.add("["+param.getOid()+"] "+param.getTitle());
-                        params.add(param);
-                        } catch (UniException e) {
-                            System.out.println(e);
-                            }
-                        }
-                }
-            };
+        for (LEP500Params param : client.getLocalData().getLep500ParamList()){
+            AnalyseParams.add("["+param.getOid()+"] "+param.getTitle());
+            }
         }
 
     private void refreshAll(){
@@ -1200,6 +1144,7 @@ public class LEP500LocalExperience extends LEP500BasePanel {
             int idx= ExpertNoteSelector.getSelectedIndex();
             int note = idx==0 ? 0 :  resultStates.get(idx-1).value();
             idx = OwnerSelector.getSelectedIndex();
+            /*
             long userId = idx==0 ? 0 : userList.get(idx-1).getOid();
             new APICall<ArrayList<MeasureFile>>(main){
                 @Override
@@ -1217,28 +1162,14 @@ public class LEP500LocalExperience extends LEP500BasePanel {
                     refreshMeasure();
                     }
                 };
+            */
             return;
             }
-        new APICall<ArrayList<DBRequest>>(main){
-            @Override
-            public Call<ArrayList<DBRequest>> apiFun() {
-                return main.service.getEntityList(main.debugToken,"PowerLine", Values.GetAllModeActual,3);
-                }
-            @Override
-            public void onSucess(ArrayList<DBRequest> oo) {
-                lines.clear();
-                for(DBRequest dd : oo){
-                    try {
-                        PowerLine line = (PowerLine) dd.get(main.gson);
-                        lines.add(line);
-                        PowerLineList.add(line.getName());
-                        } catch (UniException e) {
-                             System.out.println(e);
-                            }
-                        }
-                    refreshSupport();
-                    }
-                };
+        for (PowerLine line : client.getLocalData().getPowerLines()){
+            lines.add(line);
+            PowerLineList.add(line.getName());
+            }
+        refreshSupport();
         }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
