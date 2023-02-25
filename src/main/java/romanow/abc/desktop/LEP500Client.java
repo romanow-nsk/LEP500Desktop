@@ -26,11 +26,12 @@ public class LEP500Client extends Client{
         }
     public LEP500Client(boolean admin,boolean setLog, boolean offline0){
         super(setLog,offline0);
+        Values.init();
         if (offline0)
             return;
         if (admin){
-            setLoginName("9139877277");
-            setPassword("schwanensee1969");
+            setLoginName(Values.env().superUser().getLoginPhone());
+            setPassword(Values.env().superUser().getPassword());
             }
         }
     public void initPanels() {
