@@ -1,6 +1,7 @@
 package romanow.abc.desktop;
 
 
+
 import lombok.Getter;
 import romanow.abc.core.ErrorList;
 import romanow.abc.core.constants.Values;
@@ -12,12 +13,7 @@ import romanow.lep500.LEP500Params;
 
 import java.awt.*;
 import java.io.*;
-import romanow.abc.desktop.BasePanel;
-import romanow.abc.desktop.Client;
-import romanow.abc.desktop.LEP500Client;
-import romanow.abc.desktop.LEP500TrendPanel;
-import romanow.abc.desktop.LogPanel;
-import romanow.abc.desktop.PanelDescriptor;
+
 
 import static romanow.abc.core.constants.Values.*;
 import static romanow.abc.core.constants.ValuesBase.UserSuperAdminType;
@@ -122,6 +118,7 @@ public class LEP500OfflineClient extends LEP500Client{
             }
         out.addInfo("Импортировано "+fcount+", c ошибками "+out.getErrCount());
         localData.createPowerLines();
+        localData.setValid(true);
         return  out;
         }
     public void loadLocalData(){

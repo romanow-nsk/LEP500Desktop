@@ -27,6 +27,8 @@ import romanow.abc.core.mongo.DBQueryList;
 import romanow.abc.core.mongo.DBXStream;
 import romanow.abc.core.mongo.I_DBQuery;
 import romanow.abc.dataserver.APILEP500;
+import romanow.abc.dataserver.DataServer;
+import romanow.abc.dataserver.LEP500DataServer;
 import romanow.lep500.*;
 import romanow.lep500.fft.ExtremeFacade;
 import romanow.lep500.fft.ExtremeList;
@@ -35,6 +37,7 @@ import romanow.lep500.fft.FFTStatistic;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -180,7 +183,13 @@ public class LEP500OfflineExperience extends LEP500BasePanel {
                 }
             };
          */
-        refreshSelectionList();
+        if (!localData.isValid()){
+            client.createLocalDataDescription();
+            localData = client.getLocalData();
+            refreshAll();
+            }
+        else
+            refreshSelectionList();
         }
 
     /**
@@ -697,7 +706,7 @@ public class LEP500OfflineExperience extends LEP500BasePanel {
     private void AnalyseSelectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnalyseSelectionActionPerformed
         if (selection.size()==0 || localData.getLep500ParamList().size()==0)
             return;
-        ArrayList<AnalyseResult> oo = offlineAPI.offlineAnalyse(selection,localData.getLep500ParamList().get(AnalyseParams.getSelectedIndex()));
+        ArrayList<AnalyseResult> oo = offlineAPI.offlineAnalyse(localData,selection,localData.getLep500ParamList().get(AnalyseParams.getSelectedIndex()));
             for(AnalyseResult dd : oo){
                 results.add(dd);
             }
@@ -1144,27 +1153,18 @@ public class LEP500OfflineExperience extends LEP500BasePanel {
             int idx= ExpertNoteSelector.getSelectedIndex();
             int note = idx==0 ? 0 :  resultStates.get(idx-1).value();
             idx = OwnerSelector.getSelectedIndex();
-            /*
-            long userId = idx==0 ? 0 : userList.get(idx-1).getOid();
-            new APICall<ArrayList<MeasureFile>>(main){
-                @Override
-                public Call<ArrayList<MeasureFile>> apiFun() {
-                    return main2.service2.getMeasureSelection(main.debugToken,note,userId,"","");
-                    }
-                @Override
-                public void onSucess(ArrayList<MeasureFile> oo) {
-                    measureFiles.clear();
-                    measureFiles = oo;
-                    MeasuresCount.setText(""+measureFiles.size());
-                    for(MeasureFile ss : oo){
-                        MeasureList.add(ss.getTitle());
-                        }
-                    refreshMeasure();
-                    }
-                };
-            */
+            MeasureList.removeAll();
+            measureFiles.clear();
+            for (FileDescription fd : localData.getFiles()){
+                MeasureList.add(fd.createOriginelFileName());
+                measureFiles.add(new MeasureFile(fd));
+                }
+            refreshMeasure();
             return;
             }
+            /*
+            long userId = idx==0 ? 0 : userList.get(idx-1).getOid();
+            */
         for (PowerLine line : client.getLocalData().getPowerLines()){
             lines.add(line);
             PowerLineList.add(line.getName());
